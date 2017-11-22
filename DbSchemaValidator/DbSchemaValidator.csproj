@@ -46,6 +46,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DbContextExtensions.cs" />
+    <Compile Include="TypeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
