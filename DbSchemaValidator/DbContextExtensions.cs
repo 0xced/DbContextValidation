@@ -25,11 +25,12 @@ namespace DbSchemaValidator
         public static async Task ValidateSchema(this DbContext context)
         {
             await context.Database.Connection.OpenAsync();
-            var contextAssembly = context.GetType().Assembly;
-            foreach (var type in ((IObjectContextAdapter)context).ObjectContext.MetadataWorkspace.GetItems<EntityType>(DataSpace.OSpace))
+            var workspace = ((IObjectContextAdapter)context).ObjectContext.MetadataWorkspace;
+            var itemCollection = (ObjectItemCollection)workspace.GetItemCollection(DataSpace.OSpace);
+            foreach (var entityType in workspace.GetItems<EntityType>(DataSpace.CSpace))
             {
-                var entityType = contextAssembly.GetType(type.FullName, throwOnError: true);
-                var query = ((IQueryable<object>)context.Set(entityType)).Take(1);
+                var type = itemCollection.GetClrType(workspace.GetObjectSpaceType(entityType));
+                var query = ((IQueryable<object>)context.Set(type)).Take(1);
                 try
                 {
                     await query.ToListAsync();
@@ -37,8 +38,8 @@ namespace DbSchemaValidator
                 catch (Exception exception)
                 {
                     var innerException = (exception as EntityCommandExecutionException)?.InnerException ?? exception;
-                    var message = $"Invalid mapping for DbSet<{entityType?.FullName}> in {context.GetType().FullName}. See the inner exception for details.";
-                    throw new InvalidMappingException(entityType, query.ToString(), message, innerException);
+                    var message = $"Invalid mapping for DbSet<{type?.FullName}> in {context.GetType().FullName}. See the inner exception for details.";
+                    throw new InvalidMappingException(type, query.ToString(), message, innerException);
                 }
             }
         }
