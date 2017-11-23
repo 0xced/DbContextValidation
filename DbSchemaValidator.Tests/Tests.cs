@@ -1,3 +1,5 @@
+using System;
+using System.Data.Entity;
 using System.Threading.Tasks;
 using DbSchemaValidator.Tests.DB;
 using Xunit;
@@ -15,31 +17,19 @@ namespace DbSchemaValidator.Tests
             }
         }
 
-        [Fact]
-        public async Task MisspelledTable()
+        [Theory]
+        [InlineData(typeof(MisspelledTableContext), typeof(Customer), "Kustomers")]
+        [InlineData(typeof(MisspelledColumnContext), typeof(Order), "OrderFate")]
+        public async Task Misspelling(Type contextType, Type invalidEntityType, string misspelledConfiguration)
         {
-            using (var context = new MisspelledTableContext())
+            using (var context = (DbContext)Activator.CreateInstance(contextType))
             {
                 var exception = await Assert.ThrowsAsync<InvalidMappingException>(() => context.ValidateSchema());
-                Assert.Equal(typeof(Customer), exception.EntityType);
-                Assert.Contains("Kustomers", exception.Query);
+                Assert.Equal(invalidEntityType, exception.EntityType);
+                Assert.Contains(misspelledConfiguration, exception.Query);
                 var innerException = exception.InnerException;
                 Assert.NotNull(innerException);
-                Assert.Contains("Kustomers", innerException.Message);
-            }
-        }
-
-        [Fact]
-        public async Task MisspelledColumn()
-        {
-            using (var context = new MisspelledColumnContext())
-            {
-                var exception = await Assert.ThrowsAsync<InvalidMappingException>(() => context.ValidateSchema());
-                Assert.Equal(typeof(Order), exception.EntityType);
-                Assert.Contains("OrderFate", exception.Query);
-                var innerException = exception.InnerException;
-                Assert.NotNull(innerException);
-                Assert.Contains("OrderFate", innerException.Message);
+                Assert.Contains(misspelledConfiguration, innerException.Message);
             }
         }
     }
