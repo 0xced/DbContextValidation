@@ -14,7 +14,7 @@ namespace DbSchemaValidator.Tests
                 await context.ValidateSchema();
             }
         }
-        
+
         [Fact]
         public async Task MisspelledTable()
         {
@@ -28,7 +28,7 @@ namespace DbSchemaValidator.Tests
                 Assert.Contains("Kustomers", innerException.Message);
             }
         }
-        
+
         [Fact]
         public async Task MisspelledColumn()
         {

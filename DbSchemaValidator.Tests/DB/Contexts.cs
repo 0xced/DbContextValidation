@@ -10,7 +10,7 @@ namespace DbSchemaValidator.Tests.DB
             Database.Log = Console.WriteLine;
         }
     }
-    
+
     public class ValidContext : BIRTContext
     {
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -19,7 +19,7 @@ namespace DbSchemaValidator.Tests.DB
             modelBuilder.Entity<Order>().ToTable("Orders").HasKey(o => o.OrderNumber);
         }
     }
-    
+
     public class MisspelledTableContext : BIRTContext
     {
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -28,7 +28,7 @@ namespace DbSchemaValidator.Tests.DB
             modelBuilder.Entity<Order>().ToTable("Orders").HasKey(o => o.OrderNumber);
         }
     }
-    
+
     public class MisspelledColumnContext : BIRTContext
     {
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

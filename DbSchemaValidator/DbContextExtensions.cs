@@ -15,11 +15,11 @@ namespace DbSchemaValidator
             EntityType = entityType;
             Query = query;
         }
-        
+
         public Type EntityType { get; }
         public string Query { get; }
     }
-    
+
     public static class DbContextExtensions
     {
         public static async Task ValidateSchema(this DbContext context)
