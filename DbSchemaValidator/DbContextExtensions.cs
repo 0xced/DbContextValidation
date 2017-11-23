@@ -24,7 +24,6 @@ namespace DbSchemaValidator
     {
         public static async Task ValidateSchema(this DbContext context)
         {
-            await context.Database.Connection.OpenAsync();
             var workspace = ((IObjectContextAdapter)context).ObjectContext.MetadataWorkspace;
             var itemCollection = (ObjectItemCollection)workspace.GetItemCollection(DataSpace.OSpace);
             foreach (var entityType in workspace.GetItems<EntityType>(DataSpace.CSpace))
@@ -35,11 +34,10 @@ namespace DbSchemaValidator
                 {
                     await query.ToListAsync();
                 }
-                catch (Exception exception)
+                catch (EntityCommandExecutionException exception)
                 {
-                    var innerException = (exception as EntityCommandExecutionException)?.InnerException ?? exception;
-                    var message = $"Invalid mapping for DbSet<{type?.FullName}> in {context.GetType().FullName}. See the inner exception for details.";
-                    throw new InvalidMappingException(type, query.ToString(), message, innerException);
+                    var message = $"The mapping for {type.FullName} is invalid. See the inner exception for details.";
+                    throw new InvalidMappingException(type, query.ToString(), message, exception.InnerException);
                 }
             }
         }
