@@ -4,8 +4,8 @@ namespace DbSchemaValidator.Tests.DB
 {
     public class Customer
     {
-        public long CustomerNumber { get; set; }
-        public string CustomerName { get; set; }
+        public long Id { get; set; }
+        public string Name { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
     }
 }

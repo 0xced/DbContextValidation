@@ -3,39 +3,38 @@ using System.Data.Entity;
 
 namespace DbSchemaValidator.Tests.DB
 {
-    public abstract class BIRTContext : DbContext
+    public abstract class Context : DbContext
     {
-        protected BIRTContext() : base("name=BIRT")
+        protected Context() : base("name=DB")
         {
             Database.Log = Console.WriteLine;
         }
     }
 
-    public class ValidContext : BIRTContext
+    public class ValidContext : Context
     {
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Customer>().ToTable("Customers").HasKey(c => c.CustomerNumber);
-            modelBuilder.Entity<Order>().ToTable("Orders").HasKey(o => o.OrderNumber);
+            modelBuilder.Entity<Customer>();
+            modelBuilder.Entity<Order>();
         }
     }
 
-    public class MisspelledTableContext : BIRTContext
+    public class MisspelledTableContext : Context
     {
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Customer>().ToTable("Kustomers").HasKey(c => c.CustomerNumber);
-            modelBuilder.Entity<Order>().ToTable("Orders").HasKey(o => o.OrderNumber);
+            modelBuilder.Entity<Customer>().ToTable("Kustomers");
+            modelBuilder.Entity<Order>();
         }
     }
 
-    public class MisspelledColumnContext : BIRTContext
+    public class MisspelledColumnContext : Context
     {
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Customer>().ToTable("Customers").HasKey(c => c.CustomerNumber);
-            modelBuilder.Entity<Order>().ToTable("Orders").HasKey(o => o.OrderNumber)
-                .Property(o => o.OrderDate).HasColumnName("OrderFate");
+            modelBuilder.Entity<Customer>();
+            modelBuilder.Entity<Order>().Property(o => o.OrderDate).HasColumnName("OrderFate");
         }
     }
 }
