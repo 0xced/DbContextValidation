@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Data.Common;
 using System.Data.Entity;
-using System.Data.Entity.Core;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
@@ -29,15 +29,16 @@ namespace DbSchemaValidator
             foreach (var entityType in workspace.GetItems<EntityType>(DataSpace.CSpace))
             {
                 var type = itemCollection.GetClrType(workspace.GetObjectSpaceType(entityType));
-                var query = ((IQueryable<object>)context.Set(type)).Take(1);
+                var validationQuery = ((IQueryable<object>)context.Set(type)).Take(1);
+                var query = validationQuery.ToString();
                 try
                 {
-                    await query.ToListAsync();
+                    await context.Database.SqlQuery<object>(query).ToListAsync();
                 }
-                catch (EntityCommandExecutionException exception)
+                catch (DbException exception)
                 {
                     var message = $"The mapping for {type.FullName} is invalid. See the inner exception for details.";
-                    throw new InvalidMappingException(type, query.ToString(), message, exception.InnerException);
+                    throw new InvalidMappingException(type, query, message, exception);
                 }
             }
         }
