@@ -10,14 +10,14 @@ namespace DbSchemaValidator
 {
     public class InvalidMappingException : Exception
     {
-        public InvalidMappingException(Type entityType, string query, string message, Exception innerException) : base(message, innerException)
+        public InvalidMappingException(Type entityType, string sqlQuery, string message, Exception innerException) : base(message, innerException)
         {
             EntityType = entityType;
-            Query = query;
+            SqlQuery = sqlQuery;
         }
 
         public Type EntityType { get; }
-        public string Query { get; }
+        public string SqlQuery { get; }
     }
 
     public static class DbContextExtensions
@@ -30,15 +30,15 @@ namespace DbSchemaValidator
             {
                 var type = itemCollection.GetClrType(workspace.GetObjectSpaceType(entityType));
                 var validationQuery = ((IQueryable<object>)context.Set(type)).Take(1);
-                var query = validationQuery.ToString();
+                var sqlQuery = validationQuery.ToString();
                 try
                 {
-                    await context.Database.SqlQuery<object>(query).ToListAsync();
+                    await context.Database.SqlQuery<object>(sqlQuery).ToListAsync();
                 }
                 catch (DbException exception)
                 {
                     var message = $"The mapping for {type.FullName} is invalid. See the inner exception for details.";
-                    throw new InvalidMappingException(type, query, message, exception);
+                    throw new InvalidMappingException(type, sqlQuery, message, exception);
                 }
             }
         }

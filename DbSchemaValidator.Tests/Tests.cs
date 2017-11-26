@@ -26,7 +26,7 @@ namespace DbSchemaValidator.Tests
             {
                 var exception = await Assert.ThrowsAsync<InvalidMappingException>(() => context.ValidateSchema());
                 Assert.Equal(invalidEntityType, exception.EntityType);
-                Assert.Contains(misspelledConfiguration, exception.Query);
+                Assert.Contains(misspelledConfiguration, exception.SqlQuery);
                 var innerException = exception.InnerException;
                 Assert.NotNull(innerException);
                 Assert.Contains(misspelledConfiguration, innerException.Message);
