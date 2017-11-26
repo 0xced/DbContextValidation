@@ -9,8 +9,8 @@ CREATE TABLE Orders (
   Id INTEGER NOT NULL,
   OrderDate DATETIME NOT NULL,
   CustomerId INTEGER NOT NULL,
-  PRIMARY KEY (Id)
-  FOREIGN KEY(OrderDate) REFERENCES Customers(Id)
+  PRIMARY KEY (Id),
+  FOREIGN KEY(CustomerId) REFERENCES Customers(Id)
 );
 endef
 
