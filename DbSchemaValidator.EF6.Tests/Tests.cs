@@ -1,10 +1,10 @@
 using System;
 using System.Data.Entity;
 using System.Threading.Tasks;
-using DbSchemaValidator.Tests.DB;
+using DbSchemaValidator.EF6.Tests.DB;
 using Xunit;
 
-namespace DbSchemaValidator.Tests
+namespace DbSchemaValidator.EF6.Tests
 {
     public class Tests
     {

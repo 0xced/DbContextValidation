@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data.Entity;
 
-namespace DbSchemaValidator.Tests.DB
+namespace DbSchemaValidator.EF6.Tests.DB
 {
     public abstract class Context : DbContext
     {

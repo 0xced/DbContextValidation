@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("DbSchemaValidator.Tests")]
+[assembly: AssemblyTitle("DbSchemaValidator.EF6.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("DbSchemaValidator.Tests")]
+[assembly: AssemblyProduct("DbSchemaValidator.EF6.Tests")]
 [assembly: AssemblyCopyright("Copyright © Cédric Luthi 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

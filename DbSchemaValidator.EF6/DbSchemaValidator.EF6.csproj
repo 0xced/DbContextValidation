@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <!-- There is no "Package" UI in Rider, see https://stackoverflow.com/questions/42138418/equivalent-to-assemblyinfo-in-dotnet-core-csproj/42143079#42143079 -->
+    <Version>1.0.0</Version>
+    <Authors>Cédric Luthi</Authors>
+    <PackageId>DbSchemaValidator.EF6</PackageId>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <NeutralLanguage>en</NeutralLanguage>
+    <Copyright>Copyright © Cédric Luthi 2017</Copyright>
+    <Description>DbContext validation against a db schema with Entity Framework 6</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="EntityFramework" Version="6.2.0" />
+  </ItemGroup>
+</Project>
