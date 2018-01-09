@@ -11,7 +11,7 @@ namespace DbSchemaValidator.EFCore.Tests.DB
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder
-                .UseSqlite("Data Source=../../../DbSchemaValidator.db")
+                .UseSqlite("Data Source=../../../../DbSchemaValidator.Tests/DbSchemaValidator.db")
                 .UseLoggerFactory(ConsoleLoggerFactory);
         }
         
