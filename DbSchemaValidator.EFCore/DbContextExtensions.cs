@@ -9,16 +9,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DbSchemaValidator.EFCore
 {
-    public class InvalidMappingException : Exception
-    {
-        public InvalidMappingException(Type entityType, string message, Exception innerException) : base(message, innerException)
-        {
-            EntityType = entityType;
-        }
-
-        public Type EntityType { get; }
-    }
-
     public static class DbContextExtensions
     {
         private static readonly Lazy<MethodInfo> Set = new Lazy<MethodInfo>(() => typeof(DbContext).GetMethod(typeof(DbSet<>), nameof(DbContext.Set)));

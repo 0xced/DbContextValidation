@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data.Common;
+﻿using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.Data.Entity.Infrastructure;
@@ -8,18 +7,6 @@ using System.Threading.Tasks;
 
 namespace DbSchemaValidator.EF6
 {
-    public class InvalidMappingException : Exception
-    {
-        public InvalidMappingException(Type entityType, string sqlQuery, string message, Exception innerException) : base(message, innerException)
-        {
-            EntityType = entityType;
-            SqlQuery = sqlQuery;
-        }
-
-        public Type EntityType { get; }
-        public string SqlQuery { get; }
-    }
-
     public static class DbContextExtensions
     {
         public static async Task ValidateSchema(this DbContext context)
@@ -38,7 +25,7 @@ namespace DbSchemaValidator.EF6
                 catch (DbException exception)
                 {
                     var message = $"The mapping for {type.FullName} is invalid. See the inner exception for details.";
-                    throw new InvalidMappingException(type, sqlQuery, message, exception);
+                    throw new InvalidMappingException(type, message, exception);
                 }
             }
         }

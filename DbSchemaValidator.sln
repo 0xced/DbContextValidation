@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSchemaValidator.EFCore", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSchemaValidator.EFCore.Tests", "DbSchemaValidator.EFCore.Tests\DbSchemaValidator.EFCore.Tests.csproj", "{36BBBC5D-24B1-4820-BE61-A6F9F189EAF3}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "DbSchemaValidator", "DbSchemaValidator\DbSchemaValidator.shproj", "{9B7279B8-8FD6-4239-B451-15724FEA79F1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
