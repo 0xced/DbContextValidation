@@ -27,7 +27,7 @@ namespace DbSchemaValidator.EFCore
             
             public int GetHashCode(Type obj)
             {
-                throw new NotImplementedException();
+                return $"{obj.Assembly}.{obj.Namespace}.{obj.Name}".GetHashCode();
             }
         }
         
