@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("DbSchemaValidator.EF6.Tests")]
-[assembly: AssemblyCopyright("Copyright © Cédric Luthi 2017")]
+[assembly: AssemblyCopyright("Copyright © Cédric Luthi")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
