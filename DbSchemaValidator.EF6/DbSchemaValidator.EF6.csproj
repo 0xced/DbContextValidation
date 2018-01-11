@@ -12,7 +12,7 @@
     <Description>DbContext validation against a db schema with Entity Framework 6</Description>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="EntityFramework" Version="6.2.0" />
+    <PackageReference Include="EntityFramework" Version="6.0.0" />
   </ItemGroup>
   <Import Project="..\DbSchemaValidator\DbSchemaValidator.projitems" Label="Shared" />
 </Project>
