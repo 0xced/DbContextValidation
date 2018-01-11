@@ -9,9 +9,7 @@ namespace DbSchemaValidator.EFCore
     {
         private class SimpleTypeComparer : IEqualityComparer<Type>
         {
-            private static readonly Lazy<SimpleTypeComparer> LazyTypeComparer = new Lazy<SimpleTypeComparer>(() => new SimpleTypeComparer());
-            
-            public static SimpleTypeComparer Instance => LazyTypeComparer.Value;
+            public static SimpleTypeComparer Instance => new SimpleTypeComparer();
             
             public bool Equals(Type a, Type b)
             {
