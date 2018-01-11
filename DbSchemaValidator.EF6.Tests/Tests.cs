@@ -8,6 +8,13 @@ namespace DbSchemaValidator.EF6.Tests
 {
     public class Tests
     {
+        static Tests()
+        {
+            Database.SetInitializer<ValidContext>(null);
+            Database.SetInitializer<MisspelledTableContext>(null);
+            Database.SetInitializer<MisspelledColumnContext>(null);
+        }
+        
         [Fact]
         public async Task ValidMapping()
         {
