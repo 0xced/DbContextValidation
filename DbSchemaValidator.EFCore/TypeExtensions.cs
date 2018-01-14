@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace DbSchemaValidator.EFCore
 {
-    public static class TypeExtensions
+    internal static class TypeExtensions
     {
         private class SimpleTypeComparer : IEqualityComparer<Type>
         {
@@ -29,7 +29,7 @@ namespace DbSchemaValidator.EFCore
             }
         }
         
-        public static MethodInfo GetMethod(this Type type, Type returnType, string name, params Type[] parameterTypes)
+        internal static MethodInfo GetMethod(this Type type, Type returnType, string name, params Type[] parameterTypes)
         {
             if (type == null)
                 throw new ArgumentNullException(nameof(type));
