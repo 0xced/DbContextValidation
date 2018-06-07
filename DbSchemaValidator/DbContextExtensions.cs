@@ -3,26 +3,34 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
+#if EFCORE
 using Microsoft.EntityFrameworkCore;
+#else
+using System.Data.Entity;
+#endif
 
+#if EFCORE
 namespace DbSchemaValidator.EFCore
+#else
+namespace DbSchemaValidator.EF6
+#endif
 {
-    public static class DbContextExtensions
+    public static partial class DbContextExtensions
     {
         public static async Task<IReadOnlyCollection<InvalidMapping>> ValidateSchema(this DbContext context, IProgress<DbSchemaValidation> progress = null)
         {
             var invalidMappings = new List<InvalidMapping>();
-            var entityTypes = context.Model.GetEntityTypes().ToList();
+            var dbModel = context.GetDbModel();
             var i = 0;
-            foreach (var entityType in entityTypes)
+            foreach (var entry in dbModel)
             {
-                var tableName = entityType.Relational().TableName;
-                progress?.Report(new DbSchemaValidation(++i / (float)entityTypes.Count, tableName));
-                var expectedColumnNames = entityType.GetProperties().Select(e => e.Relational().ColumnName).ToList();
+                var tableName = entry.Key;
+                var expectedColumnNames = entry.Value; 
+                progress?.Report(new DbSchemaValidation(++i / (float)dbModel.Count, tableName));
                 var missingColumns = new List<string>();
                 try
                 {
-                    var actualColumnNames = await context.Database.GetDbConnection().GetColumnNames(tableName);
+                    var actualColumnNames = await context.GetDbConnection().GetColumnNames(tableName);
                     missingColumns = expectedColumnNames.Except(actualColumnNames).ToList();
                 }
                 catch (DbException)
