@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 #if NETFRAMEWORK
@@ -13,6 +14,8 @@ namespace DbSchemaValidator.Tests
 {
     public class Tests
     {
+        private static readonly Progress<DbSchemaValidation> Progress = new Progress<DbSchemaValidation>(e => Console.WriteLine($"{e.TableName} ({e.FractionCompleted:P2})"));
+        
         static Tests()
         {
 #if NETFRAMEWORK
@@ -28,7 +31,7 @@ namespace DbSchemaValidator.Tests
         {
             using (var context = new ValidContext())
             {
-                var invalidMappings = await context.ValidateSchema();
+                var invalidMappings = await context.ValidateSchema(Progress);
                 Assert.Empty(invalidMappings);
             }
         }
@@ -38,7 +41,7 @@ namespace DbSchemaValidator.Tests
         {
             using (var context = new MisspelledTableContext())
             {
-                var invalidMappings = await context.ValidateSchema();
+                var invalidMappings = await context.ValidateSchema(Progress);
                 Assert.Single(invalidMappings);
                 var invalidMapping = invalidMappings.Single(); 
                 Assert.Equal("Kustomers", invalidMapping.TableName);
@@ -51,7 +54,7 @@ namespace DbSchemaValidator.Tests
         {
             using (var context = new MisspelledColumnContext())
             {
-                var invalidMappings = await context.ValidateSchema();
+                var invalidMappings = await context.ValidateSchema(Progress);
                 Assert.Single(invalidMappings);
                 var invalidMapping = invalidMappings.Single(); 
                 Assert.Equal("Orders", invalidMapping.TableName);

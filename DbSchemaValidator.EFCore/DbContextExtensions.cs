@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,12 +9,15 @@ namespace DbSchemaValidator.EFCore
 {
     public static class DbContextExtensions
     {
-        public static async Task<IReadOnlyCollection<InvalidMapping>> ValidateSchema(this DbContext context)
+        public static async Task<IReadOnlyCollection<InvalidMapping>> ValidateSchema(this DbContext context, IProgress<DbSchemaValidation> progress = null)
         {
             var invalidMappings = new List<InvalidMapping>();
-            foreach (var entityType in context.Model.GetEntityTypes())
+            var entityTypes = context.Model.GetEntityTypes().ToList();
+            var i = 0;
+            foreach (var entityType in entityTypes)
             {
                 var tableName = entityType.Relational().TableName;
+                progress?.Report(new DbSchemaValidation(++i / (float)entityTypes.Count, tableName));
                 var expectedColumnNames = entityType.GetProperties().Select(e => e.Relational().ColumnName).ToList();
                 var missingColumns = new List<string>();
                 try
