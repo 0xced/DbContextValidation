@@ -2,13 +2,11 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSchemaValidator.EF6", "DbSchemaValidator.EF6\DbSchemaValidator.EF6.csproj", "{5E5057B0-3FF8-48CA-B925-F5BA17CA64D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSchemaValidator.EF6.Tests", "DbSchemaValidator.EF6.Tests\DbSchemaValidator.EF6.Tests.csproj", "{0B33137E-059D-4F75-91E1-FFC50DC72018}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSchemaValidator.Tests.EF6", "DbSchemaValidator.Tests.EF6\DbSchemaValidator.Tests.EF6.csproj", "{0B33137E-059D-4F75-91E1-FFC50DC72018}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSchemaValidator.EFCore", "DbSchemaValidator.EFCore\DbSchemaValidator.EFCore.csproj", "{CDB94E4C-9A46-42CA-AB16-AC46BBC60B88}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSchemaValidator.EFCore.Tests", "DbSchemaValidator.EFCore.Tests\DbSchemaValidator.EFCore.Tests.csproj", "{36BBBC5D-24B1-4820-BE61-A6F9F189EAF3}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "DbSchemaValidator", "DbSchemaValidator\DbSchemaValidator.shproj", "{9B7279B8-8FD6-4239-B451-15724FEA79F1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSchemaValidator.Tests.EFCore", "DbSchemaValidator.Tests.EFCore\DbSchemaValidator.Tests.EFCore.csproj", "{36BBBC5D-24B1-4820-BE61-A6F9F189EAF3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,7 +19,6 @@ Global
 		{5E5057B0-3FF8-48CA-B925-F5BA17CA64D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E5057B0-3FF8-48CA-B925-F5BA17CA64D9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0B33137E-059D-4F75-91E1-FFC50DC72018}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0B33137E-059D-4F75-91E1-FFC50DC72018}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B33137E-059D-4F75-91E1-FFC50DC72018}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B33137E-059D-4F75-91E1-FFC50DC72018}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CDB94E4C-9A46-42CA-AB16-AC46BBC60B88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -29,7 +26,6 @@ Global
 		{CDB94E4C-9A46-42CA-AB16-AC46BBC60B88}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CDB94E4C-9A46-42CA-AB16-AC46BBC60B88}.Release|Any CPU.Build.0 = Release|Any CPU
 		{36BBBC5D-24B1-4820-BE61-A6F9F189EAF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{36BBBC5D-24B1-4820-BE61-A6F9F189EAF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36BBBC5D-24B1-4820-BE61-A6F9F189EAF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36BBBC5D-24B1-4820-BE61-A6F9F189EAF3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection

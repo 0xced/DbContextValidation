@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DbSchemaValidator.EF6.Tests.DB
+namespace DbSchemaValidator.Tests
 {
     public class Order
     {

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,28 +8,29 @@ namespace DbSchemaValidator.EFCore
 {
     public static class DbContextExtensions
     {
-        private static readonly Lazy<MethodInfo> Set = new Lazy<MethodInfo>(() => typeof(DbContext).GetMethod(typeof(DbSet<>), nameof(DbContext.Set)));
-        private static readonly Lazy<MethodInfo> Take = new Lazy<MethodInfo>(() => typeof(Queryable).GetMethod(typeof(IQueryable<>), nameof(Queryable.Take), typeof(IQueryable<>), typeof(int)));
-        private static readonly Lazy<MethodInfo> ToListAsync = new Lazy<MethodInfo>(() => typeof(EntityFrameworkQueryableExtensions).GetMethod(typeof(Task<List<object>>), nameof(EntityFrameworkQueryableExtensions.ToListAsync), typeof(IQueryable<>), typeof(CancellationToken)));
-        
-        public static async Task ValidateSchema(this DbContext context)
+        public static async Task<IReadOnlyCollection<InvalidMapping>> ValidateSchema(this DbContext context)
         {
+            var invalidMappings = new List<InvalidMapping>();
             foreach (var entityType in context.Model.GetEntityTypes())
             {
-                var type = entityType.ClrType;
-                var dbSet = Set.Value.MakeGenericMethod(type).Invoke(context, new object[] {});
-                var query = Take.Value.MakeGenericMethod(type).Invoke(null, new[] {dbSet, 1});
+                var tableName = entityType.Relational().TableName;
+                var expectedColumnNames = entityType.GetProperties().Select(e => e.Relational().ColumnName).ToList();
+                var missingColumns = new List<string>();
                 try
                 {
-                    // runtime generic version of `await context.Set<type>().Take(1).ToListAsync()`
-                    await (Task)ToListAsync.Value.MakeGenericMethod(type).Invoke(null, new[] {query, default(CancellationToken)});
+                    var actualColumnNames = await context.Database.GetDbConnection().GetColumnNames(tableName);
+                    missingColumns = expectedColumnNames.Except(actualColumnNames).ToList();
                 }
-                catch (DbException exception)
+                catch (DbException)
                 {
-                    var message = $"The mapping for {type.FullName} is invalid. See the inner exception for details.";
-                    throw new InvalidMappingException(type, message, exception);
+                    invalidMappings.Add(new InvalidMapping(tableName, missingColumns: null));
+                }
+                if (missingColumns.Any())
+                {
+                    invalidMappings.Add(new InvalidMapping(tableName, missingColumns));
                 }
             }
+            return invalidMappings;
         }
     }
 }

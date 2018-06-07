@@ -1,5 +1,7 @@
-﻿using System.Data.Common;
+﻿using System.Collections.Generic;
+using System.Data.Common;
 using System.Data.Entity;
+using System.Data.Entity.Core.Mapping;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
@@ -9,25 +11,35 @@ namespace DbSchemaValidator.EF6
 {
     public static class DbContextExtensions
     {
-        public static async Task ValidateSchema(this DbContext context)
+        public static async Task<IReadOnlyCollection<InvalidMapping>> ValidateSchema(this DbContext context)
         {
+            var invalidMappings = new List<InvalidMapping>();
             var workspace = ((IObjectContextAdapter)context).ObjectContext.MetadataWorkspace;
-            var itemCollection = (ObjectItemCollection)workspace.GetItemCollection(DataSpace.OSpace);
+            var entitySets = workspace.GetItems<EntityContainer>(DataSpace.CSpace).Single().EntitySets;
+            var entitySetMappings = workspace.GetItems<EntityContainerMapping>(DataSpace.CSSpace).Single().EntitySetMappings.ToList();
             foreach (var entityType in workspace.GetItems<EntityType>(DataSpace.CSpace))
             {
-                var type = itemCollection.GetClrType(workspace.GetObjectSpaceType(entityType));
-                var validationQuery = ((IQueryable<object>)context.Set(type)).Take(1);
-                var sqlQuery = validationQuery.ToString();
+                var entitySet = entitySets.Single(s => s.ElementType.Name == entityType.Name);
+                var entitySetMapping = entitySetMappings.Single(s => s.EntitySet == entitySet);
+                var fragmentMapping = entitySetMapping.EntityTypeMappings.Single().Fragments.Single();
+                var tableName = fragmentMapping.StoreEntitySet.MetadataProperties["Table"].Value?.ToString();
+                var expectedColumnNames = fragmentMapping.PropertyMappings.OfType<ScalarPropertyMapping>().Select(e => e.Column.Name);
+                var missingColumns = new List<string>();
                 try
                 {
-                    await context.Database.SqlQuery<object>(sqlQuery).ToListAsync();
+                    var actualColumnNames = await context.Database.Connection.GetColumnNames(tableName);
+                    missingColumns = expectedColumnNames.Except(actualColumnNames).ToList();
                 }
-                catch (DbException exception)
+                catch (DbException)
                 {
-                    var message = $"The mapping for {type.FullName} is invalid. See the inner exception for details.";
-                    throw new InvalidMappingException(type, message, exception);
+                    invalidMappings.Add(new InvalidMapping(tableName, missingColumns: null));
+                }
+                if (missingColumns.Any())
+                {
+                    invalidMappings.Add(new InvalidMapping(tableName, missingColumns));
                 }
             }
+            return invalidMappings;
         }
     }
 }

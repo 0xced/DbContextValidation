@@ -1,7 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net461</TargetFramework>
+    <TargetFramework>net452</TargetFramework>
     <IsPackable>false</IsPackable>
+    <AssemblyName>DbSchemaValidator.Tests.EF6</AssemblyName>
+    <RootNamespace>DbSchemaValidator.Tests.EF6</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.108" />
@@ -11,5 +13,10 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DbSchemaValidator.EF6\DbSchemaValidator.EF6.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\DbSchemaValidator.Tests\Tests.cs" />
+    <Compile Include="..\DbSchemaValidator.Tests\Entities\Customer.cs" />
+    <Compile Include="..\DbSchemaValidator.Tests\Entities\Order.cs" />
   </ItemGroup>
 </Project>

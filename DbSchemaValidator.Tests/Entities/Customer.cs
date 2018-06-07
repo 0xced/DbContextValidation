@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DbSchemaValidator.EF6.Tests.DB
+namespace DbSchemaValidator.Tests
 {
     public class Customer
     {

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net45</TargetFramework>
     <!-- There is no "Package" UI in Rider, see https://stackoverflow.com/questions/42138418/equivalent-to-assemblyinfo-in-dotnet-core-csproj/42143079#42143079 -->
     <Version>1.0.0</Version>
     <Authors>Cédric Luthi</Authors>
@@ -12,10 +12,14 @@
     <Description>DbContext validation against a db schema with Entity Framework 6</Description>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="EntityFramework" Version="6.0.0" />
+    <PackageReference Include="EntityFramework" Version="6.1.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="../DbSchemaValidator/DbConnectionExtensions.cs" />
+    <Compile Include="../DbSchemaValidator/InvalidMapping.cs" />
   </ItemGroup>
   <PropertyGroup>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(PackageId).xml</DocumentationFile>
   </PropertyGroup>
-  <Import Project="..\DbSchemaValidator\DbSchemaValidator.projitems" Label="Shared" />
 </Project>
+<!-- TODO: SourceLink -->

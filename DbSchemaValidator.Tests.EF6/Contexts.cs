@@ -6,7 +6,7 @@ using System.Data.Entity.Infrastructure;
 using System.Data.SQLite;
 using System.Data.SQLite.EF6;
 
-namespace DbSchemaValidator.EF6.Tests.DB
+namespace DbSchemaValidator.Tests.EF6
 {
     public class SQLiteConnectionFactory : IDbConnectionFactory
     {

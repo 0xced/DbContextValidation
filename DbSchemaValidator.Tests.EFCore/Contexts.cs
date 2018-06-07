@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Console;
 
-namespace DbSchemaValidator.EFCore.Tests.DB
+namespace DbSchemaValidator.Tests.EFCore
 {
     public abstract class Context : DbContext
     {

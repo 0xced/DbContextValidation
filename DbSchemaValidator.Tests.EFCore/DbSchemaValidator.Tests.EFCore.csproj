@@ -13,4 +13,9 @@
   <ItemGroup>
     <ProjectReference Include="..\DbSchemaValidator.EFCore\DbSchemaValidator.EFCore.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\DbSchemaValidator.Tests\Tests.cs" />
+    <Compile Include="..\DbSchemaValidator.Tests\Entities\Customer.cs" />
+    <Compile Include="..\DbSchemaValidator.Tests\Entities\Order.cs" />
+  </ItemGroup>
 </Project>
