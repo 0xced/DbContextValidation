@@ -32,7 +32,7 @@ namespace DbSchemaValidator.EF6.Tests.DB
     [DbConfigurationType(typeof(SQLiteConfiguration))] 
     public abstract class Context : DbContext
     {
-        protected Context() : base("Data Source=../../../DbSchemaValidator.Tests/DbSchemaValidator.db")
+        protected Context() : base("Data Source=../../../../DbSchemaValidator.Tests/DbSchemaValidator.db")
         {
             Database.Log = Console.WriteLine;
         }
