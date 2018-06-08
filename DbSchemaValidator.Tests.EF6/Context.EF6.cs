@@ -37,31 +37,4 @@ namespace DbSchemaValidator.Tests.EF6
             Database.Log = Console.WriteLine;
         }
     }
-
-    public class ValidContext : Context
-    {
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Customer>().ToTable("tCustomers");
-            modelBuilder.Entity<Order>().ToTable("tOrders");
-        }
-    }
-
-    public class MisspelledTableContext : ValidContext
-    {
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Customer>().ToTable("Customers");
-        }
-    }
-
-    public class MisspelledColumnContext : ValidContext
-    {
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Order>().Property(o => o.OrderDate).HasColumnName("OrderFate");
-        }
-    }
 }

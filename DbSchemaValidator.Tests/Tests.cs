@@ -3,10 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 #if NETFRAMEWORK
 using DbSchemaValidator.EF6;
-using DbSchemaValidator.Tests.EF6;
 #else
 using DbSchemaValidator.EFCore;
-using DbSchemaValidator.Tests.EFCore;
 #endif
 using Xunit;
 

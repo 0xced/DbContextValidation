@@ -24,4 +24,3 @@
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(PackageId).xml</DocumentationFile>
   </PropertyGroup>
 </Project>
-<!-- TODO: SourceLink -->

@@ -1,24 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Console;
+﻿#if NETFRAMEWORK
+using DbSchemaValidator.Tests.EF6;
+using ModelBuilder = System.Data.Entity.DbModelBuilder;
+#else
+using DbSchemaValidator.Tests.EFCore;
+using Microsoft.EntityFrameworkCore;
+#endif
 
-namespace DbSchemaValidator.Tests.EFCore
+namespace DbSchemaValidator.Tests
 {
-    public abstract class Context : DbContext
-    {
-        private static readonly LoggerFactory ConsoleLoggerFactory = new LoggerFactory(new[] {new ConsoleLoggerProvider((name, level) => true, true)});
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder
-                .UseSqlite("Data Source=../../../../DbSchemaValidator.Tests/DbSchemaValidator.db")
-                .UseLoggerFactory(ConsoleLoggerFactory);
-        }
-        
-        public DbSet<Customer> Customers { get; set; }
-        public DbSet<Order> Orders { get; set; }
-    }
-
     public class ValidContext : Context
     {
         protected override void OnModelCreating(ModelBuilder modelBuilder)
