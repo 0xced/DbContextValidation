@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data.Common;
+﻿using System.Data.Common;
 using System.Data.Entity;
 using System.Data.Entity.Core.Common;
 using System.Data.Entity.Infrastructure;
@@ -34,7 +33,6 @@ namespace DbSchemaValidator.Tests.EF6
     {
         protected Context() : base("Data Source=../../../../DbSchemaValidator.Tests/DbSchemaValidator.db")
         {
-            Database.Log = Console.WriteLine;
         }
     }
 }
