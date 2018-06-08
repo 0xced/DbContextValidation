@@ -22,7 +22,7 @@ namespace DbSchemaValidator.EF6
                 var entitySet = entitySets.Single(s => s.ElementType.Name == entityType.Name);
                 var entitySetMapping = entitySetMappings.Single(s => s.EntitySet == entitySet);
                 var fragmentMapping = entitySetMapping.EntityTypeMappings.Single().Fragments.Single();
-                var tableName = fragmentMapping.StoreEntitySet.MetadataProperties["Table"].Value.ToString();
+                var tableName = fragmentMapping.StoreEntitySet.Table;
                 var columnNames = fragmentMapping.PropertyMappings.OfType<ScalarPropertyMapping>().Select(e => e.Column.Name);
                 model.Add(tableName, columnNames.ToList());
             }
