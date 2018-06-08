@@ -44,7 +44,7 @@ namespace DbSchemaValidator.Tests
                 var invalidMappings = await context.ValidateSchema(Progress);
                 Assert.Single(invalidMappings);
                 var invalidMapping = invalidMappings.Single(); 
-                Assert.Equal("Kustomers", invalidMapping.TableName);
+                Assert.Equal("Customers", invalidMapping.TableName);
                 Assert.Null(invalidMapping.MissingColumns);
             }
         }
@@ -57,7 +57,7 @@ namespace DbSchemaValidator.Tests
                 var invalidMappings = await context.ValidateSchema(Progress);
                 Assert.Single(invalidMappings);
                 var invalidMapping = invalidMappings.Single(); 
-                Assert.Equal("Orders", invalidMapping.TableName);
+                Assert.Equal("tOrders", invalidMapping.TableName);
                 Assert.Single(invalidMapping.MissingColumns);
                 Assert.Equal("OrderFate", invalidMapping.MissingColumns.Single());
             }

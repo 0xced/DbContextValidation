@@ -18,21 +18,30 @@ namespace DbSchemaValidator.Tests.EFCore
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Order> Orders { get; set; }
     }
-    
-    public class ValidContext : Context {}
-    
-    public class MisspelledTableContext : Context
+
+    public class ValidContext : Context
     {
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Customer>().ToTable("Kustomers");
+            modelBuilder.Entity<Customer>().ToTable("tCustomers");
+            modelBuilder.Entity<Order>().ToTable("tOrders");
+        }
+    }
+    
+    public class MisspelledTableContext : ValidContext
+    {
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Customer>().ToTable("Customers");
         }
     }
 
-    public class MisspelledColumnContext : Context
+    public class MisspelledColumnContext : ValidContext
     {
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Order>().Property(o => o.OrderDate).HasColumnName("OrderFate");
         }
     }

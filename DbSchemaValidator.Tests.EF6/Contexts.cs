@@ -42,25 +42,25 @@ namespace DbSchemaValidator.Tests.EF6
     {
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Customer>();
-            modelBuilder.Entity<Order>();
+            modelBuilder.Entity<Customer>().ToTable("tCustomers");
+            modelBuilder.Entity<Order>().ToTable("tOrders");
         }
     }
 
-    public class MisspelledTableContext : Context
+    public class MisspelledTableContext : ValidContext
     {
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Customer>().ToTable("Kustomers");
-            modelBuilder.Entity<Order>();
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Customer>().ToTable("Customers");
         }
     }
 
-    public class MisspelledColumnContext : Context
+    public class MisspelledColumnContext : ValidContext
     {
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Customer>();
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Order>().Property(o => o.OrderDate).HasColumnName("OrderFate");
         }
     }
