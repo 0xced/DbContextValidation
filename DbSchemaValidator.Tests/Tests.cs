@@ -29,7 +29,7 @@ namespace DbSchemaValidator.Tests
         {
             using (var context = new ValidContext())
             {
-                var invalidMappings = await context.ValidateSchema(Progress);
+                var invalidMappings = await context.ValidateSchema(progress: Progress);
                 Assert.Empty(invalidMappings);
             }
         }
@@ -39,7 +39,7 @@ namespace DbSchemaValidator.Tests
         {
             using (var context = new MisspelledTableContext())
             {
-                var invalidMappings = await context.ValidateSchema(Progress);
+                var invalidMappings = await context.ValidateSchema(progress: Progress);
                 Assert.Single(invalidMappings);
                 var invalidMapping = invalidMappings.Single(); 
                 Assert.Equal("Customers", invalidMapping.TableName);
@@ -52,12 +52,37 @@ namespace DbSchemaValidator.Tests
         {
             using (var context = new MisspelledColumnContext())
             {
-                var invalidMappings = await context.ValidateSchema(Progress);
+                var invalidMappings = await context.ValidateSchema(progress: Progress);
                 Assert.Single(invalidMappings);
                 var invalidMapping = invalidMappings.Single(); 
                 Assert.Equal("tOrders", invalidMapping.TableName);
                 Assert.Single(invalidMapping.MissingColumns);
                 Assert.Equal("OrderFate", invalidMapping.MissingColumns.Single());
+            }
+        }
+        
+        [Fact]
+        public async Task CaseInsentiveColumn()
+        {
+            using (var context = new CaseInsensitiveColumnsContext())
+            {
+                var invalidMappings = await context.ValidateSchema(StringComparer.InvariantCultureIgnoreCase, Progress);
+                Assert.Empty(invalidMappings);
+            }
+        }
+        
+        [Fact]
+        public async Task CaseSentiveColumn()
+        {
+            using (var context = new CaseInsensitiveColumnsContext())
+            {
+                var invalidMappings = await context.ValidateSchema(progress: Progress);
+                Assert.Single(invalidMappings);
+                var invalidMapping = invalidMappings.Single(); 
+                Assert.Equal("tOrders", invalidMapping.TableName);
+                Assert.Equal(2, invalidMapping.MissingColumns.Count);
+                Assert.Contains("oRdErDaTe", invalidMapping.MissingColumns);
+                Assert.Contains("cUsToMeRiD", invalidMapping.MissingColumns);
             }
         }
     }

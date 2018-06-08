@@ -17,7 +17,7 @@ namespace DbSchemaValidator.EF6
 {
     public static partial class DbContextExtensions
     {
-        public static async Task<IReadOnlyCollection<InvalidMapping>> ValidateSchema(this DbContext context, IProgress<DbSchemaValidation> progress = null)
+        public static async Task<IReadOnlyCollection<InvalidMapping>> ValidateSchema(this DbContext context, IEqualityComparer<string> columnNameEqualityComparer = null, IProgress<DbSchemaValidation> progress = null)
         {
             var invalidMappings = new List<InvalidMapping>();
             var dbModel = context.GetDbModel();
@@ -30,7 +30,7 @@ namespace DbSchemaValidator.EF6
                 try
                 {
                     var actualColumnNames = await context.GetDbConnection().GetColumnNames(tableName);
-                    var missingColumns = expectedColumnNames.Except(actualColumnNames).ToList();
+                    var missingColumns = expectedColumnNames.Except(actualColumnNames, columnNameEqualityComparer).ToList();
                     if (missingColumns.Any())
                     {
                         invalidMappings.Add(new InvalidMapping(tableName, missingColumns));

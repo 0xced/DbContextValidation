@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Threading.Tasks;
@@ -12,9 +11,9 @@ namespace DbSchemaValidator.EF6
 {
     internal static class DbConnectionExtensions
     {
-        internal static async Task<ISet<string>> GetColumnNames(this DbConnection connection, string tableName)
+        internal static async Task<IReadOnlyCollection<string>> GetColumnNames(this DbConnection connection, string tableName)
         {
-            var columnNames = new HashSet<string>(StringComparer.InvariantCultureIgnoreCase);
+            var columnNames = new List<string>();
             var wasClosed = connection.State == ConnectionState.Closed;
             if (wasClosed)
                 await connection.OpenAsync();

@@ -34,4 +34,14 @@ namespace DbSchemaValidator.Tests
             modelBuilder.Entity<Order>().Property(o => o.OrderDate).HasColumnName("OrderFate");
         }
     }
+    
+    public class CaseInsensitiveColumnsContext : ValidContext
+    {
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Order>().Property(o => o.OrderDate).HasColumnName("oRdErDaTe");
+            modelBuilder.Entity<Order>().Property(o => o.CustomerId).HasColumnName("cUsToMeRiD");
+        }
+    }
 }
