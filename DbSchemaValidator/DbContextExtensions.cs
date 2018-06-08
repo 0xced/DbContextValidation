@@ -27,19 +27,18 @@ namespace DbSchemaValidator.EF6
                 var tableName = entry.Key;
                 var expectedColumnNames = entry.Value; 
                 progress?.Report(new DbSchemaValidation(++i / (float)dbModel.Count, tableName));
-                var missingColumns = new List<string>();
                 try
                 {
                     var actualColumnNames = await context.GetDbConnection().GetColumnNames(tableName);
-                    missingColumns = expectedColumnNames.Except(actualColumnNames).ToList();
+                    var missingColumns = expectedColumnNames.Except(actualColumnNames).ToList();
+                    if (missingColumns.Any())
+                    {
+                        invalidMappings.Add(new InvalidMapping(tableName, missingColumns));
+                    }
                 }
                 catch (DbException)
                 {
                     invalidMappings.Add(new InvalidMapping(tableName, missingColumns: null));
-                }
-                if (missingColumns.Any())
-                {
-                    invalidMappings.Add(new InvalidMapping(tableName, missingColumns));
                 }
             }
             return invalidMappings;
