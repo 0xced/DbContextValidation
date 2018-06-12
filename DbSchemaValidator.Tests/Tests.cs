@@ -76,7 +76,7 @@ namespace DbSchemaValidator.Tests
         {
             using (var context = new CaseInsensitiveColumnsContext())
             {
-                var invalidMappings = await context.ValidateSchema(progress: Progress);
+                var invalidMappings = await context.ValidateSchema(StringComparer.InvariantCulture, Progress);
                 Assert.Single(invalidMappings);
                 var invalidMapping = invalidMappings.Single(); 
                 Assert.Equal("tOrders", invalidMapping.TableName);

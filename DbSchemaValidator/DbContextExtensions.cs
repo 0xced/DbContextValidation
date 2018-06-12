@@ -17,6 +17,14 @@ namespace DbSchemaValidator.EF6
 {
     public static partial class DbContextExtensions
     {
+        private static IEqualityComparer<string> ColumnNameEqualityComparer(IEqualityComparer<string> columnNameEqualityComparer, bool? caseSensitive)
+        {
+            if (columnNameEqualityComparer != null)
+                return columnNameEqualityComparer;
+
+            return caseSensitive is false ? StringComparer.InvariantCultureIgnoreCase : StringComparer.InvariantCulture;
+        }
+        
         public static async Task<IReadOnlyCollection<InvalidMapping>> ValidateSchema(this DbContext context, IEqualityComparer<string> columnNameEqualityComparer = null, IProgress<DbSchemaValidation> progress = null)
         {
             var invalidMappings = new List<InvalidMapping>();
@@ -29,8 +37,9 @@ namespace DbSchemaValidator.EF6
                 progress?.Report(new DbSchemaValidation(++i / (float)dbModel.Count, tableName));
                 try
                 {
-                    var actualColumnNames = await context.GetDbConnection().GetColumnNames(tableName);
-                    var missingColumns = expectedColumnNames.Except(actualColumnNames, columnNameEqualityComparer).ToList();
+                    var tableInfo = await context.GetDbConnection().GetTableInfo(tableName);
+                    var equalityComparer = ColumnNameEqualityComparer(columnNameEqualityComparer, tableInfo.CaseSensitive);
+                    var missingColumns = expectedColumnNames.Except(tableInfo.ColumnNames, equalityComparer).ToList();
                     if (missingColumns.Any())
                     {
                         invalidMappings.Add(new InvalidMapping(tableName, missingColumns));

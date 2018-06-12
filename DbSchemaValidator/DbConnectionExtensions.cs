@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Threading.Tasks;
@@ -11,9 +12,10 @@ namespace DbSchemaValidator.EF6
 {
     internal static class DbConnectionExtensions
     {
-        internal static async Task<IReadOnlyCollection<string>> GetColumnNames(this DbConnection connection, string tableName)
+        internal static async Task<TableInfo> GetTableInfo(this DbConnection connection, string tableName)
         {
             var columnNames = new List<string>();
+            bool? caseSensitive;
             var wasClosed = connection.State == ConnectionState.Closed;
             if (wasClosed)
                 await connection.OpenAsync();
@@ -30,6 +32,14 @@ namespace DbSchemaValidator.EF6
                         {
                             columnNames.Add(reader.GetName(i));
                         }
+                        try
+                        {
+                            caseSensitive = reader.GetSchemaTable()?.CaseSensitive;
+                        }
+                        catch (Exception)
+                        {
+                            caseSensitive = null;
+                        }
                     }
                 }
             }
@@ -38,7 +48,7 @@ namespace DbSchemaValidator.EF6
                 if (wasClosed)
                     connection.Close();
             }
-            return columnNames;
+            return new TableInfo(columnNames, caseSensitive);
         }
     }
 }
