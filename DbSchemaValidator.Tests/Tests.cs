@@ -19,8 +19,9 @@ namespace DbSchemaValidator.Tests
 #if NETFRAMEWORK
             // Disable migrations
             System.Data.Entity.Database.SetInitializer<ValidContext>(null);
-            System.Data.Entity.Database.SetInitializer<MisspelledTableContext>(null);
-            System.Data.Entity.Database.SetInitializer<MisspelledColumnContext>(null);
+            System.Data.Entity.Database.SetInitializer<ContextWithMisspelledCustomersTable>(null);
+            System.Data.Entity.Database.SetInitializer<ContextWithMisspelledOrderDateColumn>(null);
+            System.Data.Entity.Database.SetInitializer<ContextWithMixedCaseColumns>(null);
 #endif
         }
 
@@ -35,9 +36,9 @@ namespace DbSchemaValidator.Tests
         }
         
         [Fact]
-        public async Task MisspelledTable()
+        public async Task MisspelledCustomersTable()
         {
-            using (var context = new MisspelledTableContext())
+            using (var context = new ContextWithMisspelledCustomersTable())
             {
                 var invalidMappings = await context.ValidateSchema(progress: Progress);
                 Assert.Single(invalidMappings);
@@ -48,9 +49,9 @@ namespace DbSchemaValidator.Tests
         }
         
         [Fact]
-        public async Task MisspelledColumn()
+        public async Task MisspelledOrderDateColumn()
         {
-            using (var context = new MisspelledColumnContext())
+            using (var context = new ContextWithMisspelledOrderDateColumn())
             {
                 var invalidMappings = await context.ValidateSchema(progress: Progress);
                 Assert.Single(invalidMappings);
@@ -62,9 +63,9 @@ namespace DbSchemaValidator.Tests
         }
         
         [Fact]
-        public async Task CaseInsentiveColumn()
+        public async Task CaseInsensitiveColumnNameComparison()
         {
-            using (var context = new CaseInsensitiveColumnsContext())
+            using (var context = new ContextWithMixedCaseColumns())
             {
                 var invalidMappings = await context.ValidateSchema(StringComparer.InvariantCultureIgnoreCase, Progress);
                 Assert.Empty(invalidMappings);
@@ -72,9 +73,9 @@ namespace DbSchemaValidator.Tests
         }
         
         [Fact]
-        public async Task CaseSentiveColumn()
+        public async Task CaseSensitiveColumnNameComparison()
         {
-            using (var context = new CaseInsensitiveColumnsContext())
+            using (var context = new ContextWithMixedCaseColumns())
             {
                 var invalidMappings = await context.ValidateSchema(StringComparer.InvariantCulture, Progress);
                 Assert.Single(invalidMappings);

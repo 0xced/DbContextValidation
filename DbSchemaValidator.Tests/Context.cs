@@ -17,7 +17,7 @@ namespace DbSchemaValidator.Tests
         }
     }
     
-    public class MisspelledTableContext : ValidContext
+    public class ContextWithMisspelledCustomersTable : ValidContext
     {
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -26,7 +26,7 @@ namespace DbSchemaValidator.Tests
         }
     }
 
-    public class MisspelledColumnContext : ValidContext
+    public class ContextWithMisspelledOrderDateColumn : ValidContext
     {
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -35,7 +35,7 @@ namespace DbSchemaValidator.Tests
         }
     }
     
-    public class CaseInsensitiveColumnsContext : ValidContext
+    public class ContextWithMixedCaseColumns : ValidContext
     {
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
