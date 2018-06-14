@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 #if NETFRAMEWORK
@@ -12,8 +13,6 @@ namespace DbSchemaValidator.Tests
 {
     public class Tests
     {
-        private static readonly Progress<DbSchemaValidation> Progress = new Progress<DbSchemaValidation>(e => Console.WriteLine($"{e.TableName} ({e.FractionCompleted:P2})"));
-        
         static Tests()
         {
 #if NETFRAMEWORK
@@ -30,8 +29,23 @@ namespace DbSchemaValidator.Tests
         {
             using (var context = new ValidContext())
             {
-                var invalidMappings = await context.ValidateSchema(progress: Progress);
+                var invalidMappings = await context.ValidateSchema();
                 Assert.Empty(invalidMappings);
+            }
+        }
+        
+        [Fact]
+        public async Task ValidMappingWithProgress()
+        {
+            var validations = new List<DbSchemaValidation>();
+            var progress = new Progress<DbSchemaValidation>(validations.Add);
+            
+            using (var context = new ValidContext())
+            {
+                await context.ValidateSchema(progress: progress);
+                Assert.Equal(2, validations.Count);
+                Assert.Contains(validations, e => e.TableName == "tCustomers");
+                Assert.Contains(validations, e => e.TableName == "tOrders");
             }
         }
         
@@ -40,7 +54,7 @@ namespace DbSchemaValidator.Tests
         {
             using (var context = new ContextWithMisspelledCustomersTable())
             {
-                var invalidMappings = await context.ValidateSchema(progress: Progress);
+                var invalidMappings = await context.ValidateSchema();
                 Assert.Single(invalidMappings);
                 var invalidMapping = invalidMappings.Single(); 
                 Assert.Equal("Customers", invalidMapping.TableName);
@@ -53,7 +67,7 @@ namespace DbSchemaValidator.Tests
         {
             using (var context = new ContextWithMisspelledOrderDateColumn())
             {
-                var invalidMappings = await context.ValidateSchema(progress: Progress);
+                var invalidMappings = await context.ValidateSchema();
                 Assert.Single(invalidMappings);
                 var invalidMapping = invalidMappings.Single(); 
                 Assert.Equal("tOrders", invalidMapping.TableName);
@@ -67,7 +81,7 @@ namespace DbSchemaValidator.Tests
         {
             using (var context = new ContextWithMixedCaseColumns())
             {
-                var invalidMappings = await context.ValidateSchema(StringComparer.InvariantCultureIgnoreCase, Progress);
+                var invalidMappings = await context.ValidateSchema(StringComparer.InvariantCultureIgnoreCase);
                 Assert.Empty(invalidMappings);
             }
         }
@@ -77,7 +91,7 @@ namespace DbSchemaValidator.Tests
         {
             using (var context = new ContextWithMixedCaseColumns())
             {
-                var invalidMappings = await context.ValidateSchema(StringComparer.InvariantCulture, Progress);
+                var invalidMappings = await context.ValidateSchema(StringComparer.InvariantCulture);
                 Assert.Single(invalidMappings);
                 var invalidMapping = invalidMappings.Single(); 
                 Assert.Equal("tOrders", invalidMapping.TableName);
