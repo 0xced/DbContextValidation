@@ -33,8 +33,8 @@ namespace DbSchemaValidator.EF6
             foreach (var entry in dbModel)
             {
                 var tableName = entry.Key;
-                var expectedColumnNames = entry.Value; 
-                progress?.Report(new DbSchemaValidation(++i / (float)dbModel.Count, tableName));
+                var expectedColumnNames = entry.Value;
+                InvalidMapping invalidMapping = null;
                 try
                 {
                     var tableInfo = await context.GetDbConnection().GetTableInfo(tableName);
@@ -42,13 +42,18 @@ namespace DbSchemaValidator.EF6
                     var missingColumns = expectedColumnNames.Except(tableInfo.ColumnNames, equalityComparer).ToList();
                     if (missingColumns.Any())
                     {
-                        invalidMappings.Add(new InvalidMapping(tableName, missingColumns));
+                        invalidMapping = new InvalidMapping(tableName, missingColumns);
                     }
                 }
                 catch (DbException)
                 {
-                    invalidMappings.Add(new InvalidMapping(tableName, missingColumns: null));
+                    invalidMapping = new InvalidMapping(tableName, missingColumns: null);
                 }
+                if (invalidMapping != null)
+                {
+                    invalidMappings.Add(invalidMapping);                    
+                }
+                progress?.Report(new DbSchemaValidation(++i, dbModel.Count, tableName, invalidMapping));
             }
             return invalidMappings;
         }

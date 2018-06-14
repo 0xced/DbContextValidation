@@ -43,9 +43,10 @@ namespace DbSchemaValidator.Tests
             using (var context = new ValidContext())
             {
                 await context.ValidateSchema(progress: progress);
+                await Task.Yield();
                 Assert.Equal(2, validations.Count);
-                Assert.Contains(validations, e => e.TableName == "tCustomers");
-                Assert.Contains(validations, e => e.TableName == "tOrders");
+                Assert.Contains(validations, e => e.TableName == "tCustomers" && e.Table == 1 && e.TableCount == 2 && e.InvalidMapping == null);
+                Assert.Contains(validations, e => e.TableName == "tOrders"    && e.Table == 2 && e.TableCount == 2 && e.InvalidMapping == null);
             }
         }
         

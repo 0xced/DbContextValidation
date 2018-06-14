@@ -6,13 +6,17 @@ namespace DbSchemaValidator.EF6
 {
     public class DbSchemaValidation
     {
-        internal DbSchemaValidation(float fractionCompleted, string tableName)
+        internal DbSchemaValidation(int table, int tableCount, string tableName, InvalidMapping invalidMapping)
         {
-            FractionCompleted = fractionCompleted;
+            Table = table;
+            TableCount = tableCount;
             TableName = tableName;
+            InvalidMapping = invalidMapping;
         }
 
-        public float FractionCompleted { get; }
+        public int Table { get; }
+        public int TableCount { get; }
         public string TableName { get; }
+        public InvalidMapping InvalidMapping { get; }
     }
 }
