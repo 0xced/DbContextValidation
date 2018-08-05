@@ -6,7 +6,7 @@ namespace DbSchemaValidator.EFCore
 namespace DbSchemaValidator.EF6
 #endif
 {
-    public class TableInfo
+    internal class TableInfo
     {
         public TableInfo(IReadOnlyCollection<string> columnNames, bool? caseSensitive)
         {
