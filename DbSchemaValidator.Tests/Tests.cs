@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 #if NETFRAMEWORK
 using DbSchemaValidator.EF6;
@@ -47,6 +48,17 @@ namespace DbSchemaValidator.Tests
                 Assert.Equal(2, fractions.Count);
                 Assert.Contains(fractions, e => e >= 0.5 && e <= 0.5);
                 Assert.Contains(fractions, e => e >= 1.0 && e <= 1.0);
+            }
+        }
+        
+        [Fact]
+        public async Task ValidMappingWithCancellation()
+        {
+            using (var context = new ValidContext())
+            {
+                var validationTask = context.ValidateSchema(cancellationToken: new CancellationToken(true));
+                Assert.Equal(TaskStatus.Canceled, validationTask.Status);
+                await Assert.ThrowsAsync<OperationCanceledException>(() => validationTask);
             }
         }
         

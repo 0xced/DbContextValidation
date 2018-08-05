@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 #if EFCORE
 using Microsoft.EntityFrameworkCore;
@@ -25,13 +26,14 @@ namespace DbSchemaValidator.EF6
             return caseSensitive is false ? StringComparer.InvariantCultureIgnoreCase : StringComparer.InvariantCulture;
         }
         
-        public static async Task<IReadOnlyCollection<InvalidMapping>> ValidateSchema(this DbContext context, IEqualityComparer<string> columnNameEqualityComparer = null, IProgress<float> progress = null)
+        public static async Task<IReadOnlyCollection<InvalidMapping>> ValidateSchema(this DbContext context, IEqualityComparer<string> columnNameEqualityComparer = null, IProgress<float> progress = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             var invalidMappings = new List<InvalidMapping>();
             var dbModel = context.GetDbModel();
             var i = 0;
             foreach (var entry in dbModel)
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 var tableName = entry.Key;
                 var expectedColumnNames = entry.Value;
                 InvalidMapping invalidMapping = null;
