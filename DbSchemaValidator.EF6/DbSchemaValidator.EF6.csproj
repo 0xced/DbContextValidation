@@ -18,7 +18,6 @@
   <ItemGroup>
     <Compile Include="../DbSchemaValidator/DbConnectionExtensions.cs" />
     <Compile Include="../DbSchemaValidator/DbContextExtensions.cs" />
-    <Compile Include="../DbSchemaValidator/DbSchemaValidation.cs" />
     <Compile Include="../DbSchemaValidator/InvalidMapping.cs" />
     <Compile Include="../DbSchemaValidator/TableInfo.cs" />
   </ItemGroup>

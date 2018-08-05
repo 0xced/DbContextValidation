@@ -37,16 +37,16 @@ namespace DbSchemaValidator.Tests
         [Fact]
         public async Task ValidMappingWithProgress()
         {
-            var validations = new List<DbSchemaValidation>();
-            var progress = new Progress<DbSchemaValidation>(validations.Add);
+            var fractions = new List<float>();
+            var progress = new Progress<float>(fractions.Add);
             
             using (var context = new ValidContext())
             {
                 await context.ValidateSchema(progress: progress);
                 await Task.Yield();
-                Assert.Equal(2, validations.Count);
-                Assert.Contains(validations, e => e.TableName == "tCustomers" && e.Table == 1 && e.TableCount == 2 && e.InvalidMapping == null);
-                Assert.Contains(validations, e => e.TableName == "tOrders"    && e.Table == 2 && e.TableCount == 2 && e.InvalidMapping == null);
+                Assert.Equal(2, fractions.Count);
+                Assert.Contains(fractions, e => e >= 0.5 && e <= 0.5);
+                Assert.Contains(fractions, e => e >= 1.0 && e <= 1.0);
             }
         }
         

@@ -25,7 +25,7 @@ namespace DbSchemaValidator.EF6
             return caseSensitive is false ? StringComparer.InvariantCultureIgnoreCase : StringComparer.InvariantCulture;
         }
         
-        public static async Task<IReadOnlyCollection<InvalidMapping>> ValidateSchema(this DbContext context, IEqualityComparer<string> columnNameEqualityComparer = null, IProgress<DbSchemaValidation> progress = null)
+        public static async Task<IReadOnlyCollection<InvalidMapping>> ValidateSchema(this DbContext context, IEqualityComparer<string> columnNameEqualityComparer = null, IProgress<float> progress = null)
         {
             var invalidMappings = new List<InvalidMapping>();
             var dbModel = context.GetDbModel();
@@ -53,7 +53,7 @@ namespace DbSchemaValidator.EF6
                 {
                     invalidMappings.Add(invalidMapping);                    
                 }
-                progress?.Report(new DbSchemaValidation(++i, dbModel.Count, tableName, invalidMapping));
+                progress?.Report(++i / (float)dbModel.Count);
             }
             return invalidMappings;
         }
