@@ -8,7 +8,7 @@ namespace DbSchemaValidator.EF6
 {
     public class InvalidMapping
     {
-        public InvalidMapping(string tableName, IReadOnlyCollection<string> missingColumns)
+        internal InvalidMapping(string tableName, IReadOnlyCollection<string> missingColumns)
         {
             TableName = tableName;
             MissingColumns = missingColumns;
