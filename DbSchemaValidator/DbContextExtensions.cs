@@ -17,7 +17,7 @@ namespace DbSchemaValidator.EF6
 #endif
 {
     /// <summary>
-    /// DbContextExtensions is a static class used to hold the <see cref="ValidateSchema"/> method.
+    /// DbContextExtensions is a static class used to hold the <see cref="ValidateSchemaAsync"/> method.
     /// </summary>
     public static partial class DbContextExtensions
     {
@@ -37,7 +37,7 @@ namespace DbSchemaValidator.EF6
         /// <param name="progress">A progress reporting numbers between 0.0 and 1.0 representing the completed fraction of the validation process. If <code>null</code>, no progress is reported.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> that you can use to abort the validation process.</param>
         /// <returns>A collection of <see cref="InvalidMapping"/>s, i.e. when an entity defined in the model does not have a matching table and column names in the database. If the context model exactly matches the database schema then an empty collection is returned.</returns>
-        public static async Task<IReadOnlyCollection<InvalidMapping>> ValidateSchema(this DbContext context, IEqualityComparer<string> columnNameEqualityComparer = null, IProgress<float> progress = null, CancellationToken cancellationToken = default(CancellationToken))
+        public static async Task<IReadOnlyCollection<InvalidMapping>> ValidateSchemaAsync(this DbContext context, IEqualityComparer<string> columnNameEqualityComparer = null, IProgress<float> progress = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             var invalidMappings = new List<InvalidMapping>();
             var dbModel = context.GetDbModel();

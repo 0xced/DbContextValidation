@@ -30,7 +30,7 @@ namespace DbSchemaValidator.Tests
         {
             using (var context = new ValidContext())
             {
-                var invalidMappings = await context.ValidateSchema();
+                var invalidMappings = await context.ValidateSchemaAsync();
                 Assert.Empty(invalidMappings);
             }
         }
@@ -43,7 +43,7 @@ namespace DbSchemaValidator.Tests
             
             using (var context = new ValidContext())
             {
-                await context.ValidateSchema(progress: progress);
+                await context.ValidateSchemaAsync(progress: progress);
                 await Task.Yield();
                 Assert.Equal(2, fractions.Count);
                 Assert.Contains(fractions, e => e >= 0.5 && e <= 0.5);
@@ -56,7 +56,7 @@ namespace DbSchemaValidator.Tests
         {
             using (var context = new ValidContext())
             {
-                var validationTask = context.ValidateSchema(cancellationToken: new CancellationToken(true));
+                var validationTask = context.ValidateSchemaAsync(cancellationToken: new CancellationToken(true));
                 Assert.Equal(TaskStatus.Canceled, validationTask.Status);
                 await Assert.ThrowsAsync<OperationCanceledException>(() => validationTask);
             }
@@ -67,7 +67,7 @@ namespace DbSchemaValidator.Tests
         {
             using (var context = new ContextWithMisspelledCustomersTable())
             {
-                var invalidMappings = await context.ValidateSchema();
+                var invalidMappings = await context.ValidateSchemaAsync();
                 Assert.Single(invalidMappings);
                 var invalidMapping = invalidMappings.Single(); 
                 Assert.Equal("Customers", invalidMapping.TableName);
@@ -80,7 +80,7 @@ namespace DbSchemaValidator.Tests
         {
             using (var context = new ContextWithMisspelledOrderDateColumn())
             {
-                var invalidMappings = await context.ValidateSchema();
+                var invalidMappings = await context.ValidateSchemaAsync();
                 Assert.Single(invalidMappings);
                 var invalidMapping = invalidMappings.Single(); 
                 Assert.Equal("tOrders", invalidMapping.TableName);
@@ -94,7 +94,7 @@ namespace DbSchemaValidator.Tests
         {
             using (var context = new ContextWithMixedCaseColumns())
             {
-                var invalidMappings = await context.ValidateSchema(StringComparer.InvariantCultureIgnoreCase);
+                var invalidMappings = await context.ValidateSchemaAsync(StringComparer.InvariantCultureIgnoreCase);
                 Assert.Empty(invalidMappings);
             }
         }
@@ -104,7 +104,7 @@ namespace DbSchemaValidator.Tests
         {
             using (var context = new ContextWithMixedCaseColumns())
             {
-                var invalidMappings = await context.ValidateSchema(StringComparer.InvariantCulture);
+                var invalidMappings = await context.ValidateSchemaAsync(StringComparer.InvariantCulture);
                 Assert.Single(invalidMappings);
                 var invalidMapping = invalidMappings.Single(); 
                 Assert.Equal("tOrders", invalidMapping.TableName);
