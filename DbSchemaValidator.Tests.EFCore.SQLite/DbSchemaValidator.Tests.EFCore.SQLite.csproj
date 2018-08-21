@@ -12,5 +12,8 @@
   <ItemGroup>
     <ProjectReference Include="..\DbSchemaValidator.EFCore\DbSchemaValidator.EFCore.csproj" />
   </ItemGroup>
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);PROVIDER_SQLITE</DefineConstants>
+  </PropertyGroup>
   <Import Project="..\DbSchemaValidator.Tests\DbSchemaValidator.Tests.projitems" Label="Shared" />
 </Project>

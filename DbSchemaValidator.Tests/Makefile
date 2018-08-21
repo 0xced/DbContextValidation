@@ -1,21 +1,10 @@
-define CREATE_TABLES
-CREATE TABLE tCustomers (
-  Id INTEGER NOT NULL,
-  Name VARCHAR(50) NOT NULL,
-  PRIMARY KEY (Id)
-);
+all: sqlite postgres
 
-CREATE TABLE tOrders (
-  Id INTEGER NOT NULL,
-  OrderDate DATETIME NOT NULL,
-  CustomerId INTEGER NOT NULL,
-  PRIMARY KEY (Id),
-  FOREIGN KEY(CustomerId) REFERENCES tCustomers(Id)
-);
-endef
-
-export CREATE_TABLES
-
-create_database:
+sqlite:
 	rm -f DbSchemaValidator.db
-	sqlite3 DbSchemaValidator.db "$$CREATE_TABLES"
+	sqlite3 DbSchemaValidator.db < CreateTables.sql
+
+postgres:
+	psql -q -c 'DROP DATABASE IF EXISTS "DbSchemaValidator"'
+	psql -q -c 'CREATE DATABASE "DbSchemaValidator"'
+	psql -q -d DbSchemaValidator -f CreateTables.sql

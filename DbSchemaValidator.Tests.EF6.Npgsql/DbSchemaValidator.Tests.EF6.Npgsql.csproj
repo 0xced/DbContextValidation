@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net452</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <AssemblyName>DbSchemaValidator.Tests.EF6</AssemblyName>
+    <RootNamespace>DbSchemaValidator.Tests.EF6</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Npgsql.EntityFramework" Version="2.2.7" />
+    <PackageReference Include="xunit" Version="2.4.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DbSchemaValidator.EF6\DbSchemaValidator.EF6.csproj" />
+  </ItemGroup>
+  <Import Project="..\DbSchemaValidator.Tests\DbSchemaValidator.Tests.projitems" Label="Shared" />
+</Project>

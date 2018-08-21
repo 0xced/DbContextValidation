@@ -2,15 +2,19 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSchemaValidator.EF6", "DbSchemaValidator.EF6\DbSchemaValidator.EF6.csproj", "{5E5057B0-3FF8-48CA-B925-F5BA17CA64D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSchemaValidator.Tests.EF6", "DbSchemaValidator.Tests.EF6\DbSchemaValidator.Tests.EF6.csproj", "{0B33137E-059D-4F75-91E1-FFC50DC72018}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSchemaValidator.EFCore", "DbSchemaValidator.EFCore\DbSchemaValidator.EFCore.csproj", "{CDB94E4C-9A46-42CA-AB16-AC46BBC60B88}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSchemaValidator.Tests.EFCore", "DbSchemaValidator.Tests.EFCore\DbSchemaValidator.Tests.EFCore.csproj", "{36BBBC5D-24B1-4820-BE61-A6F9F189EAF3}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "DbSchemaValidator", "DbSchemaValidator\DbSchemaValidator.shproj", "{F9569881-513F-46AF-8BC8-CE5E31A3DEB8}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "DbSchemaValidator.Tests", "DbSchemaValidator.Tests\DbSchemaValidator.Tests.shproj", "{FD83F4DD-8750-4D33-B8EE-0E0A2019F88C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSchemaValidator.Tests.EFCore.Npgsql", "DbSchemaValidator.Tests.EFCore.Npgsql\DbSchemaValidator.Tests.EFCore.Npgsql.csproj", "{DB85519B-A8BD-433E-87BE-A3D61EDCB0AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSchemaValidator.Tests.EF6.Npgsql", "DbSchemaValidator.Tests.EF6.Npgsql\DbSchemaValidator.Tests.EF6.Npgsql.csproj", "{8CE4038B-6865-4F4F-838E-DBFA5D0B08F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSchemaValidator.Tests.EF6.SQLite", "DbSchemaValidator.Tests.EF6.SQLite\DbSchemaValidator.Tests.EF6.SQLite.csproj", "{78313926-8712-4EB1-9A9F-2296F7C12B47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSchemaValidator.Tests.EFCore.SQLite", "DbSchemaValidator.Tests.EFCore.SQLite\DbSchemaValidator.Tests.EFCore.SQLite.csproj", "{705C7586-1270-490A-BB8D-7C6E33A742DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,15 +26,25 @@ Global
 		{5E5057B0-3FF8-48CA-B925-F5BA17CA64D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E5057B0-3FF8-48CA-B925-F5BA17CA64D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E5057B0-3FF8-48CA-B925-F5BA17CA64D9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0B33137E-059D-4F75-91E1-FFC50DC72018}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0B33137E-059D-4F75-91E1-FFC50DC72018}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0B33137E-059D-4F75-91E1-FFC50DC72018}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CDB94E4C-9A46-42CA-AB16-AC46BBC60B88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CDB94E4C-9A46-42CA-AB16-AC46BBC60B88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CDB94E4C-9A46-42CA-AB16-AC46BBC60B88}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CDB94E4C-9A46-42CA-AB16-AC46BBC60B88}.Release|Any CPU.Build.0 = Release|Any CPU
-		{36BBBC5D-24B1-4820-BE61-A6F9F189EAF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{36BBBC5D-24B1-4820-BE61-A6F9F189EAF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{36BBBC5D-24B1-4820-BE61-A6F9F189EAF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB85519B-A8BD-433E-87BE-A3D61EDCB0AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB85519B-A8BD-433E-87BE-A3D61EDCB0AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB85519B-A8BD-433E-87BE-A3D61EDCB0AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB85519B-A8BD-433E-87BE-A3D61EDCB0AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CE4038B-6865-4F4F-838E-DBFA5D0B08F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CE4038B-6865-4F4F-838E-DBFA5D0B08F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CE4038B-6865-4F4F-838E-DBFA5D0B08F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CE4038B-6865-4F4F-838E-DBFA5D0B08F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78313926-8712-4EB1-9A9F-2296F7C12B47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78313926-8712-4EB1-9A9F-2296F7C12B47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78313926-8712-4EB1-9A9F-2296F7C12B47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78313926-8712-4EB1-9A9F-2296F7C12B47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{705C7586-1270-490A-BB8D-7C6E33A742DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{705C7586-1270-490A-BB8D-7C6E33A742DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{705C7586-1270-490A-BB8D-7C6E33A742DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{705C7586-1270-490A-BB8D-7C6E33A742DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

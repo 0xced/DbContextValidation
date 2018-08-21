@@ -2,7 +2,11 @@
 using DbSchemaValidator.Tests.EF6;
 using ModelBuilder = System.Data.Entity.DbModelBuilder;
 #else
-using DbSchemaValidator.Tests.EFCore;
+#if PROVIDER_NPGSQL
+using DbSchemaValidator.Tests.EFCore.Npgsql;
+#elif PROVIDER_SQLITE
+using DbSchemaValidator.Tests.EFCore.SQLite;
+#endif
 using Microsoft.EntityFrameworkCore;
 #endif
 

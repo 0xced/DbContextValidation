@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace DbSchemaValidator.Tests.EFCore
+namespace DbSchemaValidator.Tests.EFCore.Npgsql
 {
     public abstract class Context : DbContext
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=../../../../DbSchemaValidator.Tests/DbSchemaValidator.db");
+            optionsBuilder.UseNpgsql("Host=localhost;Database=DbSchemaValidator");
         }
     }
 }
