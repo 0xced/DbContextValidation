@@ -8,12 +8,16 @@ namespace DbSchemaValidator.EF6
 {
     internal class TableInfo
     {
-        public TableInfo(IReadOnlyCollection<string> columnNames, bool? caseSensitive)
+        public TableInfo(string schema, string table, IReadOnlyCollection<string> columnNames, bool? caseSensitive)
         {
+            Schema = schema;
+            Table = table;
             ColumnNames = columnNames;
             CaseSensitive = caseSensitive;
         }
 
+        public string Schema { get; }
+        public string Table { get; }
         public IReadOnlyCollection<string> ColumnNames { get; }
         public bool? CaseSensitive { get; }
     }

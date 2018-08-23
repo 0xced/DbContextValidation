@@ -10,9 +10,9 @@ namespace DbSchemaValidator.EF6
 {
     public static partial class DbContextExtensions
     {
-        private static IDictionary<string, IReadOnlyCollection<string>> GetDbModel(this DbContext context)
+        private static IDictionary<(string schema, string tableName), IReadOnlyCollection<string>> GetDbModel(this DbContext context)
         {
-            var model = new Dictionary<string, IReadOnlyCollection<string>>();
+            var model = new Dictionary<(string schema, string tableName), IReadOnlyCollection<string>>();
             var workspace = ((IObjectContextAdapter)context).ObjectContext.MetadataWorkspace;
             var entitySets = workspace.GetItems<EntityContainer>(DataSpace.CSpace).Single().EntitySets;
             var entitySetMappings = workspace.GetItems<EntityContainerMapping>(DataSpace.CSSpace).Single().EntitySetMappings.ToList();
@@ -22,9 +22,10 @@ namespace DbSchemaValidator.EF6
                 var entitySet = entitySets.Single(s => s.ElementType.Name == entityType.Name);
                 var entitySetMapping = entitySetMappings.Single(s => s.EntitySet == entitySet);
                 var fragmentMapping = entitySetMapping.EntityTypeMappings.Single().Fragments.Single();
+                var schema = fragmentMapping.StoreEntitySet.Schema;
                 var tableName = fragmentMapping.StoreEntitySet.Table;
                 var columnNames = fragmentMapping.PropertyMappings.OfType<ScalarPropertyMapping>().Select(e => e.Column.Name);
-                model.Add(tableName, columnNames.ToList());
+                model.Add((schema: schema, tableName: tableName), columnNames.ToList());
             }
             return model;
         }

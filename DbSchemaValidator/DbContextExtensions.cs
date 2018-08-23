@@ -45,12 +45,13 @@ namespace DbSchemaValidator.EF6
             foreach (var entry in dbModel)
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                var tableName = entry.Key;
+                var schema = entry.Key.schema;
+                var tableName = entry.Key.tableName;
                 var expectedColumnNames = entry.Value;
                 InvalidMapping invalidMapping = null;
                 try
                 {
-                    var tableInfo = await context.GetDbConnection().GetTableInfo(tableName);
+                    var tableInfo = await context.GetDbConnection().GetTableInfo(schema, tableName);
                     var equalityComparer = ColumnNameEqualityComparer(columnNameEqualityComparer, tableInfo.CaseSensitive);
                     var missingColumns = expectedColumnNames.Except(tableInfo.ColumnNames, equalityComparer).ToList();
                     if (missingColumns.Any())
