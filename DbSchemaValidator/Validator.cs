@@ -17,27 +17,34 @@ namespace DbSchemaValidator.EF6
 #endif
 {
     /// <summary>
-    /// DbContextExtensions is a static class used to hold the <see cref="ValidateSchemaAsync"/> method.
+    /// TODO
     /// </summary>
-    public static partial class DbContextExtensions
+    /// <param name="schema">TODO</param>
+    /// <param name="tableName">TODO</param>
+    public delegate string SelectStatement(string schema, string tableName);
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    public class Validator : IValidator
     {
-        private static IEqualityComparer<string> ColumnNameEqualityComparer(IEqualityComparer<string> columnNameEqualityComparer, bool? caseSensitive)
-        {
-            if (columnNameEqualityComparer != null)
-                return columnNameEqualityComparer;
 
-            return caseSensitive is false ? StringComparer.InvariantCultureIgnoreCase : StringComparer.InvariantCulture;
-        }
-        
+        private readonly IEqualityComparer<string> _columnNameEqualityComparer;
+        private readonly SelectStatement _selectStatement;
+
         /// <summary>
-        /// Validates all the table and column names of entities defined in the model associated with the context against the actual database schema.
+        /// TODO
         /// </summary>
-        /// <param name="context">The context you want to validate against its actual database connection.</param>
         /// <param name="columnNameEqualityComparer">An equality comparer used to compare column names defined in the model against the actual column names. If <code>null</code>, tries to guess from the database provider if table names are case sensitive or not. If case sensitivity can not be guessed, then <code>StringComparer.InvariantCulture</code> is used.</param>
-        /// <param name="progress">A progress reporting numbers between 0.0 and 1.0 representing the completed fraction of the validation process. If <code>null</code>, no progress is reported.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken"/> that you can use to abort the validation process.</param>
-        /// <returns>A collection of <see cref="InvalidMapping"/>s, i.e. when an entity defined in the model does not have a matching table and column names in the database. If the context model exactly matches the database schema then an empty collection is returned.</returns>
-        public static async Task<IReadOnlyCollection<InvalidMapping>> ValidateSchemaAsync(this DbContext context, IEqualityComparer<string> columnNameEqualityComparer = null, IProgress<float> progress = null, CancellationToken cancellationToken = default(CancellationToken))
+        /// <param name="selectStatement">TODO</param>
+        public Validator(IEqualityComparer<string> columnNameEqualityComparer = null, SelectStatement selectStatement = null)
+        {
+            _columnNameEqualityComparer = columnNameEqualityComparer;
+            _selectStatement = selectStatement ?? DefaultSelectStatement;
+        }
+
+        /// <inheritdoc />
+        public async Task<IReadOnlyCollection<InvalidMapping>> ValidateSchemaAsync(DbContext context, IProgress<float> progress = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             var invalidMappings = new List<InvalidMapping>();
             var dbModel = context.GetDbModel();
@@ -51,8 +58,9 @@ namespace DbSchemaValidator.EF6
                 InvalidMapping invalidMapping = null;
                 try
                 {
-                    var tableInfo = await context.GetDbConnection().GetTableInfo(schema, tableName);
-                    var equalityComparer = ColumnNameEqualityComparer(columnNameEqualityComparer, tableInfo.CaseSensitive);
+                    var selectStatement = _selectStatement(schema, tableName);
+                    var tableInfo = await context.GetDbConnection().GetTableInfo(selectStatement, schema, tableName);
+                    var equalityComparer = ColumnNameEqualityComparer(_columnNameEqualityComparer, tableInfo.CaseSensitive);
                     var missingColumns = expectedColumnNames.Except(tableInfo.ColumnNames, equalityComparer).ToList();
                     if (missingColumns.Any())
                     {
@@ -70,6 +78,19 @@ namespace DbSchemaValidator.EF6
                 progress?.Report(++i / (float)dbModel.Count);
             }
             return invalidMappings;
+        }
+        
+        private static string DefaultSelectStatement(string schema, string tableName)
+        {
+            return $"SELECT * FROM {tableName} WHERE 1=0";
+        }
+        
+        private static IEqualityComparer<string> ColumnNameEqualityComparer(IEqualityComparer<string> columnNameEqualityComparer, bool? caseSensitive)
+        {
+            if (columnNameEqualityComparer != null)
+                return columnNameEqualityComparer;
+
+            return caseSensitive is false ? StringComparer.InvariantCultureIgnoreCase : StringComparer.InvariantCulture;
         }
     }
 }

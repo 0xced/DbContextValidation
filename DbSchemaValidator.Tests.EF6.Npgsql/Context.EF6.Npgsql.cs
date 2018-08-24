@@ -1,7 +1,8 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Data.Entity;
 using Npgsql;
 
-namespace DbSchemaValidator.Tests.EF6
+namespace DbSchemaValidator.Tests.EF6.Npgsql
 {
     public class NpgsqlConfiguration : DbConfiguration
     {
@@ -16,7 +17,7 @@ namespace DbSchemaValidator.Tests.EF6
     [DbConfigurationType(typeof(NpgsqlConfiguration))] 
     public abstract class Context : DbContext
     {
-        protected Context() : base("Host=localhost;Database=DbSchemaValidator")
+        protected Context() : base($"Host=localhost;Database=DbSchemaValidator;UserName={Environment.UserName}")
         {
         }
     }

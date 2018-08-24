@@ -8,9 +8,9 @@ using System.Linq;
 
 namespace DbSchemaValidator.EF6
 {
-    public static partial class DbContextExtensions
+    internal static partial class DbContextExtensions
     {
-        private static IDictionary<(string schema, string tableName), IReadOnlyCollection<string>> GetDbModel(this DbContext context)
+        internal static IDictionary<(string schema, string tableName), IReadOnlyCollection<string>> GetDbModel(this DbContext context)
         {
             var model = new Dictionary<(string schema, string tableName), IReadOnlyCollection<string>>();
             var workspace = ((IObjectContextAdapter)context).ObjectContext.MetadataWorkspace;
@@ -30,7 +30,7 @@ namespace DbSchemaValidator.EF6
             return model;
         }
 
-        private static DbConnection GetDbConnection(this DbContext context)
+        internal static DbConnection GetDbConnection(this DbContext context)
         {
             return context.Database.Connection;
         }

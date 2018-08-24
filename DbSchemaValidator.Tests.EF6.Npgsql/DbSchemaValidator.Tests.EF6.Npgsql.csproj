@@ -2,8 +2,6 @@
   <PropertyGroup>
     <TargetFramework>net452</TargetFramework>
     <IsPackable>false</IsPackable>
-    <AssemblyName>DbSchemaValidator.Tests.EF6</AssemblyName>
-    <RootNamespace>DbSchemaValidator.Tests.EF6</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Npgsql.EntityFramework" Version="2.2.7" />
@@ -13,5 +11,8 @@
   <ItemGroup>
     <ProjectReference Include="..\DbSchemaValidator.EF6\DbSchemaValidator.EF6.csproj" />
   </ItemGroup>
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);PROVIDER_NPGSQL</DefineConstants>
+  </PropertyGroup>
   <Import Project="..\DbSchemaValidator.Tests\DbSchemaValidator.Tests.projitems" Label="Shared" />
 </Project>

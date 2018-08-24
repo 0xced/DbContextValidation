@@ -12,7 +12,7 @@ namespace DbSchemaValidator.EF6
 {
     internal static class DbConnectionExtensions
     {
-        internal static async Task<TableInfo> GetTableInfo(this DbConnection connection, string schema, string tableName)
+        internal static async Task<TableInfo> GetTableInfo(this DbConnection connection, string selectStatement, string schema, string tableName)
         {
             var columnNames = new List<string>();
             bool? caseSensitive;
@@ -24,8 +24,7 @@ namespace DbSchemaValidator.EF6
             {
                 using (var command = connection.CreateCommand())
                 {
-                    var table = string.IsNullOrEmpty(schema) ? tableName : schema + "." + tableName;
-                    command.CommandText = $"SELECT * FROM {table} WHERE 1=0";
+                    command.CommandText = selectStatement;
                     command.CommandType = CommandType.Text;
                     using (var reader = await command.ExecuteReaderAsync())
                     {

@@ -7,7 +7,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)DbConnectionExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DbContextExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Validator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IValidator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)InvalidMapping.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TableInfo.cs" />
   </ItemGroup>
