@@ -55,21 +55,21 @@ namespace DbSchemaValidator.EF6
                 var schema = entry.Key.schema;
                 var tableName = entry.Key.tableName;
                 var expectedColumnNames = entry.Value;
+                var selectStatement = _selectStatement(schema, tableName);
                 InvalidMapping invalidMapping = null;
                 try
                 {
-                    var selectStatement = _selectStatement(schema, tableName);
                     var tableInfo = await context.GetDbConnection().GetTableInfo(selectStatement, schema, tableName);
                     var equalityComparer = ColumnNameEqualityComparer(_columnNameEqualityComparer, tableInfo.CaseSensitive);
                     var missingColumns = expectedColumnNames.Except(tableInfo.ColumnNames, equalityComparer).ToList();
                     if (missingColumns.Any())
                     {
-                        invalidMapping = new InvalidMapping(tableName, missingColumns);
+                        invalidMapping = new InvalidMapping(tableName, missingColumns, selectStatement);
                     }
                 }
                 catch (DbException)
                 {
-                    invalidMapping = new InvalidMapping(tableName, missingColumns: null);
+                    invalidMapping = new InvalidMapping(tableName, missingColumns: null, selectStatement);
                 }
                 if (invalidMapping != null)
                 {

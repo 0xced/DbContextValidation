@@ -11,10 +11,11 @@ namespace DbSchemaValidator.EF6
     /// </summary>
     public class InvalidMapping
     {
-        internal InvalidMapping(string tableName, IReadOnlyCollection<string> missingColumns)
+        internal InvalidMapping(string tableName, IReadOnlyCollection<string> missingColumns, string selectStatement)
         {
             TableName = tableName;
             MissingColumns = missingColumns;
+            SelectStatement = selectStatement;
         }
 
         /// <summary>
@@ -27,7 +28,13 @@ namespace DbSchemaValidator.EF6
         /// This collection can never be empty. 
         /// </summary>
         public IReadOnlyCollection<string> MissingColumns { get; }
-
+        
+        /// <summary>
+        /// The select statement that was issued to the database to get the actual column names.
+        /// May be useful to understand why a table is missing.
+        /// </summary>
+        public string SelectStatement { get; }
+        
         /// <returns>A description of the invalid mapping including the table name and all its missing columns.</returns>
         public override string ToString()
         {
