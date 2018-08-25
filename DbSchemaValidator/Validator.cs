@@ -64,12 +64,12 @@ namespace DbSchemaValidator.EF6
                     var missingColumns = expectedColumnNames.Except(tableInfo.ColumnNames, equalityComparer).ToList();
                     if (missingColumns.Any())
                     {
-                        invalidMapping = new InvalidMapping(tableName, missingColumns, selectStatement);
+                        invalidMapping = new InvalidMapping(schema, tableName, missingColumns, selectStatement);
                     }
                 }
                 catch (DbException)
                 {
-                    invalidMapping = new InvalidMapping(tableName, missingColumns: null, selectStatement);
+                    invalidMapping = new InvalidMapping(schema, tableName, missingColumns: null, selectStatement);
                 }
                 if (invalidMapping != null)
                 {

@@ -11,13 +11,19 @@ namespace DbSchemaValidator.EF6
     /// </summary>
     public class InvalidMapping
     {
-        internal InvalidMapping(string tableName, IReadOnlyCollection<string> missingColumns, string selectStatement)
+        internal InvalidMapping(string schema, string tableName, IReadOnlyCollection<string> missingColumns, string selectStatement)
         {
+            Schema = schema;
             TableName = tableName;
             MissingColumns = missingColumns;
             SelectStatement = selectStatement;
         }
 
+        /// <summary>
+        /// The schema of the table.  
+        /// </summary>
+        public string Schema { get; }
+        
         /// <summary>
         /// The name of the table.
         /// </summary>
@@ -39,8 +45,10 @@ namespace DbSchemaValidator.EF6
         public override string ToString()
         {
             return MissingColumns == null
-                ? $"Table {TableName} is missing"
-                : $"Table {TableName} is missing {MissingColumns.Count} column{(MissingColumns.Count > 1 ? "s" : "")}: {string.Join(",", MissingColumns)}";
+                ? $"Table {TableDescription} is missing"
+                : $"Table {TableDescription} is missing {MissingColumns.Count} column{(MissingColumns.Count > 1 ? "s" : "")}: {string.Join(",", MissingColumns)}";
         }
+
+        private string TableDescription => string.IsNullOrEmpty(Schema) ? TableName : $"{Schema}.{TableName}";
     }
 }
