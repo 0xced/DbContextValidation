@@ -1,5 +1,4 @@
-﻿using System.Linq;
-#if NETFRAMEWORK
+﻿#if NETFRAMEWORK
 using ModelBuilder = System.Data.Entity.DbModelBuilder;
 #else
 using Microsoft.EntityFrameworkCore;
