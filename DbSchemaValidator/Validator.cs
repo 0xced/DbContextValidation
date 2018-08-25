@@ -44,10 +44,9 @@ namespace DbSchemaValidator.EF6
         }
 
         /// <inheritdoc />
-        public async Task<bool> ValidateSchemaAsync(DbContext context, IProgress<Validation> progress = null,
-            CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<IReadOnlyCollection<InvalidMapping>> ValidateSchemaAsync(DbContext context, IProgress<float> progress = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var isValid = true;
+            var invalidMappings = new List<InvalidMapping>();
             var dbModel = context.GetDbModel();
             var i = 0;
             foreach (var entry in dbModel)
@@ -56,10 +55,10 @@ namespace DbSchemaValidator.EF6
                 var schema = entry.Key.schema;
                 var tableName = entry.Key.tableName;
                 var expectedColumnNames = entry.Value;
-                var selectStatement = _selectStatement(schema, tableName);
                 InvalidMapping invalidMapping = null;
                 try
                 {
+                    var selectStatement = _selectStatement(schema, tableName);
                     var tableInfo = await context.GetDbConnection().GetTableInfo(selectStatement, schema, tableName);
                     var equalityComparer = ColumnNameEqualityComparer(_columnNameEqualityComparer, tableInfo.CaseSensitive);
                     var missingColumns = expectedColumnNames.Except(tableInfo.ColumnNames, equalityComparer).ToList();
@@ -74,11 +73,11 @@ namespace DbSchemaValidator.EF6
                 }
                 if (invalidMapping != null)
                 {
-                    isValid = false;
+                    invalidMappings.Add(invalidMapping);                    
                 }
-                progress?.Report(new Validation(++i / (float)dbModel.Count, selectStatement, invalidMapping));
+                progress?.Report(++i / (float)dbModel.Count);
             }
-            return isValid;
+            return invalidMappings;
         }
         
         private static string DefaultSelectStatement(string schema, string tableName)

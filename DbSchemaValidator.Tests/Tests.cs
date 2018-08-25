@@ -17,7 +17,6 @@ namespace DbSchemaValidator.Tests
         private readonly Validator _defaultValidator;
         private readonly Validator _caseInsensitiveValidator;
         private readonly Validator _caseSensitiveValidator;
-        private readonly ValidationProgress _progress;
 
         static Tests()
         {
@@ -46,8 +45,6 @@ namespace DbSchemaValidator.Tests
                 _caseInsensitiveValidator = new Validator(StringComparer.InvariantCultureIgnoreCase);
                 _caseSensitiveValidator = new Validator(StringComparer.InvariantCulture);
             }
-            
-            _progress = new ValidationProgress();
         }
 
         private string NpgsqlSelectStatement(string schema, string tableName)
@@ -61,18 +58,21 @@ namespace DbSchemaValidator.Tests
         {
             using (var context = new ValidContext())
             {
-                var isValid = await _defaultValidator.ValidateSchemaAsync(context);
-                Assert.True(isValid);
+                var invalidMappings = await _defaultValidator.ValidateSchemaAsync(context);
+                Assert.Empty(invalidMappings);
             }
         }
         
         [Fact]
         public async Task ValidMappingWithProgress()
         {
+            var fractions = new List<float>();
+            var progress = new Progress<float>(fractions.Add);
+            
             using (var context = new ValidContext())
             {
-                await _defaultValidator.ValidateSchemaAsync(context, progress: _progress);
-                var fractions = _progress.Fractions;
+                await _defaultValidator.ValidateSchemaAsync(context, progress: progress);
+                await Task.Yield();
                 Assert.Equal(2, fractions.Count);
                 Assert.Contains(fractions, e => e >= 0.5 && e <= 0.5);
                 Assert.Contains(fractions, e => e >= 1.0 && e <= 1.0);
@@ -84,8 +84,7 @@ namespace DbSchemaValidator.Tests
         {
             using (var context = new ValidContext())
             {
-                var validationTask = _defaultValidator.ValidateSchemaAsync(context, _progress, new CancellationToken(true));
-                Assert.Empty(_progress.Fractions);
+                var validationTask = _defaultValidator.ValidateSchemaAsync(context, cancellationToken: new CancellationToken(true));
                 Assert.Equal(TaskStatus.Canceled, validationTask.Status);
                 await Assert.ThrowsAsync<OperationCanceledException>(() => validationTask);
             }
@@ -96,8 +95,7 @@ namespace DbSchemaValidator.Tests
         {
             using (var context = new ContextWithMisspelledCustomersTable())
             {
-                await _defaultValidator.ValidateSchemaAsync(context, _progress);
-                var invalidMappings = _progress.InvalidMappings;
+                var invalidMappings = await _defaultValidator.ValidateSchemaAsync(context);
                 Assert.Single(invalidMappings);
                 var invalidMapping = invalidMappings.Single(); 
                 Assert.Equal("Customers", invalidMapping.TableName);
@@ -110,8 +108,7 @@ namespace DbSchemaValidator.Tests
         {
             using (var context = new ContextWithMisspelledOrderDateColumn())
             {
-                await _defaultValidator.ValidateSchemaAsync(context, _progress);
-                var invalidMappings = _progress.InvalidMappings;
+                var invalidMappings = await _defaultValidator.ValidateSchemaAsync(context);
                 Assert.Single(invalidMappings);
                 var invalidMapping = invalidMappings.Single(); 
                 Assert.Equal("tOrders", invalidMapping.TableName);
@@ -125,8 +122,8 @@ namespace DbSchemaValidator.Tests
         {
             using (var context = new ContextWithMixedCaseColumns())
             {
-                var isValid = await _caseInsensitiveValidator.ValidateSchemaAsync(context);
-                Assert.True(isValid);
+                var invalidMappings = await _caseInsensitiveValidator.ValidateSchemaAsync(context);
+                Assert.Empty(invalidMappings);
             }
         }
         
@@ -135,8 +132,7 @@ namespace DbSchemaValidator.Tests
         {
             using (var context = new ContextWithMixedCaseColumns())
             {
-                await _caseSensitiveValidator.ValidateSchemaAsync(context, _progress);
-                var invalidMappings = _progress.InvalidMappings;
+                var invalidMappings = await _caseSensitiveValidator.ValidateSchemaAsync(context);
                 Assert.Single(invalidMappings);
                 var invalidMapping = invalidMappings.Single(); 
                 Assert.Equal("tOrders", invalidMapping.TableName);
