@@ -15,7 +15,7 @@ namespace DbSchemaValidator.EFCore
                 var schema = entityType.Relational().Schema;
                 var tableName = entityType.Relational().TableName;
                 var columnNames = entityType.GetProperties().Select(e => e.Relational().ColumnName);
-                model.Add((schema: schema, tableName: tableName), columnNames.ToList());
+                model.Add((schema, tableName), columnNames.ToList());
             }
             return model;
         }

@@ -25,7 +25,7 @@ namespace DbSchemaValidator.EF6
                 var schema = fragmentMapping.StoreEntitySet.Schema;
                 var tableName = fragmentMapping.StoreEntitySet.Table;
                 var columnNames = fragmentMapping.PropertyMappings.OfType<ScalarPropertyMapping>().Select(e => e.Column.Name);
-                model.Add((schema: schema, tableName: tableName), columnNames.ToList());
+                model.Add((schema, tableName), columnNames.ToList());
             }
             return model;
         }
