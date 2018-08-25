@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace DbSchemaValidator.EF6
 {
-    internal static partial class DbContextExtensions
+    internal static class DbContextExtensions
     {
         internal static IDictionary<(string schema, string tableName), IReadOnlyCollection<string>> GetDbModel(this DbContext context)
         {
