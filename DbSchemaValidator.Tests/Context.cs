@@ -32,6 +32,24 @@ namespace DbSchemaValidator.Tests
             modelBuilder.Entity<Order>().ToTable("tOrders");
         }
     }
+
+    public class ContextWithPublicSchema : ValidContext
+    {
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.HasDefaultSchema("public");
+        }
+    }
+    
+    public class ContextWithUnknownSchema : ValidContext
+    {
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.HasDefaultSchema("unknown");
+        }
+    }
     
     public class ContextWithMisspelledCustomersTable : ValidContext
     {
