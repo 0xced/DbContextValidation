@@ -16,6 +16,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSchemaValidator.Tests.EF6
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSchemaValidator.Tests.EFCore.SQLite", "DbSchemaValidator.Tests.EFCore.SQLite\DbSchemaValidator.Tests.EFCore.SQLite.csproj", "{705C7586-1270-490A-BB8D-7C6E33A742DE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSchemaValidator.Tests.EFCore.MySQL", "DbSchemaValidator.Tests.EFCore.MySQL\DbSchemaValidator.Tests.EFCore.MySQL.csproj", "{2E495A48-B063-45D7-AA84-0F4895EBEBAB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSchemaValidator.Tests.EF6.MySQL", "DbSchemaValidator.Tests.EF6.MySQL\DbSchemaValidator.Tests.EF6.MySQL.csproj", "{3F3EF38E-EFE9-44A6-AF30-D4DDAF5014BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,5 +50,13 @@ Global
 		{705C7586-1270-490A-BB8D-7C6E33A742DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{705C7586-1270-490A-BB8D-7C6E33A742DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{705C7586-1270-490A-BB8D-7C6E33A742DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E495A48-B063-45D7-AA84-0F4895EBEBAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E495A48-B063-45D7-AA84-0F4895EBEBAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E495A48-B063-45D7-AA84-0F4895EBEBAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E495A48-B063-45D7-AA84-0F4895EBEBAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F3EF38E-EFE9-44A6-AF30-D4DDAF5014BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F3EF38E-EFE9-44A6-AF30-D4DDAF5014BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F3EF38E-EFE9-44A6-AF30-D4DDAF5014BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F3EF38E-EFE9-44A6-AF30-D4DDAF5014BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

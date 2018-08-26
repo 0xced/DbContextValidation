@@ -15,26 +15,27 @@ namespace DbSchemaValidator.Tests
 {
     public enum Provider
     {
+        MySQL,
         Npgsql,
         SQLite,
     }
     
     public class Tests
     {
-        private sealed class SkipProvidersFactAttribute : FactAttribute
+        private sealed class ProviderFactAttribute : FactAttribute
         {
             private static readonly Provider Provider;
             
-            static SkipProvidersFactAttribute()
+            static ProviderFactAttribute()
             {
                 var fullName = typeof(ValidContext).BaseType?.FullName ?? throw new Exception("ValidContext must inherit from Context");
                 var providerName = fullName.Split('.').Reverse().Skip(1).Take(1).First();
                 Provider = (Provider)Enum.Parse(typeof(Provider), providerName);
             }
             
-            public SkipProvidersFactAttribute(params Provider[] providersToSkip)
+            public ProviderFactAttribute(Provider provider)
             {
-                if (providersToSkip.Contains(Provider))
+                if (provider != Provider)
                 {
                     Skip = $"This test is not applicable to {Provider}";
                 }
@@ -75,7 +76,7 @@ namespace DbSchemaValidator.Tests
             }
         }
         
-        [SkipProvidersFact(Provider.SQLite)]
+        [ProviderFact(Provider.Npgsql)]
         public async Task ValidMappingWithPublicSchema()
         {
             using (var context = new ContextWithPublicSchema())

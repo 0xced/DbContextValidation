@@ -20,7 +20,8 @@ namespace DbSchemaValidator.EF6
     /// </summary>
     /// <param name="schema">TODO</param>
     /// <param name="tableName">TODO</param>
-    public delegate string SelectStatement(string schema, string tableName);
+    /// <param name="quoteIdentifier">TODO</param>
+    public delegate string SelectStatement(string schema, string tableName, Func<string, string> quoteIdentifier);
     
     /// <summary>
     /// 
@@ -54,11 +55,10 @@ namespace DbSchemaValidator.EF6
                 var schema = entry.Key.schema;
                 var tableName = entry.Key.tableName;
                 var expectedColumnNames = entry.Value;
-                var selectStatement = _selectStatement(schema, tableName);
                 InvalidMapping invalidMapping = null;
                 try
                 {
-                    var tableInfo = await context.GetDbConnection().GetTableInfo(selectStatement, schema, tableName);
+                    var tableInfo = await context.GetDbConnection().GetTableInfo(_selectStatement, schema, tableName);
                     var equalityComparer = ColumnNameEqualityComparer(_columnNameEqualityComparer, tableInfo.CaseSensitive);
                     var missingColumns = expectedColumnNames.Except(tableInfo.ColumnNames, equalityComparer).ToList();
                     if (missingColumns.Any())
@@ -79,9 +79,12 @@ namespace DbSchemaValidator.EF6
             return invalidMappings;
         }
         
-        private static string DefaultSelectStatement(string schema, string tableName)
+        private static string DefaultSelectStatement(string schema, string tableName, Func<string, string> quoteIdentifier)
         {
-            var tableDescription = string.IsNullOrEmpty(schema) ? $"\"{tableName}\"" : $"\"{schema}\".\"{tableName}\"";
+            var hasSchema = !string.IsNullOrEmpty(schema);
+            var quotedSchema = hasSchema ? quoteIdentifier?.Invoke(schema) ?? schema : null;
+            var quotedTableName = quoteIdentifier?.Invoke(tableName) ?? tableName;
+            var tableDescription = hasSchema ? $"{quotedSchema}.{quotedTableName}" : quotedTableName;
             return $"SELECT * FROM {tableDescription} WHERE 1=0";
         }
         

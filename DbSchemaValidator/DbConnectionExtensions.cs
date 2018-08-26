@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Reflection;
 using System.Threading.Tasks;
 
 #if EFCORE
@@ -12,7 +13,7 @@ namespace DbSchemaValidator.EF6
 {
     internal static class DbConnectionExtensions
     {
-        internal static async Task<TableInfo> GetTableInfo(this DbConnection connection, string selectStatement, string schema, string tableName)
+        internal static async Task<TableInfo> GetTableInfo(this DbConnection connection, SelectStatement selectStatement, string schema, string tableName)
         {
             var columnNames = new List<string>();
             bool? caseSensitive;
@@ -24,7 +25,10 @@ namespace DbSchemaValidator.EF6
             {
                 using (var command = connection.CreateCommand())
                 {
-                    command.CommandText = selectStatement;
+                    var dbProviderFactory = connection.GetProviderFactory();
+                    var commandBuilder = dbProviderFactory?.CreateCommandBuilder();
+                    var quoteIdentifier = commandBuilder != null ? commandBuilder.QuoteIdentifier : (Func<string, string>)null;
+                    command.CommandText = selectStatement(schema, tableName, quoteIdentifier);
                     command.CommandType = CommandType.Text;
                     using (var reader = await command.ExecuteReaderAsync())
                     {
@@ -53,6 +57,13 @@ namespace DbSchemaValidator.EF6
                     connection.Close();
             }
             return new TableInfo(schema, tableName, columnNames, caseSensitive);
+        }
+
+        // ReSharper disable once SuggestBaseTypeForParameter
+        private static DbProviderFactory GetProviderFactory(this DbConnection connection)
+        {
+            var dbProviderFactoryProperty = connection.GetType().GetProperty("DbProviderFactory", BindingFlags.NonPublic | BindingFlags.Instance);
+            return dbProviderFactoryProperty?.GetValue(connection) is DbProviderFactory dbProviderFactory ? dbProviderFactory : null;
         }
     }
 }
