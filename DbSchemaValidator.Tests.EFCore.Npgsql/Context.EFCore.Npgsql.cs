@@ -6,7 +6,7 @@ namespace DbSchemaValidator.Tests.EFCore.Npgsql
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Host=localhost;Database=DbSchemaValidator");
+            optionsBuilder.UseNpgsql("Host=localhost;Database=DbSchemaValidator;UserName=postgres;Password=docker");
         }
     }
 }

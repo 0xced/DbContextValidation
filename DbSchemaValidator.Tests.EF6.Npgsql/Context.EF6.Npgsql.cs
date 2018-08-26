@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using Npgsql;
 
 namespace DbSchemaValidator.Tests.EF6.Npgsql
@@ -17,7 +16,7 @@ namespace DbSchemaValidator.Tests.EF6.Npgsql
     [DbConfigurationType(typeof(NpgsqlConfiguration))] 
     public abstract class Context : DbContext
     {
-        protected Context() : base($"Host=localhost;Database=DbSchemaValidator;UserName={Environment.UserName}")
+        protected Context() : base("Host=localhost;Database=DbSchemaValidator;UserName=postgres;Password=docker")
         {
         }
     }
