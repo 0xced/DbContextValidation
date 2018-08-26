@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -64,12 +63,12 @@ namespace DbSchemaValidator.EF6
                     var missingColumns = expectedColumnNames.Except(tableInfo.ColumnNames, equalityComparer).ToList();
                     if (missingColumns.Any())
                     {
-                        invalidMapping = new InvalidMapping(schema, tableName, missingColumns, selectStatement);
+                        invalidMapping = new InvalidMapping(schema, tableName, missingColumns, selectException: null);
                     }
                 }
-                catch (DbException)
+                catch (TableNotFoundException exception)
                 {
-                    invalidMapping = new InvalidMapping(schema, tableName, missingColumns: null, selectStatement);
+                    invalidMapping = new InvalidMapping(schema, tableName, missingColumns: null, exception.DbException);
                 }
                 if (invalidMapping != null)
                 {

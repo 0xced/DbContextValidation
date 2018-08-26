@@ -43,6 +43,10 @@ namespace DbSchemaValidator.EF6
                     }
                 }
             }
+            catch (DbException exception)
+            {
+                throw new TableNotFoundException(exception);
+            }
             finally
             {
                 if (wasClosed)

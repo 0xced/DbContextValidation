@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.Common;
 
 #if EFCORE
 namespace DbSchemaValidator.EFCore
@@ -11,12 +12,12 @@ namespace DbSchemaValidator.EF6
     /// </summary>
     public class InvalidMapping
     {
-        internal InvalidMapping(string schema, string tableName, IReadOnlyCollection<string> missingColumns, string selectStatement)
+        internal InvalidMapping(string schema, string tableName, IReadOnlyCollection<string> missingColumns, DbException selectException)
         {
             Schema = schema;
             TableName = tableName;
             MissingColumns = missingColumns;
-            SelectStatement = selectStatement;
+            SelectException = selectException;
         }
 
         /// <summary>
@@ -30,16 +31,16 @@ namespace DbSchemaValidator.EF6
         public string TableName { get; }
 
         /// <summary>
-        /// The collection of column names which is defined in the DbContext model but not found in the actual database. If <code>null</code>, the table itself is missing.
-        /// This collection can never be empty. 
+        /// The collection of column names which is defined in the DbContext model but not found in the actual database.
+        /// This collection is never empty. If <code>null</code>, the table itself is missing and <see cref="SelectException"/> is not <code>null</code>. 
         /// </summary>
         public IReadOnlyCollection<string> MissingColumns { get; }
         
         /// <summary>
-        /// The select statement that was issued to the database to get the actual column names.
+        /// If <see cref="MissingColumns"/> is <code>null</code>, contains the exception that occured when the select statement to get the actual column names was issued to the database.
         /// May be useful to understand why a table is missing.
         /// </summary>
-        public string SelectStatement { get; }
+        public DbException SelectException { get; }
         
         /// <returns>A description of the invalid mapping including the table name and all its missing columns.</returns>
         public override string ToString()
