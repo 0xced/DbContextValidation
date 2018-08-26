@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentAssertions;
 #if NETFRAMEWORK
 using DbSchemaValidator.EF6;
 #else
@@ -59,7 +60,7 @@ namespace DbSchemaValidator.Tests
             using (var context = new ValidContext())
             {
                 var invalidMappings = await _defaultValidator.ValidateSchemaAsync(context);
-                Assert.Empty(invalidMappings);
+                invalidMappings.Should().BeEmpty();
             }
         }
         
@@ -73,20 +74,20 @@ namespace DbSchemaValidator.Tests
             {
                 await _defaultValidator.ValidateSchemaAsync(context, progress: progress);
                 await Task.Yield();
-                Assert.Equal(2, fractions.Count);
-                Assert.Contains(fractions, e => e >= 0.5 && e <= 0.5);
-                Assert.Contains(fractions, e => e >= 1.0 && e <= 1.0);
+                fractions.Should().HaveCount(2);
+                fractions.Should().Contain(new []{0.5f, 1.0f});
             }
         }
         
         [Fact]
-        public async Task ValidMappingWithCancellation()
+        public void ValidMappingWithCancellation()
         {
             using (var context = new ValidContext())
             {
                 var validationTask = _defaultValidator.ValidateSchemaAsync(context, cancellationToken: new CancellationToken(true));
-                Assert.Equal(TaskStatus.Canceled, validationTask.Status);
-                await Assert.ThrowsAsync<OperationCanceledException>(() => validationTask);
+                validationTask.Status.Should().Be(TaskStatus.Canceled);
+                Func<Task> validation = async () => { await validationTask; };
+                validation.Should().Throw<OperationCanceledException>();
             }
         }
         
@@ -96,10 +97,10 @@ namespace DbSchemaValidator.Tests
             using (var context = new ContextWithMisspelledCustomersTable())
             {
                 var invalidMappings = await _defaultValidator.ValidateSchemaAsync(context);
-                Assert.Single(invalidMappings);
-                var invalidMapping = invalidMappings.Single(); 
-                Assert.Equal("Customers", invalidMapping.TableName);
-                Assert.Null(invalidMapping.MissingColumns);
+                var invalidMapping = invalidMappings.Should().ContainSingle().Subject;
+                invalidMapping.TableName.Should().Be("Customers");
+                invalidMapping.MissingColumns.Should().BeNull();
+                invalidMapping.SelectException.Should().NotBeNull();
             }
         }
         
@@ -109,11 +110,10 @@ namespace DbSchemaValidator.Tests
             using (var context = new ContextWithMisspelledOrderDateColumn())
             {
                 var invalidMappings = await _defaultValidator.ValidateSchemaAsync(context);
-                Assert.Single(invalidMappings);
-                var invalidMapping = invalidMappings.Single(); 
-                Assert.Equal("tOrders", invalidMapping.TableName);
-                Assert.Single(invalidMapping.MissingColumns);
-                Assert.Equal("OrderFate", invalidMapping.MissingColumns.Single());
+                var invalidMapping = invalidMappings.Should().ContainSingle().Subject;
+                invalidMapping.TableName.Should().Be("tOrders");
+                var missingColumn = invalidMapping.MissingColumns.Should().ContainSingle().Subject;
+                missingColumn.Should().Be("OrderFate");
             }
         }
         
@@ -123,7 +123,7 @@ namespace DbSchemaValidator.Tests
             using (var context = new ContextWithMixedCaseColumns())
             {
                 var invalidMappings = await _caseInsensitiveValidator.ValidateSchemaAsync(context);
-                Assert.Empty(invalidMappings);
+                invalidMappings.Should().BeEmpty();
             }
         }
         
@@ -133,12 +133,10 @@ namespace DbSchemaValidator.Tests
             using (var context = new ContextWithMixedCaseColumns())
             {
                 var invalidMappings = await _caseSensitiveValidator.ValidateSchemaAsync(context);
-                Assert.Single(invalidMappings);
-                var invalidMapping = invalidMappings.Single(); 
-                Assert.Equal("tOrders", invalidMapping.TableName);
-                Assert.Equal(2, invalidMapping.MissingColumns.Count);
-                Assert.Contains("oRdErDaTe", invalidMapping.MissingColumns);
-                Assert.Contains("cUsToMeRiD", invalidMapping.MissingColumns);
+                var invalidMapping = invalidMappings.Should().ContainSingle().Subject; 
+                invalidMapping.TableName.Should().Be("tOrders");
+                invalidMapping.MissingColumns.Should().HaveCount(2);
+                invalidMapping.MissingColumns.Should().Contain("oRdErDaTe", "cUsToMeRiD");
             }
         }
     }
