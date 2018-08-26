@@ -50,8 +50,8 @@ namespace DbSchemaValidator.Tests
 
         private string NpgsqlSelectStatement(string schema, string tableName)
         {
-            var table = string.IsNullOrEmpty(schema) ? tableName : schema + "." + tableName;
-            return $"SELECT * FROM \"{table}\" WHERE 1=0";
+            var tableDescription = string.IsNullOrEmpty(schema) ? $"\"{tableName}\"" : $"\"{schema}\".\"{tableName}\"";
+            return $"SELECT * FROM {tableDescription} WHERE 1=0";
         }
 
         [Fact]
