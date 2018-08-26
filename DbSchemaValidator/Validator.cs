@@ -81,8 +81,8 @@ namespace DbSchemaValidator.EF6
         
         private static string DefaultSelectStatement(string schema, string tableName)
         {
-            var table = string.IsNullOrEmpty(schema) ? tableName : schema + "." + tableName;
-            return $"SELECT * FROM {table} WHERE 1=0";
+            var tableDescription = string.IsNullOrEmpty(schema) ? $"\"{tableName}\"" : $"\"{schema}\".\"{tableName}\"";
+            return $"SELECT * FROM {tableDescription} WHERE 1=0";
         }
         
         private static IEqualityComparer<string> ColumnNameEqualityComparer(IEqualityComparer<string> columnNameEqualityComparer, bool? caseSensitive)
