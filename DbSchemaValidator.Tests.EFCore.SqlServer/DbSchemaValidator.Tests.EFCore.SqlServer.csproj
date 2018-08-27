@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="5.4.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.2" />
+    <PackageReference Include="xunit" Version="2.4.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DbSchemaValidator.EFCore\DbSchemaValidator.EFCore.csproj" />
+  </ItemGroup>
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);PROVIDER_SQLSERVER</DefineConstants>
+  </PropertyGroup>
+  <Import Project="..\DbSchemaValidator.Tests\DbSchemaValidator.Tests.projitems" Label="Shared" />
+</Project>

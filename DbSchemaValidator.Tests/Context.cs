@@ -4,12 +4,16 @@ using ModelBuilder = System.Data.Entity.DbModelBuilder;
 using Microsoft.EntityFrameworkCore;
 #endif
 
-#if PROVIDER_MYSQL && NETFRAMEWORK
+#if PROVIDER_SQLSERVER && NETFRAMEWORK
+using DbSchemaValidator.Tests.EF6.SqlServer;
+#elif PROVIDER_MYSQL && NETFRAMEWORK
 using DbSchemaValidator.Tests.EF6.MySQL;
 #elif PROVIDER_NPGSQL && NETFRAMEWORK
 using DbSchemaValidator.Tests.EF6.Npgsql;
 #elif PROVIDER_SQLITE && NETFRAMEWORK
 using DbSchemaValidator.Tests.EF6.SQLite;
+#elif PROVIDER_SQLSERVER
+using DbSchemaValidator.Tests.EFCore.SqlServer;
 #elif PROVIDER_MYSQL
 using DbSchemaValidator.Tests.EFCore.MySQL;
 #elif PROVIDER_NPGSQL
