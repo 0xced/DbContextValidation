@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,8 +21,8 @@ namespace DbSchemaValidator.EF6
     /// </summary>
     /// <param name="schema">TODO</param>
     /// <param name="tableName">TODO</param>
-    /// <param name="quoteIdentifier">TODO</param>
-    public delegate string SelectStatement(string schema, string tableName, Func<string, string> quoteIdentifier);
+    /// <param name="commandBuilder">TODO</param>
+    public delegate string SelectStatement(string schema, string tableName, DbCommandBuilder commandBuilder);
     
     /// <summary>
     /// 
@@ -79,12 +80,13 @@ namespace DbSchemaValidator.EF6
             return invalidMappings;
         }
         
-        private static string DefaultSelectStatement(string schema, string tableName, Func<string, string> quoteIdentifier)
+        private static string DefaultSelectStatement(string schema, string tableName, DbCommandBuilder commandBuilder)
         {
             var hasSchema = !string.IsNullOrEmpty(schema);
-            var quotedSchema = hasSchema ? quoteIdentifier?.Invoke(schema) ?? schema : null;
-            var quotedTableName = quoteIdentifier?.Invoke(tableName) ?? tableName;
-            var tableDescription = hasSchema ? $"{quotedSchema}.{quotedTableName}" : quotedTableName;
+            var quotedSchema = hasSchema ? commandBuilder?.QuoteIdentifier(schema) ?? schema : null;
+            var quotedTableName = commandBuilder?.QuoteIdentifier(tableName) ?? tableName;
+            var schemaSeparator = commandBuilder?.SchemaSeparator ?? ".";
+            var tableDescription = hasSchema ? quotedSchema + schemaSeparator + quotedTableName : quotedTableName;
             return $"SELECT * FROM {tableDescription} WHERE 1=0";
         }
         

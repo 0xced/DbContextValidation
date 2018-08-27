@@ -27,8 +27,7 @@ namespace DbSchemaValidator.EF6
                 {
                     var dbProviderFactory = connection.GetProviderFactory();
                     var commandBuilder = dbProviderFactory?.CreateCommandBuilder();
-                    var quoteIdentifier = commandBuilder != null ? commandBuilder.QuoteIdentifier : (Func<string, string>)null;
-                    command.CommandText = selectStatement(schema, tableName, quoteIdentifier);
+                    command.CommandText = selectStatement(schema, tableName, commandBuilder);
                     command.CommandType = CommandType.Text;
                     using (var reader = await command.ExecuteReaderAsync())
                     {
