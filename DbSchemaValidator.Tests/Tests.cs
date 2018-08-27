@@ -15,6 +15,7 @@ namespace DbSchemaValidator.Tests
 {
     public enum Provider
     {
+        // ReSharper disable once InconsistentNaming
         MySQL,
         Npgsql,
         SQLite,
