@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 using FluentAssertions;
 #if NETFRAMEWORK
 using DbSchemaValidator.EF6;
+using System.Data.Entity;
 #else
 using DbSchemaValidator.EFCore;
+using Microsoft.EntityFrameworkCore;
 #endif
 using Xunit;
 
@@ -76,6 +78,12 @@ namespace DbSchemaValidator.Tests
             {
                 var invalidMappings = await _defaultValidator.ValidateSchemaAsync(context);
                 invalidMappings.Should().BeEmpty();
+                // ReSharper disable AccessToDisposedClosure
+                Func<Task> customersTask = async () => { await context.Customers.ToListAsync(); };
+                Func<Task> ordersTask = async () => { await context.Orders.ToListAsync(); };
+                // ReSharper restore AccessToDisposedClosure
+                customersTask.Should().NotThrow();
+                ordersTask.Should().NotThrow();
             }
         }
         

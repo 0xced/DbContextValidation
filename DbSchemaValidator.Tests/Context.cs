@@ -1,4 +1,5 @@
 ﻿#if NETFRAMEWORK
+using System.Data.Entity;
 using ModelBuilder = System.Data.Entity.DbModelBuilder;
 #else
 using Microsoft.EntityFrameworkCore;
@@ -39,6 +40,9 @@ namespace DbSchemaValidator.Tests
             modelBuilder.Entity<Customer>().ToTable("tCustomers");
             modelBuilder.Entity<Order>().ToTable("tOrders");
         }
+
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Order> Orders { get; set; }
     }
 
     public class ContextWithPublicSchema : ValidContext
