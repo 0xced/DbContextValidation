@@ -21,13 +21,14 @@ namespace DbSchemaValidator.EF6
             if (wasClosed)
                 await connection.OpenAsync();
 
+            var dbProviderFactory = connection.GetProviderFactory();
+            var commandBuilder = dbProviderFactory?.CreateCommandBuilder();
+            var commandText = selectStatement(schema, tableName, commandBuilder);
             try
             {
                 using (var command = connection.CreateCommand())
                 {
-                    var dbProviderFactory = connection.GetProviderFactory();
-                    var commandBuilder = dbProviderFactory?.CreateCommandBuilder();
-                    command.CommandText = selectStatement(schema, tableName, commandBuilder);
+                    command.CommandText = commandText;
                     command.CommandType = CommandType.Text;
                     using (var reader = await command.ExecuteReaderAsync())
                     {
@@ -48,7 +49,7 @@ namespace DbSchemaValidator.EF6
             }
             catch (DbException exception)
             {
-                throw new TableNotFoundException(exception);
+                throw new TableNotFoundException(exception, commandText);
             }
             finally
             {

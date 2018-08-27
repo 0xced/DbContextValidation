@@ -12,12 +12,12 @@ namespace DbSchemaValidator.EF6
     /// </summary>
     public class InvalidMapping
     {
-        internal InvalidMapping(string schema, string tableName, IReadOnlyCollection<string> missingColumns, DbException selectException)
+        internal InvalidMapping(string schema, string tableName, IReadOnlyCollection<string> missingColumns, TableNotFoundException exception)
         {
             Schema = schema;
             TableName = tableName;
             MissingColumns = missingColumns;
-            SelectException = selectException;
+            MissingTableException = exception;
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace DbSchemaValidator.EF6
 
         /// <summary>
         /// The collection of column names which is defined in the DbContext model but not found in the actual database.
-        /// This collection is never empty. If <code>null</code>, the table itself is missing and <see cref="SelectException"/> is not <code>null</code>. 
+        /// This collection is never empty. If <code>null</code>, the table itself is missing and <see cref="MissingTableException"/> is not <code>null</code>. 
         /// </summary>
         public IReadOnlyCollection<string> MissingColumns { get; }
         
@@ -40,7 +40,7 @@ namespace DbSchemaValidator.EF6
         /// If <see cref="MissingColumns"/> is <code>null</code>, contains the exception that occured when the select statement to get the actual column names was issued to the database.
         /// May be useful to understand why a table is missing.
         /// </summary>
-        public DbException SelectException { get; }
+        public TableNotFoundException MissingTableException { get; }
         
         /// <returns>A description of the invalid mapping including the table name and all its missing columns.</returns>
         public override string ToString()

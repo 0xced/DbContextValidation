@@ -7,13 +7,16 @@ namespace DbSchemaValidator.EFCore
 namespace DbSchemaValidator.EF6
 #endif
 {
-    internal class TableNotFoundException : Exception
+    public class TableNotFoundException : Exception
     {
-        public TableNotFoundException(DbException dbException) : base(null, dbException)
+        public TableNotFoundException(DbException dbException, string selectStatement) : base(null, dbException)
         {
             DbException = dbException;
+            SelectStatement = selectStatement;
         }
         
         public DbException DbException { get; }
+        
+        public string SelectStatement { get; }
     }
 }

@@ -145,7 +145,7 @@ namespace DbSchemaValidator.Tests
                 var invalidMapping = invalidMappings.Should().ContainSingle().Subject;
                 invalidMapping.TableName.Should().Be("Customers");
                 invalidMapping.MissingColumns.Should().BeNull();
-                invalidMapping.SelectException.Should().NotBeNull();
+                invalidMapping.MissingTableException.Should().NotBeNull();
             }
         }
         
