@@ -35,7 +35,9 @@ namespace DbSchemaValidator.Tests
              * > By convention, the database provider will choose the most appropriate default schema. For example, Microsoft SQL Server will use the dbo schema and SQLite will not use a schema (since schemas are not supported in SQLite).
              * But EF 6 needs a bit of help to choose an appropriate default schema.
              */
+#if !PROVIDER_SQLSERVER // setting "" as default schema for SqlServer somehow turns it into "CodeFirstDatabase"
             modelBuilder.HasDefaultSchema("");
+#endif
 #endif
             modelBuilder.Entity<Customer>().ToTable("tCustomers");
             modelBuilder.Entity<Order>().ToTable("tOrders");
