@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Data.Common;
 
 #if EFCORE
 namespace DbSchemaValidator.EFCore
