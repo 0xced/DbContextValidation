@@ -4,6 +4,7 @@ using System.Data.Entity.Core.Common;
 using System.Data.Entity.Infrastructure;
 using System.Data.SQLite;
 using System.Data.SQLite.EF6;
+using static DbSchemaValidator.Tests.EF6.SQLite.Configuration;
 
 namespace DbSchemaValidator.Tests.EF6.SQLite
 {
@@ -26,10 +27,21 @@ namespace DbSchemaValidator.Tests.EF6.SQLite
         }
     }
 
+    public static class Configuration
+    {
+        public static readonly string Host = null;
+        public static readonly string Port = null;
+        public static readonly string Database = "../../../../DbSchemaValidator.Tests/DbSchemaValidator.db";
+        public static readonly string User = null;
+        public static readonly string Password = null;
+
+        public static readonly string ConnectionString = $"Data Source={Database}";
+    }
+
     [DbConfigurationType(typeof(SQLiteConfiguration))] 
     public abstract class Context : DbContext
     {
-        protected Context() : base("Data Source=../../../../DbSchemaValidator.Tests/DbSchemaValidator.db")
+        protected Context() : base(ConnectionString)
         {
         }
     }

@@ -25,17 +25,10 @@ namespace DbSchemaValidator.Tests
     
     public class Tests
     {
+        private static readonly Provider Provider;
+        
         private sealed class ProviderFactAttribute : FactAttribute
         {
-            private static readonly Provider Provider;
-            
-            static ProviderFactAttribute()
-            {
-                var fullName = typeof(ValidContext).BaseType?.FullName ?? throw new Exception("ValidContext must inherit from Context");
-                var providerName = fullName.Split('.').Reverse().Skip(1).Take(1).First();
-                Provider = (Provider)Enum.Parse(typeof(Provider), providerName);
-            }
-            
             public ProviderFactAttribute(Provider provider)
             {
                 if (provider != Provider)
@@ -51,6 +44,15 @@ namespace DbSchemaValidator.Tests
 
         static Tests()
         {
+            var @namespace = typeof(ValidContext).BaseType?.Namespace ?? throw new Exception("ValidContext must inherit from Context");
+            Provider = (Provider)Enum.Parse(typeof(Provider), @namespace.Split('.').Last());
+
+            if (Provider == Provider.SQLite)
+                return;
+
+            var containerName = "/" + @namespace.Replace(".EF6", "").Replace(".EFCore", "");
+            Docker.EnsureDockerContainerIsRunning(Provider, containerName);
+
 #if NETFRAMEWORK
             // Disable migrations
             Database.SetInitializer<ValidContext>(null);
