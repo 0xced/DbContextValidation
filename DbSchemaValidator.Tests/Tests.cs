@@ -55,12 +55,12 @@ namespace DbSchemaValidator.Tests
         {
 #if NETFRAMEWORK
             // Disable migrations
-            System.Data.Entity.Database.SetInitializer<ValidContext>(null);
-            System.Data.Entity.Database.SetInitializer<ContextWithPublicSchema>(null);
-            System.Data.Entity.Database.SetInitializer<ContextWithUnknownSchema>(null);
-            System.Data.Entity.Database.SetInitializer<ContextWithMisspelledCustomersTable>(null);
-            System.Data.Entity.Database.SetInitializer<ContextWithMisspelledOrderDateColumn>(null);
-            System.Data.Entity.Database.SetInitializer<ContextWithMixedCaseColumns>(null);
+            Database.SetInitializer<ValidContext>(null);
+            Database.SetInitializer<ContextWithPublicSchema>(null);
+            Database.SetInitializer<ContextWithUnknownSchema>(null);
+            Database.SetInitializer<ContextWithMisspelledCustomersTable>(null);
+            Database.SetInitializer<ContextWithMisspelledOrderDateColumn>(null);
+            Database.SetInitializer<ContextWithMixedCaseColumns>(null);
 #endif
         }
 
