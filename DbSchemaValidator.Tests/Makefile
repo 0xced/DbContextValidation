@@ -8,18 +8,18 @@ sqlite:
 	sqlite3 DbSchemaValidator.db < SQL.Common/CreateTables.sql
 
 mysql:
-	docker run --name DbSchemaValidator.MySQL -e MYSQL_ROOT_PASSWORD=docker -e MYSQL_DATABASE=DbSchemaValidator -e MYSQL_ROOT_HOST=% --volume "${TESTS_DIR}/SQL.MySQL:/docker-entrypoint-initdb.d" --publish 3306:3306 --detach mysql/mysql-server:5.7
+	docker run --name DbSchemaValidator.Tests.MySQL -e MYSQL_ROOT_PASSWORD=docker -e MYSQL_DATABASE=DbSchemaValidator -e MYSQL_ROOT_HOST=% --volume "${TESTS_DIR}/SQL.MySQL:/docker-entrypoint-initdb.d" --publish 3306:3306 --detach mysql/mysql-server:5.7
 
 postgres:
-	docker run --name DbSchemaValidator.PostgreSQL -e POSTGRES_PASSWORD=docker -e POSTGRES_DB=DbSchemaValidator --volume "${TESTS_DIR}/SQL.Common:/docker-entrypoint-initdb.d" --publish 5432:5432 --detach postgres:10.5-alpine
+	docker run --name DbSchemaValidator.Tests.PostgreSQL -e POSTGRES_PASSWORD=docker -e POSTGRES_DB=DbSchemaValidator --volume "${TESTS_DIR}/SQL.Common:/docker-entrypoint-initdb.d" --publish 5432:5432 --detach postgres:10.5-alpine
 
 sqlserver:
-	docker run --name DbSchemaValidator.SqlServer -e ACCEPT_EULA=Y -e MSSQL_SA_PASSWORD=SqlServer-doc4er --volume "${TESTS_DIR}/SQL.SqlServer:/docker-entrypoint-initdb.d" --publish 1433:1433 --detach genschsa/mssql-server-linux
+	docker run --name DbSchemaValidator.Tests.SqlServer -e ACCEPT_EULA=Y -e MSSQL_SA_PASSWORD=SqlServer-doc4er --volume "${TESTS_DIR}/SQL.SqlServer:/docker-entrypoint-initdb.d" --publish 1433:1433 --detach genschsa/mssql-server-linux
 
 reset:
-	docker stop DbSchemaValidator.MySQL
-	docker rm DbSchemaValidator.MySQL
-	docker stop DbSchemaValidator.PostgreSQL
-	docker rm DbSchemaValidator.PostgreSQL
-	docker stop DbSchemaValidator.SqlServer
-	docker rm DbSchemaValidator.SqlServer
+	docker stop DbSchemaValidator.Tests.MySQL
+	docker rm DbSchemaValidator.Tests.MySQL
+	docker stop DbSchemaValidator.Tests.PostgreSQL
+	docker rm DbSchemaValidator.Tests.PostgreSQL
+	docker stop DbSchemaValidator.Tests.SqlServer
+	docker rm DbSchemaValidator.Tests.SqlServer
