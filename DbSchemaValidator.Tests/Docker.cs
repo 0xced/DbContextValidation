@@ -3,13 +3,33 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Docker.DotNet;
 using Docker.DotNet.Models;
+using Xunit;
 
 namespace DbSchemaValidator.Tests
 {
-    public static class Docker
+    public class DockerFixture : IAsyncLifetime
     {
+        private DockerClient _client;
+        private string _containerId;
+        
+        public async Task InitializeAsync()
+        {
+            var containerName = "/DbSchemaValidator.Tests." + Config.Provider;
+            (_client, _containerId) = await EnsureContainerIsRunningAsync(containerName);
+        }
+
+        public async Task DisposeAsync()
+        {
+            if (_client == null)
+                return;
+            
+            await _client?.Containers.StopContainerAsync(_containerId, new ContainerStopParameters());
+            _client?.Dispose();
+        }
+
         private static string SqlDirectory(string directoryName)
         {
             var assemblyDirectory = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory;
@@ -22,79 +42,14 @@ namespace DbSchemaValidator.Tests
             return sqlDirectory;
         }
         
-        private static CreateContainerParameters MySQLParameters(string containerName)
+        public static async Task<(DockerClient dockerClient, string containerId)> EnsureContainerIsRunningAsync(string containerName)
         {
-            return new CreateContainerParameters
-            {
-                Name = containerName,
-                Image = "mysql/mysql-server:5.7",
-                Env = new [] { $"MYSQL_ROOT_PASSWORD={Config.Password}", $"MYSQL_DATABASE={Config.Database}", "MYSQL_ROOT_HOST=%" },
-                HostConfig = new HostConfig
-                {
-                    Binds = new [] { $"{SqlDirectory("SQL.MySQL")}:/docker-entrypoint-initdb.d:ro" },
-                    PortBindings = new Dictionary<string, IList<PortBinding>>
-                    {
-                        [$"{Config.Port}/tcp"] = new []{ new PortBinding { HostPort = Config.Port } }
-                    }
-                }
-            };
-        }
-
-        private static CreateContainerParameters NpgsqlParameters(string containerName)
-        {
-            return new CreateContainerParameters
-            {
-                Name = containerName,
-                Image = "postgres:10.5-alpine",
-                Env = new [] { $"POSTGRES_PASSWORD={Config.Password}", $"POSTGRES_DB={Config.Database}" },
-                HostConfig = new HostConfig
-                {
-                    Binds = new [] { $"{SqlDirectory("SQL.Common")}:/docker-entrypoint-initdb.d:ro" },
-                    PortBindings = new Dictionary<string, IList<PortBinding>>
-                    {
-                        [$"{Config.Port}/tcp"] = new []{ new PortBinding { HostPort = Config.Port } }
-                    }
-                }
-            };
-        }
-
-        private static CreateContainerParameters SqlServerParameters(string containerName)
-        {
-            return new CreateContainerParameters
-            {
-                Name = containerName,
-                Image = "genschsa/mssql-server-linux:latest",
-                Env = new [] { "ACCEPT_EULA=Y", $"MSSQL_SA_PASSWORD=${Config.Password}" },
-                HostConfig = new HostConfig
-                {
-                    Binds = new [] { $"{SqlDirectory("SQL.SqlServer")}:/docker-entrypoint-initdb.d:ro" },
-                    PortBindings = new Dictionary<string, IList<PortBinding>>
-                    {
-                        [$"{Config.Port}/tcp"] = new []{ new PortBinding { HostPort = Config.Port } }
-                    }
-                }
-            };
-        }
-
-        private static CreateContainerParameters CreateParameters(string containerName)
-        {
-            switch (Config.Provider)
-            {
-                case Provider.MySQL:
-                    return MySQLParameters(containerName);
-                case Provider.Npgsql:
-                    return NpgsqlParameters(containerName);
-                case Provider.SqlServer:
-                    return SqlServerParameters(containerName);
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(Config.Provider), Config.Provider, null);
-            }
-        }
-
-        public static void EnsureDockerContainerIsRunning(string containerName)
-        {
+            if (Config.Provider == Provider.SQLite)
+                return (null, null);
 #if NETFRAMEWORK
             // Docker.DotNet does not work on mono yet, see https://github.com/Microsoft/Docker.DotNet/pull/323
+            await Task.Delay(0); // to silence warning about async method
+            return (null, null);
 #else
             var endpointBaseUri = new Uri("unix:/var/run/docker.sock");
             var client = new DockerClientConfiguration(endpointBaseUri).CreateClient();
@@ -102,29 +57,30 @@ namespace DbSchemaValidator.Tests
             try
             {
                 var listParameters = new ContainersListParameters { All = true };
-                containers = client.Containers.ListContainersAsync(listParameters).Result;
+                containers = await client.Containers.ListContainersAsync(listParameters);
             }
             catch (DockerApiException exception)
             {
                 throw new InvalidOperationException($"Docker must be running to run {Config.Provider} tests", exception);
             }
 
-            if (containers.Where(e => e.State == "running").SelectMany(e => e.Names).Contains(containerName))
-                return;
-            
             var container = containers.FirstOrDefault(e => e.Names.Contains(containerName));
-            var containerId = container?.ID ?? CreateContainer(client, containerName);
-            client.Containers.StartContainerAsync(containerId, new ContainerStartParameters()).Wait();
+            if (container?.State == "running")
+                return (client, container.ID);
+            
+            var containerId = container?.ID ?? await CreateContainer(client, containerName);
+            await client.Containers.StartContainerAsync(containerId, new ContainerStartParameters());
+            return (client, containerId);
 #endif
         }
 
-        private static string CreateContainer(IDockerClient client, string containerName)
+        private static async Task<string> CreateContainer(IDockerClient client, string containerName)
         {
-            var createParameters = CreateParameters(containerName);
+            var createParameters = Config.ContainerParameters(containerName, SqlDirectory);
             IList<ImagesListResponse> images;
             try
             {
-                images = client.Images.ListImagesAsync(new ImagesListParameters()).Result;
+                images = await client.Images.ListImagesAsync(new ImagesListParameters());
             }
             catch (Exception exception)
             {
@@ -137,7 +93,7 @@ namespace DbSchemaValidator.Tests
                 {
                     var imagesCreateParameters = new ImagesCreateParameters {FromImage = createParameters.Image};
                     var progress = new Progress<JSONMessage>(message => Console.WriteLine($"Pulling {createParameters.Image} -> {message.ProgressMessage} ({message.Progress})"));
-                    client.Images.CreateImageAsync(imagesCreateParameters, null, progress).Wait();
+                    await client.Images.CreateImageAsync(imagesCreateParameters, null, progress);
                 }
                 catch (Exception exception)
                 {
@@ -148,7 +104,7 @@ namespace DbSchemaValidator.Tests
             CreateContainerResponse response;
             try
             {
-                response = client.Containers.CreateContainerAsync(createParameters).Result;
+                response = await client.Containers.CreateContainerAsync(createParameters);
             }
             catch (Exception exception)
             {

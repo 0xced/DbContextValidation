@@ -1,16 +1,18 @@
-﻿namespace DbSchemaValidator.Tests
+﻿using System;
+using Docker.DotNet.Models;
+
+namespace DbSchemaValidator.Tests
  {
      public static class Config
      {
          public static readonly Provider Provider = Provider.SQLite;
          public static readonly string Schema = null;
          
-         public static readonly string Host = null;
-         public static readonly string Port = null;
-         public static readonly string Database = "../../../../DbSchemaValidator.Tests/DbSchemaValidator.db";
-         public static readonly string User = null;
-         public static readonly string Password = null;
+         public static readonly string ConnectionString = "Data Source=../../../../DbSchemaValidator.Tests/DbSchemaValidator.db";
 
-         public static readonly string ConnectionString = $"Data Source={Database}";
+         public static CreateContainerParameters ContainerParameters(string containerName, Func<string, string> sqlDirectory)
+         {
+             throw new NotSupportedException("SQLite doesn't require a Docker container.");
+         }
      }
  }

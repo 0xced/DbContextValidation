@@ -23,7 +23,7 @@ namespace DbSchemaValidator.Tests
         SqlServer,
     }
     
-    public class Tests
+    public class Tests : IClassFixture<DockerFixture>
     {
         private readonly Validator _defaultValidator;
         private readonly Validator _caseInsensitiveValidator;
@@ -31,12 +31,6 @@ namespace DbSchemaValidator.Tests
 
         static Tests()
         {
-            if (Config.Provider == Provider.SQLite)
-                return;
-
-            var containerName = "/DbSchemaValidator.Tests." + Config.Provider;
-            Docker.EnsureDockerContainerIsRunning(containerName);
-
 #if NETFRAMEWORK
             // Disable migrations
             Database.SetInitializer<ValidContext>(null);
