@@ -59,7 +59,7 @@ namespace DbSchemaValidator.Tests
                 var listParameters = new ContainersListParameters { All = true };
                 containers = await client.Containers.ListContainersAsync(listParameters);
             }
-            catch (DockerApiException exception)
+            catch (Exception exception)
             {
                 throw new InvalidOperationException($"Docker must be running to run {Config.Provider} tests", exception);
             }
