@@ -6,31 +6,13 @@ using System.Reflection;
 using Docker.DotNet;
 using Docker.DotNet.Models;
 
-#if PROVIDER_SQLSERVER && NETFRAMEWORK
-using DbSchemaValidator.Tests.EF6.SqlServer;
-#elif PROVIDER_MYSQL && NETFRAMEWORK
-using DbSchemaValidator.Tests.EF6.MySQL;
-#elif PROVIDER_NPGSQL && NETFRAMEWORK
-using DbSchemaValidator.Tests.EF6.Npgsql;
-#elif PROVIDER_SQLITE && NETFRAMEWORK
-using DbSchemaValidator.Tests.EF6.SQLite;
-#elif PROVIDER_SQLSERVER
-using DbSchemaValidator.Tests.EFCore.SqlServer;
-#elif PROVIDER_MYSQL
-using DbSchemaValidator.Tests.EFCore.MySQL;
-#elif PROVIDER_NPGSQL
-using DbSchemaValidator.Tests.EFCore.Npgsql;
-#elif PROVIDER_SQLITE 
-using DbSchemaValidator.Tests.EFCore.SQLite;
-#endif
-
 namespace DbSchemaValidator.Tests
 {
     public static class Docker
     {
         private static string SqlDirectory(string directoryName)
         {
-            var assemblyDirectory = new FileInfo(Assembly.GetAssembly(typeof(Context)).Location).Directory;
+            var assemblyDirectory = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory;
             var solutionDirectory = assemblyDirectory?.Parent?.Parent?.Parent?.Parent ?? throw new FileNotFoundException("Solution directory not found");
             return Path.Combine(solutionDirectory.FullName, "DbSchemaValidator.Tests", directoryName);
         }
@@ -41,13 +23,13 @@ namespace DbSchemaValidator.Tests
             {
                 Name = containerName,
                 Image = "mysql/mysql-server:5.7",
-                Env = new [] { $"MYSQL_ROOT_PASSWORD={Configuration.Password}", $"MYSQL_DATABASE={Configuration.Database}", "MYSQL_ROOT_HOST=%" },
+                Env = new [] { $"MYSQL_ROOT_PASSWORD={Config.Password}", $"MYSQL_DATABASE={Config.Database}", "MYSQL_ROOT_HOST=%" },
                 HostConfig = new HostConfig
                 {
                     Binds = new [] { $"{SqlDirectory("SQL.MySQL")}:/docker-entrypoint-initdb.d:ro" },
                     PortBindings = new Dictionary<string, IList<PortBinding>>
                     {
-                        [$"{Configuration.Port}/tcp"] = new []{ new PortBinding { HostPort = Configuration.Port } }
+                        [$"{Config.Port}/tcp"] = new []{ new PortBinding { HostPort = Config.Port } }
                     }
                 }
             };
@@ -59,13 +41,13 @@ namespace DbSchemaValidator.Tests
             {
                 Name = containerName,
                 Image = "postgres:10.5-alpine",
-                Env = new [] { $"POSTGRES_PASSWORD={Configuration.Password}", $"POSTGRES_DB={Configuration.Database}" },
+                Env = new [] { $"POSTGRES_PASSWORD={Config.Password}", $"POSTGRES_DB={Config.Database}" },
                 HostConfig = new HostConfig
                 {
                     Binds = new [] { $"{SqlDirectory("SQL.Common")}:/docker-entrypoint-initdb.d:ro" },
                     PortBindings = new Dictionary<string, IList<PortBinding>>
                     {
-                        [$"{Configuration.Port}/tcp"] = new []{ new PortBinding { HostPort = Configuration.Port } }
+                        [$"{Config.Port}/tcp"] = new []{ new PortBinding { HostPort = Config.Port } }
                     }
                 }
             };
@@ -77,21 +59,21 @@ namespace DbSchemaValidator.Tests
             {
                 Name = containerName,
                 Image = "genschsa/mssql-server-linux:latest",
-                Env = new [] { "ACCEPT_EULA=Y", $"MSSQL_SA_PASSWORD=${Configuration.Password}" },
+                Env = new [] { "ACCEPT_EULA=Y", $"MSSQL_SA_PASSWORD=${Config.Password}" },
                 HostConfig = new HostConfig
                 {
                     Binds = new [] { $"{SqlDirectory("SQL.SqlServer")}:/docker-entrypoint-initdb.d:ro" },
                     PortBindings = new Dictionary<string, IList<PortBinding>>
                     {
-                        [$"{Configuration.Port}/tcp"] = new []{ new PortBinding { HostPort = Configuration.Port } }
+                        [$"{Config.Port}/tcp"] = new []{ new PortBinding { HostPort = Config.Port } }
                     }
                 }
             };
         }
 
-        private static CreateContainerParameters CreateParameters(Provider provider, string containerName)
+        private static CreateContainerParameters CreateParameters(string containerName)
         {
-            switch (provider)
+            switch (Config.Provider)
             {
                 case Provider.MySQL:
                     return MySQLParameters(containerName);
@@ -100,16 +82,16 @@ namespace DbSchemaValidator.Tests
                 case Provider.SqlServer:
                     return SqlServerParameters(containerName);
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(provider), provider, null);
+                    throw new ArgumentOutOfRangeException(nameof(Config.Provider), Config.Provider, null);
             }
         }
 
-        public static void EnsureDockerContainerIsRunning(Provider provider, string containerName)
+        public static void EnsureDockerContainerIsRunning(string containerName)
         {
 #if NETFRAMEWORK
             // Docker.DotNet does not work on mono yet, see https://github.com/Microsoft/Docker.DotNet/pull/323
             return;
-#endif
+#else
             var endpointBaseUri = new Uri("unix:/var/run/docker.sock");
             var client = new DockerClientConfiguration(endpointBaseUri).CreateClient();
             IList<ContainerListResponse> containers;
@@ -120,20 +102,21 @@ namespace DbSchemaValidator.Tests
             }
             catch (DockerApiException exception)
             {
-                throw new InvalidOperationException($"Docker must be running to run {provider} tests", exception);
+                throw new InvalidOperationException($"Docker must be running to run {Config.Provider} tests", exception);
             }
 
             if (containers.Where(e => e.State == "running").SelectMany(e => e.Names).Contains(containerName))
                 return;
             
             var container = containers.FirstOrDefault(e => e.Names.Contains(containerName));
-            var containerId = container?.ID ?? CreateContainer(client, provider, containerName);
+            var containerId = container?.ID ?? CreateContainer(client, containerName);
             client.Containers.StartContainerAsync(containerId, new ContainerStartParameters()).Wait();
+#endif
         }
 
-        private static string CreateContainer(IDockerClient client, Provider provider, string containerName)
+        private static string CreateContainer(IDockerClient client, string containerName)
         {
-            var createParameters = CreateParameters(provider, containerName);
+            var createParameters = CreateParameters(containerName);
             IList<ImagesListResponse> images;
             try
             {

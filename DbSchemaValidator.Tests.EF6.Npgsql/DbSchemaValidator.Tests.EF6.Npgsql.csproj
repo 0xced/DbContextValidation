@@ -12,9 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DbSchemaValidator.EF6\DbSchemaValidator.EF6.csproj" />
+    <Compile Include="..\DbSchemaValidator.Tests\Configuration\Npgsql.cs" />
   </ItemGroup>
-  <PropertyGroup>
-    <DefineConstants>$(DefineConstants);PROVIDER_NPGSQL</DefineConstants>
-  </PropertyGroup>
   <Import Project="..\DbSchemaValidator.Tests\DbSchemaValidator.Tests.projitems" Label="Shared" />
 </Project>

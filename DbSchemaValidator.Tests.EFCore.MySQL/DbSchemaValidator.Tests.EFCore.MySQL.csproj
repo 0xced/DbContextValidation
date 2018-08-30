@@ -12,9 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DbSchemaValidator.EFCore\DbSchemaValidator.EFCore.csproj" />
+    <Compile Include="..\DbSchemaValidator.Tests\Configuration\MySQL.cs" />
   </ItemGroup>
-  <PropertyGroup>
-    <DefineConstants>$(DefineConstants);PROVIDER_MYSQL</DefineConstants>
-  </PropertyGroup>
   <Import Project="..\DbSchemaValidator.Tests\DbSchemaValidator.Tests.projitems" Label="Shared" />
 </Project>

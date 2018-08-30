@@ -5,24 +5,6 @@ using ModelBuilder = System.Data.Entity.DbModelBuilder;
 using Microsoft.EntityFrameworkCore;
 #endif
 
-#if PROVIDER_SQLSERVER && NETFRAMEWORK
-using DbSchemaValidator.Tests.EF6.SqlServer;
-#elif PROVIDER_MYSQL && NETFRAMEWORK
-using DbSchemaValidator.Tests.EF6.MySQL;
-#elif PROVIDER_NPGSQL && NETFRAMEWORK
-using DbSchemaValidator.Tests.EF6.Npgsql;
-#elif PROVIDER_SQLITE && NETFRAMEWORK
-using DbSchemaValidator.Tests.EF6.SQLite;
-#elif PROVIDER_SQLSERVER
-using DbSchemaValidator.Tests.EFCore.SqlServer;
-#elif PROVIDER_MYSQL
-using DbSchemaValidator.Tests.EFCore.MySQL;
-#elif PROVIDER_NPGSQL
-using DbSchemaValidator.Tests.EFCore.Npgsql;
-#elif PROVIDER_SQLITE 
-using DbSchemaValidator.Tests.EFCore.SQLite;
-#endif
-
 namespace DbSchemaValidator.Tests
 {
     public class ValidContext : Context
@@ -35,9 +17,11 @@ namespace DbSchemaValidator.Tests
              * > By convention, the database provider will choose the most appropriate default schema. For example, Microsoft SQL Server will use the dbo schema and SQLite will not use a schema (since schemas are not supported in SQLite).
              * But EF 6 needs a bit of help to choose an appropriate default schema.
              */
-#if !PROVIDER_SQLSERVER // setting "" as default schema for SqlServer somehow turns it into "CodeFirstDatabase"
-            modelBuilder.HasDefaultSchema("");
-#endif
+            if (Config.Provider != Provider.SqlServer) // setting "" as default schema for SqlServer somehow turns it into "CodeFirstDatabase"
+            {
+                modelBuilder.HasDefaultSchema("");
+                
+            }
 #endif
             modelBuilder.Entity<Customer>().ToTable("tCustomers");
             modelBuilder.Entity<Order>().ToTable("tOrders");

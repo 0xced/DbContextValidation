@@ -1,8 +1,8 @@
 ﻿using System.Data.Entity;
 using Npgsql;
-using static DbSchemaValidator.Tests.EF6.Npgsql.Configuration;
 
-namespace DbSchemaValidator.Tests.EF6.Npgsql
+// ReSharper disable once CheckNamespace
+namespace DbSchemaValidator.Tests
 {
     public class NpgsqlConfiguration : DbConfiguration
     {
@@ -14,21 +14,10 @@ namespace DbSchemaValidator.Tests.EF6.Npgsql
         }
     }
 
-    public static class Configuration
-    {
-        public static readonly string Host = "localhost";
-        public static readonly string Port = "5432";
-        public static readonly string Database = "DbSchemaValidator";
-        public static readonly string User = "postgres";
-        public static readonly string Password = "docker";
-
-        public static readonly string ConnectionString = $"Host={Host};Database={Database};UserName={User};Password={Password}";
-    }
-
     [DbConfigurationType(typeof(NpgsqlConfiguration))] 
     public abstract class Context : DbContext
     {
-        protected Context() : base(ConnectionString)
+        protected Context() : base(Config.ConnectionString)
         {
         }
     }

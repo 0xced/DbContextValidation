@@ -12,9 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DbSchemaValidator.EFCore\DbSchemaValidator.EFCore.csproj" />
+    <Compile Include="..\DbSchemaValidator.Tests\Configuration\SqlServer.cs" />
   </ItemGroup>
-  <PropertyGroup>
-    <DefineConstants>$(DefineConstants);PROVIDER_SQLSERVER</DefineConstants>
-  </PropertyGroup>
   <Import Project="..\DbSchemaValidator.Tests\DbSchemaValidator.Tests.projitems" Label="Shared" />
 </Project>

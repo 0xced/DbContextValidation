@@ -25,15 +25,13 @@ namespace DbSchemaValidator.Tests
     
     public class Tests
     {
-        private static readonly Provider Provider;
-        
         private sealed class ProviderFactAttribute : FactAttribute
         {
             public ProviderFactAttribute(Provider provider)
             {
-                if (provider != Provider)
+                if (provider != Config.Provider)
                 {
-                    Skip = $"This test is not applicable to {Provider}";
+                    Skip = $"This test is not applicable to {Config.Provider}";
                 }
             }
         }
@@ -44,14 +42,11 @@ namespace DbSchemaValidator.Tests
 
         static Tests()
         {
-            var @namespace = typeof(ValidContext).BaseType?.Namespace ?? throw new Exception("ValidContext must inherit from Context");
-            Provider = (Provider)Enum.Parse(typeof(Provider), @namespace.Split('.').Last());
-
-            if (Provider == Provider.SQLite)
+            if (Config.Provider == Provider.SQLite)
                 return;
 
-            var containerName = "/" + @namespace.Replace(".EF6", "").Replace(".EFCore", "");
-            Docker.EnsureDockerContainerIsRunning(Provider, containerName);
+            var containerName = "/DbSchemaValidator.Tests." + Config.Provider;
+            Docker.EnsureDockerContainerIsRunning(containerName);
 
 #if NETFRAMEWORK
             // Disable migrations
