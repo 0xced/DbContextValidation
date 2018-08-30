@@ -14,7 +14,12 @@ namespace DbSchemaValidator.Tests
         {
             var assemblyDirectory = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory;
             var solutionDirectory = assemblyDirectory?.Parent?.Parent?.Parent?.Parent ?? throw new FileNotFoundException("Solution directory not found");
-            return Path.Combine(solutionDirectory.FullName, "DbSchemaValidator.Tests", directoryName);
+            var sqlDirectory = Path.Combine(solutionDirectory.FullName, "DbSchemaValidator.Tests", directoryName);
+            if (!Directory.Exists(sqlDirectory))
+            {
+                throw new FileNotFoundException("Directory with SQL scripts not found", sqlDirectory);
+            }
+            return sqlDirectory;
         }
         
         private static CreateContainerParameters MySQLParameters(string containerName)
