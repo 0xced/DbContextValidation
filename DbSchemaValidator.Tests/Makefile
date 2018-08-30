@@ -17,6 +17,6 @@ sqlserver:
 	docker run --name DbSchemaValidator.Tests.SqlServer -e ACCEPT_EULA=Y -e MSSQL_SA_PASSWORD=SqlServer-doc4er --volume "${TESTS_DIR}/SQL.SqlServer:/docker-entrypoint-initdb.d" --publish 1433:1433 --detach genschsa/mssql-server-linux
 
 reset:
-	docker rm -f DbSchemaValidator.Tests.MySQL
-	docker rm -f DbSchemaValidator.Tests.Npgsql
-	docker rm -f DbSchemaValidator.Tests.SqlServer
+	docker rm -f DbSchemaValidator.Tests.MySQL || true
+	docker rm -f DbSchemaValidator.Tests.Npgsql || true
+	docker rm -f DbSchemaValidator.Tests.SqlServer || true
