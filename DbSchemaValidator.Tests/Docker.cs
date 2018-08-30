@@ -95,7 +95,6 @@ namespace DbSchemaValidator.Tests
         {
 #if NETFRAMEWORK
             // Docker.DotNet does not work on mono yet, see https://github.com/Microsoft/Docker.DotNet/pull/323
-            return;
 #else
             var endpointBaseUri = new Uri("unix:/var/run/docker.sock");
             var client = new DockerClientConfiguration(endpointBaseUri).CreateClient();
