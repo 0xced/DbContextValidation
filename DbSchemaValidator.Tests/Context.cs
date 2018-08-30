@@ -20,7 +20,6 @@ namespace DbSchemaValidator.Tests
             if (Config.Provider != Provider.SqlServer) // setting "" as default schema for SqlServer somehow turns it into "CodeFirstDatabase"
             {
                 modelBuilder.HasDefaultSchema("");
-                
             }
 #endif
             modelBuilder.Entity<Customer>().ToTable("tCustomers");
