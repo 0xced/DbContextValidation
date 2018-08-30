@@ -25,17 +25,6 @@ namespace DbSchemaValidator.Tests
     
     public class Tests
     {
-        private sealed class ProviderFactAttribute : FactAttribute
-        {
-            public ProviderFactAttribute(Provider provider)
-            {
-                if (provider != Config.Provider)
-                {
-                    Skip = $"This test is not applicable to {Config.Provider}";
-                }
-            }
-        }
-        
         private readonly Validator _defaultValidator;
         private readonly Validator _caseInsensitiveValidator;
         private readonly Validator _caseSensitiveValidator;
@@ -51,7 +40,7 @@ namespace DbSchemaValidator.Tests
 #if NETFRAMEWORK
             // Disable migrations
             Database.SetInitializer<ValidContext>(null);
-            Database.SetInitializer<ContextWithPublicSchema>(null);
+            Database.SetInitializer<ContextWithExplicitSchema>(null);
             Database.SetInitializer<ContextWithUnknownSchema>(null);
             Database.SetInitializer<ContextWithMisspelledCustomersTable>(null);
             Database.SetInitializer<ContextWithMisspelledOrderDateColumn>(null);
@@ -82,10 +71,10 @@ namespace DbSchemaValidator.Tests
             }
         }
         
-        [ProviderFact(Provider.Npgsql)]
-        public async Task ValidMappingWithPublicSchema()
+        [Fact]
+        public async Task ValidMappingWithExplicitSchema()
         {
-            using (var context = new ContextWithPublicSchema())
+            using (var context = new ContextWithExplicitSchema())
             {
                 var invalidMappings = await _defaultValidator.ValidateSchemaAsync(context);
                 invalidMappings.Should().BeEmpty();

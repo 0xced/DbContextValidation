@@ -3,6 +3,7 @@
      public static class Config
      {
          public static readonly Provider Provider = Provider.SQLite;
+         public static readonly string Schema = null;
          
          public static readonly string Host = null;
          public static readonly string Port = null;

@@ -3,6 +3,7 @@
      public static class Config
      {
          public static readonly Provider Provider = Provider.SqlServer;
+         public static readonly string Schema = "dbo";
          
          public static readonly string Host = "localhost";
          public static readonly string Port = "1433";

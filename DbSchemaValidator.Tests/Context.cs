@@ -31,12 +31,15 @@ namespace DbSchemaValidator.Tests
         public DbSet<Order> Orders { get; set; }
     }
 
-    public class ContextWithPublicSchema : ValidContext
+    public class ContextWithExplicitSchema : ValidContext
     {
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.HasDefaultSchema("public");
+            if (Config.Schema != null) // Some databases don't support schemata at all (e.g. SQLite, MySQL)
+            {
+                modelBuilder.HasDefaultSchema(Config.Schema);
+            }
         }
     }
     

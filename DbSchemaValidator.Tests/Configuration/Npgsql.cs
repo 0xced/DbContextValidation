@@ -3,6 +3,7 @@
      public static class Config
      {
          public static readonly Provider Provider = Provider.Npgsql;
+         public static readonly string Schema = "public";
          
          public static readonly string Host = "localhost";
          public static readonly string Port = "5432";
