@@ -2,14 +2,13 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using System.Threading.Tasks;
-using Xunit;
+using System.Threading;
 
 namespace DbContextValidation.Tests
 {
-    public class DockerFixture : IAsyncLifetime
+    public class DockerFixture : IDisposable
     {
-        public async Task InitializeAsync()
+        public DockerFixture()
         {
             if (Config.Provider == Provider.SQLite)
                 return;
@@ -18,16 +17,15 @@ namespace DbContextValidation.Tests
             {
                 RunDocker($"run --name DbContextValidation.Tests.{Config.Provider} " + Config.DockerArguments(SqlDirectory));
             }
-            await WaitForDatabaseAsync(TimeSpan.FromSeconds(20));
+            WaitForDatabase(TimeSpan.FromSeconds(20));
         }
 
-        public Task DisposeAsync()
+        public void Dispose()
         {
             if (Config.Provider == Provider.SQLite)
-                return Task.FromResult(0);
+                return;
 
             RunDocker("rm -f DbContextValidation.Tests." + Config.Provider);
-            return Task.FromResult(0);
         }
 
         private static bool DockerContainerIsRunning()
@@ -73,26 +71,34 @@ namespace DbContextValidation.Tests
             return sqlDirectory;
         }
 
-        private static async Task WaitForDatabaseAsync(TimeSpan timeout)
+        private static void WaitForDatabase(TimeSpan timeout)
         {
             var stopWatch = Stopwatch.StartNew();
             var connection = Config.CreateDbConnection();
+            WriteLine($"Waiting for {connection} database to be available on {connection.ConnectionString}");
             while (true)
             {
                 try
                 {
                     connection.Open();
+                    WriteLine($"It took {stopWatch.Elapsed.TotalSeconds:F1} seconds for the database to become available.");
                     break;
                 }
                 catch (Exception exception)
                 {
-                    await Task.Delay(TimeSpan.FromSeconds(1));
+                    Thread.Sleep(TimeSpan.FromSeconds(1));
                     if (stopWatch.Elapsed > timeout)
                     {
-                        throw new TimeoutException($"Database was not available after waiting for {timeout.TotalSeconds} seconds.", exception);
+                        throw new TimeoutException($"Database was not available after waiting for {timeout.TotalSeconds:F1} seconds.", exception);
                     }
                 }
             }
+        }
+
+        private static void WriteLine(string message)
+        {
+            // Until I understand how to do it properly with xUnit, see https://github.com/xunit/xunit/issues/565
+            Process.Start("echo", "\"" + message + "\"");
         }
     }
 }

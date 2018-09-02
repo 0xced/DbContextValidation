@@ -1,6 +1,13 @@
 # Getting Makefile directory absolute path, see https://stackoverflow.com/questions/18136918/how-to-get-current-relative-directory-of-your-makefile/23324703#23324703
 TESTS_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
+test:
+	TESTS_DIRECTORY=${TESTS_DIR} mono ~/.nuget/packages/xunit.runner.console/2.4.0/tools/net452/xunit.console.exe ../DbContextValidation.Tests.EF6.*/bin/Debug/*/*.Tests.EF6.*.dll
+	dotnet test ../DbContextValidation.Tests.EFCore.SQLite
+	dotnet test ../DbContextValidation.Tests.EFCore.MySQL
+	dotnet test ../DbContextValidation.Tests.EFCore.Npgsql
+	dotnet test ../DbContextValidation.Tests.EFCore.SqlServer
+
 setup: setup_sqlite setup_mysql setup_postgres setup_sqlserver
 
 teardown: teardown_mysql teardown_postgres teardown_sqlserver
