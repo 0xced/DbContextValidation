@@ -77,7 +77,7 @@ namespace DbContextValidation.Tests
         {
             var stopWatch = Stopwatch.StartNew();
             var connection = Config.CreateDbConnection();
-            for (;;)
+            while (true)
             {
                 try
                 {
