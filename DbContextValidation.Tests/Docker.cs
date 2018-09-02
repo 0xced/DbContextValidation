@@ -3,21 +3,29 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading;
+using Xunit.Abstractions;
+using Xunit.Sdk;
 
 namespace DbContextValidation.Tests
 {
     public class DockerFixture : IDisposable
     {
-        public DockerFixture()
+        private readonly IMessageSink _sink;
+
+        public DockerFixture(IMessageSink sink)
         {
+            _sink = sink ?? throw new ArgumentNullException(nameof(sink));
+            
             if (Config.Provider == Provider.SQLite)
                 return;
 
-            if (!DockerContainerIsRunning())
-            {
-                RunDocker($"run --name DbContextValidation.Tests.{Config.Provider} " + Config.DockerArguments(SqlDirectory));
-            }
+            DockerContainerStart();
             WaitForDatabase(TimeSpan.FromSeconds(20));
+        }
+
+        private static string DockerContainerName()
+        {
+            return "DbContextValidation.Tests." + Config.Provider;
         }
 
         public void Dispose()
@@ -25,27 +33,27 @@ namespace DbContextValidation.Tests
             if (Config.Provider == Provider.SQLite)
                 return;
 
-            RunDocker("rm -f DbContextValidation.Tests." + Config.Provider);
+            RunDocker("stop " + DockerContainerName());
         }
-
-        private static bool DockerContainerIsRunning()
+        
+        private void DockerContainerStart()
         {
             try
             {
-                RunDocker("inspect -f {{.State.Status}} DbContextValidation.Tests." + Config.Provider);
-                return true;
+                RunDocker("start " + DockerContainerName());
             }
-            catch (Exception)
+            catch (Exception e) when (e.Message.Contains("No such container"))
             {
-                return false;
+                RunDocker($"run --name {DockerContainerName()} " + Config.DockerArguments(SqlDirectory));
             }
         }
 
-        private static void RunDocker(string arguments)
+        private void RunDocker(string arguments)
         {
             var docker = Process.Start(new ProcessStartInfo("docker", arguments) { UseShellExecute = false, RedirectStandardError = true });
             if (docker == null)
                 throw new ApplicationException($"Failed to run `docker {arguments}`");
+            WriteDiagnostic($"> docker {arguments}");
             docker.WaitForExit();
             if (docker.ExitCode != 0)
             {
@@ -71,17 +79,17 @@ namespace DbContextValidation.Tests
             return sqlDirectory;
         }
 
-        private static void WaitForDatabase(TimeSpan timeout)
+        private void WaitForDatabase(TimeSpan timeout)
         {
             var stopWatch = Stopwatch.StartNew();
             var connection = Config.CreateDbConnection();
-            WriteLine($"Waiting for {connection} database to be available on {connection.ConnectionString}");
+            WriteDiagnostic($"Waiting for {connection} database to be available on {connection.ConnectionString}");
             while (true)
             {
                 try
                 {
                     connection.Open();
-                    WriteLine($"It took {stopWatch.Elapsed.TotalSeconds:F1} seconds for the database to become available.");
+                    WriteDiagnostic($"It took {stopWatch.Elapsed.TotalSeconds:F1} seconds for the database to become available.");
                     break;
                 }
                 catch (Exception exception)
@@ -95,10 +103,9 @@ namespace DbContextValidation.Tests
             }
         }
 
-        private static void WriteLine(string message)
+        private void WriteDiagnostic(string message)
         {
-            // Until I understand how to do it properly with xUnit, see https://github.com/xunit/xunit/issues/565
-            Process.Start("echo", "\"" + message + "\"");
+            _sink.OnMessage(new DiagnosticMessage(message));
         }
     }
 }
