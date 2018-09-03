@@ -23,7 +23,7 @@ namespace DbContextValidation.Tests
         SqlServer,
     }
     
-    public class Tests : IClassFixture<DockerFixture>
+    public class Tests : IClassFixture<DatabaseFixture>
     {
         private readonly DbContextValidator _defaultValidator;
         private readonly DbContextValidator _caseInsensitiveValidator;

@@ -8,11 +8,11 @@ using Xunit.Sdk;
 
 namespace DbContextValidation.Tests
 {
-    public class DockerFixture : IDisposable
+    public class DatabaseFixture : IDisposable
     {
         private readonly IMessageSink _sink;
 
-        public DockerFixture(IMessageSink sink)
+        public DatabaseFixture(IMessageSink sink)
         {
             _sink = sink ?? throw new ArgumentNullException(nameof(sink));
             
