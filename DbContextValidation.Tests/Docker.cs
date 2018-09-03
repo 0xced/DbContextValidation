@@ -55,6 +55,7 @@ namespace DbContextValidation.Tests
                 throw new ApplicationException($"Failed to run `docker {arguments}`");
             WriteDiagnostic($"> docker {arguments}");
             docker.WaitForExit();
+            WriteDiagnostic($"({docker.ExitCode}) docker {arguments}");
             if (docker.ExitCode != 0)
             {
                 var error = docker.StandardError.ReadToEnd();
