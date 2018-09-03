@@ -97,8 +97,6 @@ namespace DbContextValidation.Tests
             {
                 var validationTask = _defaultValidator.ValidateContextAsync(context, cancellationToken: new CancellationToken(true));
                 validationTask.Status.Should().Be(TaskStatus.Canceled);
-                Func<Task> validation = async () => { await validationTask; };
-                validation.Should().Throw<OperationCanceledException>();
             }
         }
 
