@@ -20,7 +20,7 @@ namespace DbContextValidation.EF6
         }
 
         /// <summary>
-        /// The schema of the table.  
+        /// The schema of the table. May be <code>null</code> as some providers (e.g. SQLite, MySQL) do not support schemata.
         /// </summary>
         public string Schema { get; }
         
