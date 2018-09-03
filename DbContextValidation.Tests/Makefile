@@ -2,7 +2,7 @@
 TESTS_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
 test:
-	TESTS_DIRECTORY=${TESTS_DIR} mono ~/.nuget/packages/xunit.runner.console/2.4.0/tools/net452/xunit.console.exe ../DbContextValidation.Tests.EF6.*/bin/Debug/*/*.Tests.EF6.*.dll
+	mono ~/.nuget/packages/xunit.runner.console/2.4.0/tools/net452/xunit.console.exe ../DbContextValidation.Tests.EF6.*/bin/Debug/*/*.Tests.EF6.*.dll -diagnostics -noshadow -parallel all
 	dotnet test ../DbContextValidation.Tests.EFCore.SQLite
 	dotnet test ../DbContextValidation.Tests.EFCore.MySQL
 	dotnet test ../DbContextValidation.Tests.EFCore.Npgsql
