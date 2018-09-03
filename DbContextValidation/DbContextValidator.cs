@@ -45,7 +45,7 @@ namespace DbContextValidation.EF6
         }
 
         /// <inheritdoc />
-        public async Task<IReadOnlyCollection<InvalidMapping>> ValidateSchemaAsync(DbContext context, IProgress<float> progress = null, CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyCollection<InvalidMapping>> ValidateContextAsync(DbContext context, IProgress<float> progress = null, CancellationToken cancellationToken = default)
         {
             var invalidMappings = new List<InvalidMapping>();
             var dbModel = context.GetDbModel();
