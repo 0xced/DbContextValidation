@@ -15,12 +15,12 @@ namespace DbContextValidation.EF6
 #endif
 {
     /// <summary>
-    /// TODO
+    /// A service for validating a DbContext model
     /// </summary>
     public interface IDbContextValidator
     {
         /// <summary>
-        /// Validates all the table and column names of entities defined in the DbContext model against the actual database.
+        /// Validates all the table and column names of entities defined in the DbContext model against the actual database associated to the context.
         /// </summary>
         /// <param name="context">The context you want to validate against its actual database connection.</param>
         /// <param name="progress">A progress reporting numbers between 0.0 and 1.0 representing the completed fraction of the validation process. If <code>null</code>, no progress is reported.</param>

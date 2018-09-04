@@ -37,7 +37,7 @@ namespace DbContextValidation.EF6
         
         /// <summary>
         /// If <see cref="MissingColumns"/> is <code>null</code>, contains the exception that occured when the select statement to get the actual column names was issued to the database.
-        /// May be useful to understand why a table is missing.
+        /// Especially useful to understand why a table is missing.
         /// </summary>
         public TableNotFoundException MissingTableException { get; }
         

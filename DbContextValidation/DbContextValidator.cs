@@ -23,10 +23,8 @@ namespace DbContextValidation.EF6
     /// <param name="tableName">The name of the table.</param>
     /// <param name="commandBuilder">The <see cref="DbCommandBuilder"/> of the provider, may be <code>null</code>.</param>
     public delegate string SelectStatement(string schema, string tableName, DbCommandBuilder commandBuilder);
-    
-    /// <summary>
-    /// 
-    /// </summary>
+
+    /// <inheritdoc />
     public class DbContextValidator : IDbContextValidator
     {
 

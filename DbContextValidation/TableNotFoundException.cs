@@ -7,16 +7,25 @@ namespace DbContextValidation.EFCore
 namespace DbContextValidation.EF6
 #endif
 {
+    /// <summary>
+    /// Represents errors that occur while trying to get the list of column names for a given table. <seealso cref="InvalidMapping.MissingTableException"/>
+    /// </summary>
     public class TableNotFoundException : Exception
     {
-        public TableNotFoundException(DbException dbException, string selectStatement) : base(null, dbException)
+        internal TableNotFoundException(DbException dbException, string selectStatement) : base(null, dbException)
         {
             DbException = dbException;
             SelectStatement = selectStatement;
         }
         
+        /// <summary>
+        /// The DbException that was thrown while executing the <see cref="SelectStatement"/>.
+        /// </summary>
         public DbException DbException { get; }
         
+        /// <summary>
+        /// The select statement that was issued to the database that generated the <see cref="DbException"/>.
+        /// </summary>
         public string SelectStatement { get; }
     }
 }
