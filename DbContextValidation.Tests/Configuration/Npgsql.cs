@@ -9,11 +9,11 @@ namespace DbContextValidation.Tests
         public static readonly Provider Provider = Provider.Npgsql;
         public static readonly string Schema = "public";
 
-        private static readonly string Host = "localhost";
-        private static readonly string Port = "5432";
-        private static readonly string Database = "DbContextValidation";
-        private static readonly string User = "postgres";
-        private static readonly string Password = "docker";
+        private const string Host = "localhost";
+        private const string Port = "5432";
+        private const string Database = "DbContextValidation";
+        private const string User = "postgres";
+        private const string Password = "docker";
 
         public static readonly string ConnectionString = $"Host={Host};Database={Database};UserName={User};Password={Password}";
          

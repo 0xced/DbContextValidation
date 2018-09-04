@@ -9,11 +9,11 @@ namespace DbContextValidation.Tests
         public static readonly Provider Provider = Provider.MySQL;
         public static readonly string Schema = null;
 
-        private static readonly string Host = "localhost";
-        private static readonly string Port = "3306";
-        private static readonly string Database = "DbContextValidation";
-        private static readonly string User = "root";
-        private static readonly string Password = "docker";
+        private const string Host = "localhost";
+        private const string Port = "3306";
+        private const string Database = "DbContextValidation";
+        private const string User = "root";
+        private const string Password = "docker";
 
         public static readonly string ConnectionString = $"Host={Host};Database={Database};UserName={User};Password={Password}";
 

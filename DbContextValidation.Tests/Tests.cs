@@ -83,7 +83,7 @@ namespace DbContextValidation.Tests
             
             using (var context = new ValidContext())
             {
-                await _defaultValidator.ValidateContextAsync(context, progress: progress);
+                await _defaultValidator.ValidateContextAsync(context, progress);
                 await Task.Yield();
                 fractions.Should().HaveCount(2);
                 fractions.Should().Contain(new []{0.5f, 1.0f});

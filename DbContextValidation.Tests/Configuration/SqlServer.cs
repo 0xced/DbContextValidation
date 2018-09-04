@@ -9,12 +9,12 @@ namespace DbContextValidation.Tests
         public static readonly Provider Provider = Provider.SqlServer;
         public static readonly string Schema = "dbo";
 
-        private static readonly string Host = "localhost";
-        private static readonly string Port = "1433";
-        private static readonly string Database = "tempdb";
-        private static readonly string User = "sa";
-        private static readonly string Password = "SqlServer-doc4er";
- 
+        private const string Host = "localhost";
+        private const string Port = "1433";
+        private const string Database = "tempdb";
+        private const string User = "sa";
+        private const string Password = "SqlServer-doc4er";
+
         public static readonly string ConnectionString = $"Server={Host};Database={Database};User Id={User};Password={Password}";
          
         public static string DockerArguments(Func<string, string> sqlDirectory)

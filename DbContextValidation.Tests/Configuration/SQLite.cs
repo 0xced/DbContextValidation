@@ -7,7 +7,7 @@ namespace DbContextValidation.Tests
     {
         public static readonly Provider Provider = Provider.SQLite;
         public static readonly string Schema = null;
-         
+
         public static readonly string ConnectionString = "Data Source=../../../../DbContextValidation.Tests/DbContextValidation.db";
 
         public static string DockerArguments(Func<string, string> sqlDirectory)
