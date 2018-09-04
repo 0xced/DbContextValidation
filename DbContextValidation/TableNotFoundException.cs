@@ -12,7 +12,7 @@ namespace DbContextValidation.EF6
     /// </summary>
     public class TableNotFoundException : Exception
     {
-        internal TableNotFoundException(DbException dbException, string selectStatement) : base(null, dbException)
+        internal TableNotFoundException(string schema, string tableName, DbException dbException, string selectStatement) : base($"{schema}{(string.IsNullOrEmpty(schema) ? "" : ".")}{tableName} not found", dbException)
         {
             DbException = dbException;
             SelectStatement = selectStatement;

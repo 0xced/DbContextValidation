@@ -48,7 +48,7 @@ namespace DbContextValidation.EF6
             }
             catch (DbException exception)
             {
-                throw new TableNotFoundException(exception, commandText);
+                throw new TableNotFoundException(schema, tableName, exception, commandText);
             }
             finally
             {
