@@ -20,5 +20,11 @@ namespace DbContextValidation.EF6
         public string Table { get; }
         public IReadOnlyCollection<string> ColumnNames { get; }
         public bool? CaseSensitive { get; }
+
+        public override string ToString()
+        {
+            var schemaPrefix = string.IsNullOrEmpty(Schema) ? "" : Schema + ".";
+            return $"{schemaPrefix}{Table} {string.Join(",", ColumnNames)}";
+        }
     }
 }
