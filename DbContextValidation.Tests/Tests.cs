@@ -25,6 +25,18 @@ namespace DbContextValidation.Tests
     
     public class Tests : IClassFixture<DatabaseFixture>
     {
+        private class AccumulatorProgress<T> : IProgress<T>
+        {
+            private readonly List<T> _items = new List<T>();
+
+            public IReadOnlyList<T> Items => _items;
+
+            public void Report(T value)
+            {
+                _items.Add(value);
+            }
+        }
+        
         private readonly DbContextValidator _defaultValidator;
         private readonly DbContextValidator _caseInsensitiveValidator;
         private readonly DbContextValidator _caseSensitiveValidator;
@@ -78,15 +90,11 @@ namespace DbContextValidation.Tests
         [Fact]
         public async Task ValidMappingWithProgress()
         {
-            var fractions = new List<float>();
-            var progress = new Progress<float>(fractions.Add);
-            
+            var progress = new AccumulatorProgress<float>();
             using (var context = new ValidContext())
             {
                 await _defaultValidator.ValidateContextAsync(context, progress);
-                await Task.Yield();
-                fractions.Should().HaveCount(2);
-                fractions.Should().Contain(new []{0.5f, 1.0f});
+                progress.Items.Should().BeEquivalentTo(new []{ 0.5f, 1.0f }, options => options.WithStrictOrdering());
             }
         }
         
