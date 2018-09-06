@@ -12,6 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\DbContextValidation.EFCore\DbContextValidation.EFCore.csproj" />
     <Compile Include="..\DbContextValidation.Tests\Configuration\SQLite.cs" />
+    <None Include="..\DbContextValidation.Tests\DbContextValidation.sqlite3" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <Import Project="..\DbContextValidation.Tests\DbContextValidation.Tests.projitems" Label="Shared" />
 </Project>
