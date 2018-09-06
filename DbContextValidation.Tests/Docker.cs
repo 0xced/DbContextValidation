@@ -33,7 +33,7 @@ namespace DbContextValidation.Tests
             if (Config.Provider == Provider.SQLite)
                 return;
 
-            RunDocker("stop " + DockerContainerName());
+            RunDocker("stop " + DockerContainerName(), waitForExit: false);
         }
         
         private void DockerContainerStart()
@@ -48,18 +48,24 @@ namespace DbContextValidation.Tests
             }
         }
 
-        private void RunDocker(string arguments)
+        private void RunDocker(string arguments, bool waitForExit = true)
         {
-            var docker = Process.Start(new ProcessStartInfo("docker", arguments) { UseShellExecute = false, RedirectStandardError = true });
-            if (docker == null)
-                throw new ApplicationException($"Failed to run `docker {arguments}`");
-            WriteDiagnostic($"> docker {arguments}");
-            docker.WaitForExit();
-            WriteDiagnostic($"({docker.ExitCode}) docker {arguments}");
-            if (docker.ExitCode != 0)
+            var startInfo = new ProcessStartInfo("docker", arguments) { UseShellExecute = false, RedirectStandardOutput = true, RedirectStandardError = true };
+            using (var docker = Process.Start(startInfo))
             {
-                var error = docker.StandardError.ReadToEnd();
-                throw new ApplicationException(error);
+                if (docker == null)
+                    throw new ApplicationException($"Failed to run `docker {arguments}`");
+                WriteDiagnostic($"> docker {arguments}");
+                if (waitForExit)
+                {
+                    docker.WaitForExit();
+                    WriteDiagnostic($"({docker.ExitCode}) docker {docker.StartInfo.Arguments}");
+                    if (docker.ExitCode != 0)
+                    {
+                        var error = docker.StandardError.ReadToEnd();
+                        throw new ApplicationException(error);
+                    }
+                }
             }
         }
 
