@@ -90,13 +90,13 @@ namespace DbContextValidation.Tests
         {
             var stopWatch = Stopwatch.StartNew();
             var connection = Config.CreateDbConnection();
-            WriteDiagnostic($"Waiting for {connection} database to be available on {connection.ConnectionString}");
+            WriteDiagnostic($"Waiting for {Config.Provider} database to be available on {connection.ConnectionString}");
             while (true)
             {
                 try
                 {
                     connection.Open();
-                    WriteDiagnostic($"It took {stopWatch.Elapsed.TotalSeconds:F1} seconds for the database to become available.");
+                    WriteDiagnostic($"It took {stopWatch.Elapsed.TotalSeconds:F1} seconds for the {Config.Provider} database to become available.");
                     break;
                 }
                 catch (Exception exception)
@@ -104,7 +104,7 @@ namespace DbContextValidation.Tests
                     Thread.Sleep(TimeSpan.FromSeconds(1));
                     if (stopWatch.Elapsed > timeout)
                     {
-                        throw new TimeoutException($"Database was not available after waiting for {timeout.TotalSeconds:F1} seconds.", exception);
+                        throw new TimeoutException($"{Config.Provider} database was not available after waiting for {timeout.TotalSeconds:F1} seconds.", exception);
                     }
                 }
             }
