@@ -110,9 +110,10 @@ namespace DbContextValidation.Tests
             using (var context = new ContextWithUnknownSchema())
             {
                 var invalidMappings = await _defaultValidator.ValidateContextAsync(context);
-                invalidMappings.Should().HaveCount(2);
                 invalidMappings.Should().OnlyContain(e => e.Schema == "unknown");
-                invalidMappings.Select(e => e.TableName).Should().Contain("tCustomers", "tOrders");
+                invalidMappings.Should().OnlyContain(e => e.MissingColumns == null);
+                invalidMappings.Should().OnlyContain(e => e.MissingTableException != null);
+                invalidMappings.Select(e => e.TableName).Should().BeEquivalentTo("tCustomers", "tOrders");
             }
         }
         
@@ -162,8 +163,7 @@ namespace DbContextValidation.Tests
                 var invalidMappings = await caseSensitiveValidator.ValidateContextAsync(context);
                 var invalidMapping = invalidMappings.Should().ContainSingle().Subject; 
                 invalidMapping.TableName.Should().Be("tOrders");
-                invalidMapping.MissingColumns.Should().HaveCount(2);
-                invalidMapping.MissingColumns.Should().Contain("oRdErDaTe", "cUsToMeRiD");
+                invalidMapping.MissingColumns.Should().BeEquivalentTo("oRdErDaTe", "cUsToMeRiD");
             }
         }
     }
