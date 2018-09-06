@@ -13,8 +13,8 @@ setup: setup_sqlite setup_mysql setup_postgres setup_sqlserver
 teardown: teardown_mysql teardown_postgres teardown_sqlserver
 
 setup_sqlite:
-	rm -f DbContextValidation.db
-	sqlite3 DbContextValidation.db < SQL.Common/CreateTables.sql
+	rm -f DbContextValidation.sqlite3
+	sqlite3 DbContextValidation.sqlite3 < SQL.Common/CreateTables.sql
 
 setup_mysql: teardown_mysql
 	docker run --name DbContextValidation.Tests.MySQL -e MYSQL_ROOT_PASSWORD=docker -e MYSQL_DATABASE=DbContextValidation -e MYSQL_ROOT_HOST=% --volume "${TESTS_DIR}/SQL.MySQL:/docker-entrypoint-initdb.d:ro" --publish 3306:3306 --detach mysql/mysql-server:5.7
