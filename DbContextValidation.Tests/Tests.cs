@@ -38,8 +38,6 @@ namespace DbContextValidation.Tests
         }
         
         private readonly DbContextValidator _defaultValidator;
-        private readonly DbContextValidator _caseInsensitiveValidator;
-        private readonly DbContextValidator _caseSensitiveValidator;
 
         static Tests()
         {
@@ -57,8 +55,6 @@ namespace DbContextValidation.Tests
         public Tests()
         {
             _defaultValidator = new DbContextValidator();
-            _caseInsensitiveValidator = new DbContextValidator(StringComparer.InvariantCultureIgnoreCase);
-            _caseSensitiveValidator = new DbContextValidator(StringComparer.InvariantCulture);
         }
 
         [Fact]
@@ -151,7 +147,8 @@ namespace DbContextValidation.Tests
         {
             using (var context = new ContextWithMixedCaseColumns())
             {
-                var invalidMappings = await _caseInsensitiveValidator.ValidateContextAsync(context);
+                var caseInsensitiveValidator = new DbContextValidator(StringComparer.InvariantCultureIgnoreCase);
+                var invalidMappings = await caseInsensitiveValidator.ValidateContextAsync(context);
                 invalidMappings.Should().BeEmpty();
             }
         }
@@ -161,7 +158,8 @@ namespace DbContextValidation.Tests
         {
             using (var context = new ContextWithMixedCaseColumns())
             {
-                var invalidMappings = await _caseSensitiveValidator.ValidateContextAsync(context);
+                var caseSensitiveValidator = new DbContextValidator(StringComparer.InvariantCulture);
+                var invalidMappings = await caseSensitiveValidator.ValidateContextAsync(context);
                 var invalidMapping = invalidMappings.Should().ContainSingle().Subject; 
                 invalidMapping.TableName.Should().Be("tOrders");
                 invalidMapping.MissingColumns.Should().HaveCount(2);
