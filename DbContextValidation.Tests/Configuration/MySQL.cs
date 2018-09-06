@@ -15,7 +15,7 @@ namespace DbContextValidation.Tests
         private const string User = "root";
         private const string Password = "docker";
 
-        public static readonly string ConnectionString = $"Host={Host};Database={Database};UserName={User};Password={Password}";
+        public static readonly string ConnectionString = $"Host={Host};Port={Port};Database={Database};UserName={User};Password={Password}";
 
         public static string DockerArguments(Func<string, string> sqlDirectory)
         {
