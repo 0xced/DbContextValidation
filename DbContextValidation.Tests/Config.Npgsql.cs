@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Data.Common;
-using Npgsql;
 
 namespace DbContextValidation.Tests
 {
@@ -27,11 +25,6 @@ namespace DbContextValidation.Tests
                 $"--publish {Port}:5432/tcp",
                 "--detach",
                 "postgres:10.5-alpine");
-        }
-
-        public static DbConnection CreateDbConnection()
-        {
-            return new NpgsqlConnection(ConnectionString);
         }
     }
 }

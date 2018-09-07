@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.Common;
 
 namespace DbContextValidation.Tests
 {
@@ -12,11 +11,6 @@ namespace DbContextValidation.Tests
         public static readonly string DockerContainerName = null;
 
         public static string DockerArguments(Func<string, string> sqlDirectory)
-        {
-            throw new NotSupportedException("SQLite doesn't require a Docker container.");
-        }
-
-        public static DbConnection CreateDbConnection()
         {
             throw new NotSupportedException("SQLite doesn't require a Docker container.");
         }

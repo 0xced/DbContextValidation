@@ -85,23 +85,30 @@ namespace DbContextValidation.Tests
         private void WaitForDatabase(TimeSpan timeout)
         {
             var stopWatch = Stopwatch.StartNew();
-            var connection = Config.CreateDbConnection();
-            var provider = Config.DockerContainerName.Split('.').Last();
-            WriteDiagnostic($"Waiting for {provider} database to be available on {connection.ConnectionString}");
-            while (true)
+            using (var context = new ValidContext())
             {
-                try
+#if NETFRAMEWORK
+                var connection = context.Database.Connection;
+#else
+                var connection = Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.GetDbConnection(context.Database);
+#endif
+                var provider = Config.DockerContainerName.Split('.').Last();
+                WriteDiagnostic($"Waiting for {provider} database to be available on {connection.ConnectionString}");
+                while (true)
                 {
-                    connection.Open();
-                    WriteDiagnostic($"It took {stopWatch.Elapsed.TotalSeconds:F1} seconds for the {provider} database to become available.");
-                    break;
-                }
-                catch (Exception exception)
-                {
-                    Thread.Sleep(TimeSpan.FromSeconds(1));
-                    if (stopWatch.Elapsed > timeout)
+                    try
                     {
-                        throw new TimeoutException($"{provider} database was not available after waiting for {timeout.TotalSeconds:F1} seconds.", exception);
+                        connection.Open();
+                        WriteDiagnostic($"It took {stopWatch.Elapsed.TotalSeconds:F1} seconds for the {provider} database to become available.");
+                        break;
+                    }
+                    catch (Exception exception)
+                    {
+                        Thread.Sleep(TimeSpan.FromSeconds(1));
+                        if (stopWatch.Elapsed > timeout)
+                        {
+                            throw new TimeoutException($"{provider} database was not available after waiting for {timeout.TotalSeconds:F1} seconds.", exception);
+                        }
                     }
                 }
             }

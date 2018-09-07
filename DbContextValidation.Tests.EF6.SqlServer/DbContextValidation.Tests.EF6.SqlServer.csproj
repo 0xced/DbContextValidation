@@ -12,7 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DbContextValidation.EF6\DbContextValidation.EF6.csproj" />
-    <Compile Include="..\DbContextValidation.Tests\Configuration\SqlServer.cs" />
+    <Compile Include="..\DbContextValidation.Tests\Config.SqlServer.cs" />
   </ItemGroup>
   <Import Project="..\DbContextValidation.Tests\DbContextValidation.Tests.projitems" Label="Shared" />
 </Project>

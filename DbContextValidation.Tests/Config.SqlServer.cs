@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Data.Common;
-using System.Data.SqlClient;
 
 namespace DbContextValidation.Tests
 {
@@ -27,11 +25,6 @@ namespace DbContextValidation.Tests
                 $"--publish {Port}:1433/tcp",
                 "--detach",
                 "genschsa/mssql-server-linux:latest");
-        }
-
-        public static DbConnection CreateDbConnection()
-        {
-            return new SqlConnection(ConnectionString);
         }
     }
 }

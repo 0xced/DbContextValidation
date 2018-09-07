@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Data.Common;
-using MySql.Data.MySqlClient;
 
 namespace DbContextValidation.Tests
 {
@@ -28,11 +26,6 @@ namespace DbContextValidation.Tests
                 $"--publish {Port}:3306/tcp",
                 "--detach",
                 "mysql/mysql-server:5.7");
-        }
-
-        public static DbConnection CreateDbConnection()
-        {
-            return new MySqlConnection(ConnectionString);
         }
     }
 }
