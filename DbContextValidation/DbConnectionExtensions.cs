@@ -12,7 +12,7 @@ namespace DbContextValidation.EF6
 {
     internal static class DbConnectionExtensions
     {
-        internal static async Task<TableInfo> GetTableInfo(this DbConnection connection, SelectStatement selectStatement, string schema, string tableName)
+        internal static async Task<Table> GetTable(this DbConnection connection, SelectStatement selectStatement, string schema, string tableName)
         {
             var columnNames = new List<string>();
             var wasClosed = connection.State == ConnectionState.Closed;
@@ -46,7 +46,7 @@ namespace DbContextValidation.EF6
                 if (wasClosed)
                     connection.Close();
             }
-            return new TableInfo(schema, tableName, columnNames);
+            return new Table(schema, tableName, columnNames);
         }
 
         // ReSharper disable once SuggestBaseTypeForParameter

@@ -11,6 +11,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)DbContextValidator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IDbContextValidator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)InvalidMapping.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)TableInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Table.cs" />
   </ItemGroup>
 </Project>

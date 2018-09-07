@@ -6,23 +6,22 @@ namespace DbContextValidation.EFCore
 namespace DbContextValidation.EF6
 #endif
 {
-    internal class TableInfo
+    internal class Table
     {
-        public TableInfo(string schema, string table, IReadOnlyCollection<string> columnNames)
+        public Table(string schema, string tableName, IReadOnlyCollection<string> columnNames)
         {
             Schema = schema;
-            Table = table;
+            TableName = tableName;
             ColumnNames = columnNames;
         }
 
         public string Schema { get; }
-        public string Table { get; }
+        public string TableName { get; }
         public IReadOnlyCollection<string> ColumnNames { get; }
 
         public override string ToString()
         {
-            var schemaPrefix = string.IsNullOrEmpty(Schema) ? "" : Schema + ".";
-            return $"{schemaPrefix}{Table} {string.Join(",", ColumnNames)}";
+            return string.IsNullOrEmpty(Schema) ? TableName : Schema + "." + TableName;
         }
     }
 }

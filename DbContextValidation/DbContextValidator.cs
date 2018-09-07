@@ -46,19 +46,19 @@ namespace DbContextValidation.EF6
         public async Task<IReadOnlyCollection<InvalidMapping>> ValidateContextAsync(DbContext context, IProgress<float> progress = null, CancellationToken cancellationToken = default)
         {
             var invalidMappings = new List<InvalidMapping>();
-            var dbModel = context.GetDbModel();
+            var modelTables = context.GetModelTables();
             var i = 0;
-            foreach (var entry in dbModel)
+            foreach (var modelTable in modelTables)
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                var schema = entry.Key.schema;
-                var tableName = entry.Key.tableName;
-                var expectedColumnNames = entry.Value;
+                var schema = modelTable.Schema;
+                var tableName = modelTable.TableName;
+                var expectedColumnNames = modelTable.ColumnNames;
                 InvalidMapping invalidMapping = null;
                 try
                 {
-                    var tableInfo = await context.GetDbConnection().GetTableInfo(_selectStatement, schema, tableName);
-                    var missingColumns = expectedColumnNames.Except(tableInfo.ColumnNames, _columnNameEqualityComparer).ToList();
+                    var databaseTable = await context.GetDbConnection().GetTable(_selectStatement, schema, tableName);
+                    var missingColumns = expectedColumnNames.Except(databaseTable.ColumnNames, _columnNameEqualityComparer).ToList();
                     if (missingColumns.Any())
                     {
                         invalidMapping = new InvalidMapping(schema, tableName, missingColumns, exception: null);
@@ -72,7 +72,7 @@ namespace DbContextValidation.EF6
                 {
                     invalidMappings.Add(invalidMapping);                    
                 }
-                progress?.Report(++i / (float)dbModel.Count);
+                progress?.Report(++i / (float)modelTables.Count);
             }
             return invalidMappings;
         }

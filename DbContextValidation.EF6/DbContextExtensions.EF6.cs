@@ -10,9 +10,9 @@ namespace DbContextValidation.EF6
 {
     internal static class DbContextExtensions
     {
-        internal static IDictionary<(string schema, string tableName), IReadOnlyCollection<string>> GetDbModel(this DbContext context)
+        internal static IReadOnlyCollection<Table> GetModelTables(this DbContext context)
         {
-            var model = new Dictionary<(string schema, string tableName), IReadOnlyCollection<string>>();
+            var tables = new List<Table>();
             var workspace = ((IObjectContextAdapter)context).ObjectContext.MetadataWorkspace;
             var entitySets = workspace.GetItems<EntityContainer>(DataSpace.CSpace).Single().EntitySets;
             var entitySetMappings = workspace.GetItems<EntityContainerMapping>(DataSpace.CSSpace).Single().EntitySetMappings.ToList();
@@ -25,9 +25,10 @@ namespace DbContextValidation.EF6
                 var schema = fragmentMapping.StoreEntitySet.Schema;
                 var tableName = fragmentMapping.StoreEntitySet.Table;
                 var columnNames = fragmentMapping.PropertyMappings.OfType<ScalarPropertyMapping>().Select(e => e.Column.Name);
-                model.Add((schema, tableName), columnNames.ToList());
+                var table = new Table(schema, tableName, columnNames.ToList());
+                tables.Add(table);
             }
-            return model;
+            return tables;
         }
 
         internal static DbConnection GetDbConnection(this DbContext context)
