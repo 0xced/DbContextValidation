@@ -8,18 +8,16 @@ namespace DbContextValidation.EF6
 {
     internal class TableInfo
     {
-        public TableInfo(string schema, string table, IReadOnlyCollection<string> columnNames, bool? caseSensitive)
+        public TableInfo(string schema, string table, IReadOnlyCollection<string> columnNames)
         {
             Schema = schema;
             Table = table;
             ColumnNames = columnNames;
-            CaseSensitive = caseSensitive;
         }
 
         public string Schema { get; }
         public string Table { get; }
         public IReadOnlyCollection<string> ColumnNames { get; }
-        public bool? CaseSensitive { get; }
 
         public override string ToString()
         {

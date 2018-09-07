@@ -54,7 +54,7 @@ namespace DbContextValidation.Tests
 #error Undefined provider
 #endif
         {
-            _defaultValidator = new DbContextValidator();
+            _defaultValidator = new DbContextValidator(StringComparer.InvariantCulture);
         }
 
         [Fact]
@@ -159,8 +159,7 @@ namespace DbContextValidation.Tests
         {
             using (var context = new ContextWithMixedCaseColumns())
             {
-                var caseSensitiveValidator = new DbContextValidator(StringComparer.InvariantCulture);
-                var invalidMappings = await caseSensitiveValidator.ValidateContextAsync(context);
+                var invalidMappings = await _defaultValidator.ValidateContextAsync(context);
                 var invalidMapping = invalidMappings.Should().ContainSingle().Subject; 
                 invalidMapping.TableName.Should().Be("tOrders");
                 invalidMapping.MissingColumns.Should().BeEquivalentTo("oRdErDaTe", "cUsToMeRiD");

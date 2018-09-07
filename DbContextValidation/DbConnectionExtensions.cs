@@ -15,7 +15,6 @@ namespace DbContextValidation.EF6
         internal static async Task<TableInfo> GetTableInfo(this DbConnection connection, SelectStatement selectStatement, string schema, string tableName)
         {
             var columnNames = new List<string>();
-            bool? caseSensitive;
             var wasClosed = connection.State == ConnectionState.Closed;
             if (wasClosed)
                 await connection.OpenAsync();
@@ -35,14 +34,6 @@ namespace DbContextValidation.EF6
                         {
                             columnNames.Add(reader.GetName(i));
                         }
-                        try
-                        {
-                            caseSensitive = reader.GetSchemaTable()?.CaseSensitive;
-                        }
-                        catch (Exception)
-                        {
-                            caseSensitive = null;
-                        }
                     }
                 }
             }
@@ -55,7 +46,7 @@ namespace DbContextValidation.EF6
                 if (wasClosed)
                     connection.Close();
             }
-            return new TableInfo(schema, tableName, columnNames, caseSensitive);
+            return new TableInfo(schema, tableName, columnNames);
         }
 
         // ReSharper disable once SuggestBaseTypeForParameter
