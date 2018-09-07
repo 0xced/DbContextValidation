@@ -15,15 +15,18 @@ using Xunit;
 
 namespace DbContextValidation.Tests
 {
-    public enum Provider
-    {
-        MySQL,
-        Npgsql,
-        SQLite,
-        SqlServer,
-    }
     
-    public class Tests : IClassFixture<DatabaseFixture>
+#if PROVIDER_MYSQL
+    public class MySQL : IClassFixture<DatabaseFixture>
+#elif PROVIDER_NPGSQL
+    public class Npgsql : IClassFixture<DatabaseFixture>
+#elif PROVIDER_SQLITE
+    public class SQLite : IClassFixture<DatabaseFixture>
+#elif PROVIDER_SQLSERVER
+    public class SqlServer : IClassFixture<DatabaseFixture>
+#else
+#error Undefined provider
+#endif
     {
         private class AccumulatorProgress<T> : IProgress<T>
         {
@@ -39,20 +42,17 @@ namespace DbContextValidation.Tests
         
         private readonly DbContextValidator _defaultValidator;
 
-        static Tests()
-        {
-#if NETFRAMEWORK
-            // Disable migrations
-            Database.SetInitializer<ValidContext>(null);
-            Database.SetInitializer<ContextWithExplicitSchema>(null);
-            Database.SetInitializer<ContextWithUnknownSchema>(null);
-            Database.SetInitializer<ContextWithMisspelledCustomersTable>(null);
-            Database.SetInitializer<ContextWithMisspelledOrderDateColumn>(null);
-            Database.SetInitializer<ContextWithMixedCaseColumns>(null);
+#if PROVIDER_MYSQL
+        public MySQL()
+#elif PROVIDER_NPGSQL
+        public Npgsql()
+#elif PROVIDER_SQLITE
+        public SQLite()
+#elif PROVIDER_SQLSERVER
+        public SqlServer()
+#else
+#error Undefined provider
 #endif
-        }
-
-        public Tests()
         {
             _defaultValidator = new DbContextValidator();
         }

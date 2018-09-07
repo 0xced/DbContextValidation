@@ -6,7 +6,6 @@ namespace DbContextValidation.Tests
 {
     public static class Config
     {
-        public static readonly Provider Provider = Provider.Npgsql;
         public static readonly string Schema = "public";
 
         private const string Host = "localhost";
@@ -16,7 +15,9 @@ namespace DbContextValidation.Tests
         private const string Password = "docker";
 
         public static readonly string ConnectionString = $"Host={Host};Port={Port};Database={Database};UserName={User};Password={Password}";
-         
+
+        public static readonly string DockerContainerName = "DbContextValidation.Tests.Npgsql";
+
         public static string DockerArguments(Func<string, string> sqlDirectory)
         {
             return string.Join(" ",
@@ -27,7 +28,7 @@ namespace DbContextValidation.Tests
                 "--detach",
                 "postgres:10.5-alpine");
         }
-         
+
         public static DbConnection CreateDbConnection()
         {
             return new NpgsqlConnection(ConnectionString);

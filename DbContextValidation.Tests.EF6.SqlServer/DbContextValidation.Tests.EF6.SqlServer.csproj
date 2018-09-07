@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net452</TargetFramework>
     <IsPackable>false</IsPackable>
+    <DefineConstants>$(DefineConstants);PROVIDER_SQLSERVER</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.2.0" />

@@ -6,7 +6,6 @@ namespace DbContextValidation.Tests
 {
     public static class Config
     {
-        public static readonly Provider Provider = Provider.MySQL;
         public static readonly string Schema = null;
 
         private const string Host = "localhost";
@@ -16,6 +15,8 @@ namespace DbContextValidation.Tests
         private const string Password = "docker";
 
         public static readonly string ConnectionString = $"Host={Host};Port={Port};Database={Database};UserName={User};Password={Password}";
+
+        public static readonly string DockerContainerName = "DbContextValidation.Tests.MySQL";
 
         public static string DockerArguments(Func<string, string> sqlDirectory)
         {

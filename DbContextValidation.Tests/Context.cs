@@ -9,6 +9,19 @@ namespace DbContextValidation.Tests
 {
     public class ValidContext : Context
     {
+        static ValidContext()
+        {
+#if NETFRAMEWORK
+            // Disable migrations
+            Database.SetInitializer<ValidContext>(null);
+            Database.SetInitializer<ContextWithExplicitSchema>(null);
+            Database.SetInitializer<ContextWithUnknownSchema>(null);
+            Database.SetInitializer<ContextWithMisspelledCustomersTable>(null);
+            Database.SetInitializer<ContextWithMisspelledOrderDateColumn>(null);
+            Database.SetInitializer<ContextWithMixedCaseColumns>(null);
+#endif
+        }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 #if NETFRAMEWORK
@@ -17,7 +30,8 @@ namespace DbContextValidation.Tests
              * > By convention, the database provider will choose the most appropriate default schema. For example, Microsoft SQL Server will use the dbo schema and SQLite will not use a schema (since schemas are not supported in SQLite).
              * But EF 6 needs a bit of help to choose an appropriate default schema.
              */
-            if (Config.Provider != Provider.SqlServer) // setting "" as default schema for SqlServer somehow turns it into "CodeFirstDatabase"
+            var isSqlServer = Config.Schema == "dbo";
+            if (!isSqlServer) // setting "" as default schema for SqlServer somehow turns it into "CodeFirstDatabase"
             {
                 modelBuilder.HasDefaultSchema("");
             }
