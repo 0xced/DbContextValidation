@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <DefineConstants>$(DefineConstants);PROVIDER_POMELO</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="5.4.1" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.1.2" />
+    <PackageReference Include="xunit" Version="2.4.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DbContextValidation.EFCore\DbContextValidation.EFCore.csproj" />
+    <Compile Include="..\DbContextValidation.Tests\Config.MySQL.cs" />
+  </ItemGroup>
+  <Import Project="..\DbContextValidation.Tests\DbContextValidation.Tests.projitems" Label="Shared" />
+</Project>

@@ -20,6 +20,8 @@ namespace DbContextValidation.Tests
     public class MySQL : IClassFixture<DatabaseFixture>
 #elif PROVIDER_NPGSQL
     public class Npgsql : IClassFixture<DatabaseFixture>
+#elif PROVIDER_POMELO
+    public class Pomelo : IClassFixture<DatabaseFixture>
 #elif PROVIDER_SQLITE
     public class SQLite : IClassFixture<DatabaseFixture>
 #elif PROVIDER_SQLSERVER
@@ -46,6 +48,8 @@ namespace DbContextValidation.Tests
         public MySQL()
 #elif PROVIDER_NPGSQL
         public Npgsql()
+#elif PROVIDER_POMELO
+        public Pomelo()
 #elif PROVIDER_SQLITE
         public SQLite()
 #elif PROVIDER_SQLSERVER
