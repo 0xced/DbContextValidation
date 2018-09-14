@@ -7,12 +7,12 @@ namespace DbContextValidation.Tests
         public static readonly string Schema = null;
 
         private const string Host = "localhost";
-        private const string Port = "3306";
+        public static ushort? Port;
         private const string Database = "DbContextValidation";
         private const string User = "root";
         private const string Password = "docker";
 
-        public static readonly string ConnectionString = $"Host={Host};Port={Port};Database={Database};UserName={User};Password={Password}";
+        public static string ConnectionString => $"Host={Host};Port={Port};Database={Database};UserName={User};Password={Password}";
 
         public static readonly string DockerContainerName = "DbContextValidation.Tests.MySQL";
 
@@ -23,7 +23,7 @@ namespace DbContextValidation.Tests
                 $"-e MYSQL_DATABASE={Database}",
                 "-e MYSQL_ROOT_HOST=%",
                 $"--volume \"{sqlDirectory("SQL.MySQL")}:/docker-entrypoint-initdb.d:ro\"",
-                $"--publish {Port}:3306/tcp",
+                "--publish 3306/tcp",
                 "--detach",
                 "mysql/mysql-server:5.7");
         }

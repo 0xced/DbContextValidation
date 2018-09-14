@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Threading;
 using Xunit.Abstractions;
 using Xunit.Sdk;
@@ -42,9 +43,14 @@ namespace DbContextValidation.Tests
             {
                 RunDocker($"run --name {Config.DockerContainerName} " + Config.DockerArguments(SqlDirectory));
             }
+            var portLine = RunDocker($"port {Config.DockerContainerName}").TrimEnd('\n');
+            var port = Regex.Match(portLine, @"-> 0\.0\.0\.0:(?<port>\d+)").Groups["port"];
+            if (!port.Success)
+                throw new ApplicationException($"Could not find port in '{portLine}'");
+            Config.Port = ushort.Parse(port.Value);
         }
 
-        private void RunDocker(string arguments, bool waitForExit = true)
+        private string RunDocker(string arguments, bool waitForExit = true)
         {
             var startInfo = new ProcessStartInfo("docker", arguments) { UseShellExecute = false, RedirectStandardOutput = true, RedirectStandardError = true };
             using (var docker = Process.Start(startInfo))
@@ -61,7 +67,9 @@ namespace DbContextValidation.Tests
                         var error = docker.StandardError.ReadToEnd();
                         throw new ApplicationException(error);
                     }
+                    return docker.StandardOutput.ReadToEnd();
                 }
+                return null;
             }
         }
 
