@@ -25,28 +25,6 @@ clean:
 	find "${TESTS_DIR}/.." -name "bin" -print0 | xargs -0 rm -r
 	find "${TESTS_DIR}/.." -name "obj" -print0 | xargs -0 rm -r
 
-setup: setup_sqlite setup_mysql setup_postgres setup_sqlserver
-
-teardown: teardown_mysql teardown_postgres teardown_sqlserver
-
-setup_sqlite:
+sqlite:
 	rm -f DbContextValidation.sqlite3
 	sqlite3 DbContextValidation.sqlite3 < SQL.Common/CreateTables.sql
-
-setup_mysql: teardown_mysql
-	docker run --name DbContextValidation.Tests.MySQL -e MYSQL_ROOT_PASSWORD=docker -e MYSQL_DATABASE=DbContextValidation -e MYSQL_ROOT_HOST=% --volume "${TESTS_DIR}/SQL.MySQL:/docker-entrypoint-initdb.d:ro" --publish 3306:3306 --detach mysql/mysql-server:5.7
-
-setup_postgres: teardown_postgres
-	docker run --name DbContextValidation.Tests.Npgsql -e POSTGRES_PASSWORD=docker -e POSTGRES_DB=DbContextValidation --volume "${TESTS_DIR}/SQL.Common:/docker-entrypoint-initdb.d:ro" --publish 5432:5432 --detach postgres:10.5-alpine
-
-setup_sqlserver: teardown_sqlserver
-	docker run --name DbContextValidation.Tests.SqlServer -e ACCEPT_EULA=Y -e MSSQL_SA_PASSWORD=SqlServer-doc4er --volume "${TESTS_DIR}/SQL.SqlServer:/docker-entrypoint-initdb.d:ro" --publish 1433:1433 --detach genschsa/mssql-server-linux
-
-teardown_mysql:
-	docker rm -f DbContextValidation.Tests.MySQL || true
-
-teardown_postgres:	
-	docker rm -f DbContextValidation.Tests.Npgsql || true
-
-teardown_sqlserver:
-	docker rm -f DbContextValidation.Tests.SqlServer || true
