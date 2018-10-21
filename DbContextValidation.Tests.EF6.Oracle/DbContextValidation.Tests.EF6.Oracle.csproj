@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net452</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Oracle.ManagedDataAccess.EntityFramework" Version="18.3.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\DbContextValidation.Tests\Config.Oracle.cs" />
+  </ItemGroup>
+  <Import Project="..\DbContextValidation.Tests\DbContextValidation.Tests.EF6.props" />
+</Project>

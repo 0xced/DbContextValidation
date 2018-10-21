@@ -1,0 +1,4 @@
+CREATE TABLE "tCustomers" (
+  "Id" NUMBER PRIMARY KEY NOT NULL,
+  "Name" VARCHAR2(50) NOT NULL
+)

@@ -35,3 +35,4 @@ pull_docker_images:
 	docker pull jacobalberty/firebird:3.0.4
 	docker pull mysql/mysql-server:5.7
 	docker pull genschsa/mssql-server-linux
+	docker pull wnameless/oracle-xe-11g:18.04

@@ -23,7 +23,7 @@ namespace DbContextValidation.Tests
                 return;
 
             DockerContainerStart();
-            WaitForDatabase(TimeSpan.FromSeconds(20));
+            WaitForDatabase(TimeSpan.FromSeconds(30));
         }
 
         public void Dispose()
