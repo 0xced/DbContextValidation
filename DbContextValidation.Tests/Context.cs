@@ -14,7 +14,7 @@ namespace DbContextValidation.Tests
 #if NETFRAMEWORK
             // Disable migrations
             Database.SetInitializer<ValidContext>(null);
-            Database.SetInitializer<ContextWithExplicitSchema>(null);
+            Database.SetInitializer<ValidContextWithExplicitSchema>(null);
             Database.SetInitializer<ContextWithUnknownSchema>(null);
             Database.SetInitializer<ContextWithMisspelledCustomersTable>(null);
             Database.SetInitializer<ContextWithMisspelledOrderDateColumn>(null);
@@ -44,7 +44,7 @@ namespace DbContextValidation.Tests
         public DbSet<Order> Orders { get; set; }
     }
 
-    public class ContextWithExplicitSchema : ValidContext
+    public class ValidContextWithExplicitSchema : ValidContext
     {
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

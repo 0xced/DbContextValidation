@@ -7,10 +7,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)DbConnectionExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MissingColumns.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MissingTable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TableNotFoundException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DbContextValidator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IDbContextValidator.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)InvalidMapping.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ValidationError.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Table.cs" />
   </ItemGroup>
 </Project>

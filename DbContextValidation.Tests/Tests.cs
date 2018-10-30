@@ -62,12 +62,12 @@ namespace DbContextValidation.Tests
         }
 
         [Fact]
-        public async Task ValidMapping()
+        public async Task Validator_ValidContext_ReturnNoErrors()
         {
             using (var context = new ValidContext())
             {
-                var invalidMappings = await _defaultValidator.ValidateContextAsync(context);
-                invalidMappings.Should().BeEmpty();
+                var errors = await _defaultValidator.ValidateContextAsync(context);
+                errors.Should().BeEmpty();
                 // ReSharper disable AccessToDisposedClosure
                 Func<Task> customersTask = async () => { await context.Customers.ToListAsync(); };
                 Func<Task> ordersTask = async () => { await context.Orders.ToListAsync(); };
@@ -78,17 +78,17 @@ namespace DbContextValidation.Tests
         }
         
         [Fact]
-        public async Task ValidMappingWithExplicitSchema()
+        public async Task Validator_ValidContextWithExplicitSchema_ReturnNoErrors()
         {
-            using (var context = new ContextWithExplicitSchema())
+            using (var context = new ValidContextWithExplicitSchema())
             {
-                var invalidMappings = await _defaultValidator.ValidateContextAsync(context);
-                invalidMappings.Should().BeEmpty();
+                var errors = await _defaultValidator.ValidateContextAsync(context);
+                errors.Should().BeEmpty();
             }
         }
         
         [Fact]
-        public async Task ValidMappingWithProgress()
+        public async Task Validator_ValidContext_ReportsProgress()
         {
             var progress = new AccumulatorProgress<float>();
             using (var context = new ValidContext())
@@ -99,7 +99,7 @@ namespace DbContextValidation.Tests
         }
         
         [Fact]
-        public void ValidMappingWithCancellation()
+        public void Validator_ValidContext_SupportsCancellation()
         {
             using (var context = new ValidContext())
             {
@@ -109,64 +109,64 @@ namespace DbContextValidation.Tests
         }
 
         [Fact]
-        public async Task UnknownSchema()
+        public async Task Validator_UnknownSchema_ReturnsMissingTableErrors()
         {
             using (var context = new ContextWithUnknownSchema())
             {
-                var invalidMappings = await _defaultValidator.ValidateContextAsync(context);
-                invalidMappings.Should().OnlyContain(e => e.Schema == "unknown");
-                invalidMappings.Should().OnlyContain(e => e.MissingColumns == null);
-                invalidMappings.Should().OnlyContain(e => e.MissingTableException != null);
-                invalidMappings.Select(e => e.TableName).Should().BeEquivalentTo("tCustomers", "tOrders");
+                var errors = await _defaultValidator.ValidateContextAsync(context);
+                errors.Should().OnlyContain(e => e.Schema == "unknown");
+                errors.Should().OnlyContain(e => e.GetType() == typeof(MissingTable));
+                errors.Select(e => e.TableName).Should().BeEquivalentTo("tCustomers", "tOrders");
             }
         }
         
         [Fact]
-        public async Task MisspelledCustomersTable()
+        public async Task Validator_MisspelledCustomersTable_ReturnsMissingTableError()
         {
             using (var context = new ContextWithMisspelledCustomersTable())
             {
-                var invalidMappings = await _defaultValidator.ValidateContextAsync(context);
-                var invalidMapping = invalidMappings.Should().ContainSingle().Subject;
-                invalidMapping.TableName.Should().Be("Customers");
-                invalidMapping.MissingColumns.Should().BeNull();
-                invalidMapping.MissingTableException.Should().NotBeNull();
+                var errors = await _defaultValidator.ValidateContextAsync(context);
+                var error = errors.Should().ContainSingle().Subject;
+                error.TableName.Should().Be("Customers");
+                error.Should().BeOfType<MissingTable>();
             }
         }
         
         [Fact]
-        public async Task MisspelledOrderDateColumn()
+        public async Task Validator_MisspelledOrderDateColumn_ReturnsMissingColumnsError()
         {
             using (var context = new ContextWithMisspelledOrderDateColumn())
             {
-                var invalidMappings = await _defaultValidator.ValidateContextAsync(context);
-                var invalidMapping = invalidMappings.Should().ContainSingle().Subject;
-                invalidMapping.TableName.Should().Be("tOrders");
-                var missingColumn = invalidMapping.MissingColumns.Should().ContainSingle().Subject;
-                missingColumn.Should().Be("OrderFate");
+                var errors = await _defaultValidator.ValidateContextAsync(context);
+                var error = errors.Should().ContainSingle().Subject;
+                error.TableName.Should().Be("tOrders");
+                error.Should().BeOfType<MissingColumns>()
+                    .Which.ColumnNames.Should().ContainSingle()
+                    .Which.Should().Be("OrderFate");
             }
         }
         
         [Fact]
-        public async Task CaseInsensitiveColumnNameComparison()
+        public async Task Validator_CaseInsensitiveColumnNameComparison_ReturnNoErrors()
         {
             using (var context = new ContextWithMixedCaseColumns())
             {
                 var caseInsensitiveValidator = new DbContextValidator(StringComparer.InvariantCultureIgnoreCase);
-                var invalidMappings = await caseInsensitiveValidator.ValidateContextAsync(context);
-                invalidMappings.Should().BeEmpty();
+                var errors = await caseInsensitiveValidator.ValidateContextAsync(context);
+                errors.Should().BeEmpty();
             }
         }
         
         [Fact]
-        public async Task CaseSensitiveColumnNameComparison()
+        public async Task Validator_CaseSensitiveColumnNameComparison_ReturnsMissingColumnsError()
         {
             using (var context = new ContextWithMixedCaseColumns())
             {
-                var invalidMappings = await _defaultValidator.ValidateContextAsync(context);
-                var invalidMapping = invalidMappings.Should().ContainSingle().Subject; 
-                invalidMapping.TableName.Should().Be("tOrders");
-                invalidMapping.MissingColumns.Should().BeEquivalentTo("oRdErDaTe", "cUsToMeRiD");
+                var errors = await _defaultValidator.ValidateContextAsync(context);
+                var error = errors.Should().ContainSingle().Subject; 
+                error.TableName.Should().Be("tOrders");
+                error.Should().BeOfType<MissingColumns>()
+                    .Which.ColumnNames.Should().BeEquivalentTo("oRdErDaTe", "cUsToMeRiD");
             }
         }
     }

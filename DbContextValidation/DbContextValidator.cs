@@ -27,7 +27,6 @@ namespace DbContextValidation.EF6
     /// <inheritdoc />
     public class DbContextValidator : IDbContextValidator
     {
-
         private readonly IEqualityComparer<string> _columnNameEqualityComparer;
         private readonly SelectStatement _selectStatement;
 
@@ -43,9 +42,9 @@ namespace DbContextValidation.EF6
         }
 
         /// <inheritdoc />
-        public async Task<IReadOnlyCollection<InvalidMapping>> ValidateContextAsync(DbContext context, IProgress<float> progress = null, CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyCollection<ValidationError>> ValidateContextAsync(DbContext context, IProgress<float> progress = null, CancellationToken cancellationToken = default)
         {
-            var invalidMappings = new List<InvalidMapping>();
+            var errors = new List<ValidationError>();
             var modelTables = context.GetModelTables();
             var i = 0;
             foreach (var modelTable in modelTables)
@@ -54,27 +53,22 @@ namespace DbContextValidation.EF6
                 var schema = modelTable.Schema;
                 var tableName = modelTable.TableName;
                 var expectedColumnNames = modelTable.ColumnNames;
-                InvalidMapping invalidMapping = null;
                 try
                 {
                     var databaseTable = await context.GetDbConnection().GetTable(_selectStatement, schema, tableName);
                     var missingColumns = expectedColumnNames.Except(databaseTable.ColumnNames, _columnNameEqualityComparer).ToList();
                     if (missingColumns.Any())
                     {
-                        invalidMapping = new InvalidMapping(schema, tableName, missingColumns, exception: null);
+                        errors.Add(new MissingColumns(schema, tableName, missingColumns));
                     }
                 }
                 catch (TableNotFoundException exception)
                 {
-                    invalidMapping = new InvalidMapping(schema, tableName, missingColumns: null, exception);
-                }
-                if (invalidMapping != null)
-                {
-                    invalidMappings.Add(invalidMapping);                    
+                    errors.Add(new MissingTable(schema, tableName, exception));
                 }
                 progress?.Report(++i / (float)modelTables.Count);
             }
-            return invalidMappings;
+            return errors;
         }
         
         private static string DefaultSelectStatement(string schema, string tableName, DbCommandBuilder commandBuilder)

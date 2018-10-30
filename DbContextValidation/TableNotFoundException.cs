@@ -8,7 +8,7 @@ namespace DbContextValidation.EF6
 #endif
 {
     /// <summary>
-    /// Represents errors that occur while trying to get the list of column names for a given table. <seealso cref="InvalidMapping.MissingTableException"/>
+    /// Represents errors that occur while trying to get the list of column names for a given table. <seealso cref="MissingTable.MissingTableException"/>
     /// </summary>
     public class TableNotFoundException : Exception
     {
