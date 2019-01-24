@@ -7,9 +7,9 @@ namespace DbContextValidation.EF6
     /// <summary>
     /// Represents a missing table, i.e. a table in the DbContext model which was not found in the actual database.
     /// </summary>
-    public class MissingTable : ValidationError
+    public class MissingTableError : ValidationError
     {
-        internal MissingTable(string schema, string tableName, TableNotFoundException exception) : base(schema, tableName)
+        internal MissingTableError(string schema, string tableName, TableNotFoundException exception) : base(schema, tableName)
         {
             MissingTableException = exception;
         }

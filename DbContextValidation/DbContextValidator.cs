@@ -59,12 +59,12 @@ namespace DbContextValidation.EF6
                     var missingColumns = expectedColumnNames.Except(databaseTable.ColumnNames, _columnNameEqualityComparer).ToList();
                     if (missingColumns.Any())
                     {
-                        errors.Add(new MissingColumns(schema, tableName, missingColumns));
+                        errors.Add(new MissingColumnsError(schema, tableName, missingColumns));
                     }
                 }
                 catch (TableNotFoundException exception)
                 {
-                    errors.Add(new MissingTable(schema, tableName, exception));
+                    errors.Add(new MissingTableError(schema, tableName, exception));
                 }
                 progress?.Report(++i / (float)modelTables.Count);
             }

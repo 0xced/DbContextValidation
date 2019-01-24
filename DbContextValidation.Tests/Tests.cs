@@ -115,7 +115,7 @@ namespace DbContextValidation.Tests
             {
                 var errors = await _defaultValidator.ValidateContextAsync(context);
                 errors.Should().OnlyContain(e => e.Schema == "unknown");
-                errors.Should().OnlyContain(e => e.GetType() == typeof(MissingTable));
+                errors.Should().OnlyContain(e => e.GetType() == typeof(MissingTableError));
                 errors.Select(e => e.TableName).Should().BeEquivalentTo("tCustomers", "tOrders");
             }
         }
@@ -128,7 +128,7 @@ namespace DbContextValidation.Tests
                 var errors = await _defaultValidator.ValidateContextAsync(context);
                 var error = errors.Should().ContainSingle().Subject;
                 error.TableName.Should().Be("Customers");
-                error.Should().BeOfType<MissingTable>();
+                error.Should().BeOfType<MissingTableError>();
             }
         }
         
@@ -140,7 +140,7 @@ namespace DbContextValidation.Tests
                 var errors = await _defaultValidator.ValidateContextAsync(context);
                 var error = errors.Should().ContainSingle().Subject;
                 error.TableName.Should().Be("tOrders");
-                error.Should().BeOfType<MissingColumns>()
+                error.Should().BeOfType<MissingColumnsError>()
                     .Which.ColumnNames.Should().ContainSingle()
                     .Which.Should().Be("OrderFate");
             }
@@ -165,7 +165,7 @@ namespace DbContextValidation.Tests
                 var errors = await _defaultValidator.ValidateContextAsync(context);
                 var error = errors.Should().ContainSingle().Subject; 
                 error.TableName.Should().Be("tOrders");
-                error.Should().BeOfType<MissingColumns>()
+                error.Should().BeOfType<MissingColumnsError>()
                     .Which.ColumnNames.Should().BeEquivalentTo("oRdErDaTe", "cUsToMeRiD");
             }
         }

@@ -9,9 +9,9 @@ namespace DbContextValidation.EF6
     /// <summary>
     /// Represents a table with missing column(s).
     /// </summary>
-    public class MissingColumns : ValidationError
+    public class MissingColumnsError : ValidationError
     {
-        internal MissingColumns(string schema, string tableName, IReadOnlyCollection<string> columnNames) : base(schema, tableName)
+        internal MissingColumnsError(string schema, string tableName, IReadOnlyCollection<string> columnNames) : base(schema, tableName)
         {
             ColumnNames = columnNames;
         }

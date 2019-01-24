@@ -7,8 +7,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)DbConnectionExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)MissingColumns.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)MissingTable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MissingColumnsError.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MissingTableError.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TableNotFoundException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DbContextValidator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IDbContextValidator.cs" />
