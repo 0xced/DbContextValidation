@@ -8,8 +8,9 @@ namespace DbContextValidation.EF6
 #endif
 {
     /// <summary>
-    /// Represents errors that occur while trying to get the list of column names for a given table. <seealso cref="MissingTable.MissingTableException"/>
+    /// Represents errors that occur while trying to get the list of column names for a given table.
     /// </summary>
+    /// <seealso cref="MissingTableError.MissingTableException"/>
     public class TableNotFoundException : Exception
     {
         internal TableNotFoundException(string schema, string tableName, DbException dbException, string selectStatement) : base($"{schema}{(string.IsNullOrEmpty(schema) ? "" : ".")}{tableName} not found", dbException)
