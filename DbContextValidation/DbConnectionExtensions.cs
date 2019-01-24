@@ -19,7 +19,7 @@ namespace DbContextValidation.EF6
                 await connection.OpenAsync();
 
             var dbProviderFactory = connection.GetProviderFactory();
-            var commandBuilder = dbProviderFactory?.CreateCommandBuilder();
+            var commandBuilder = dbProviderFactory.CreateCommandBuilder();
             var commandText = selectStatement(schema, tableName, commandBuilder);
             try
             {
@@ -52,9 +52,12 @@ namespace DbContextValidation.EF6
         private static DbProviderFactory GetProviderFactory(this DbConnection connection)
         {
 #if EFCORE && (NETSTANDARD2_0 || NETCOREAPP2_0)
-            // DbProviderFactories was introduced in netcoreapp2.1 but it is easy to get the DbProviderFactory through reflection 
-            var dbProviderFactoryProperty = connection.GetType().GetProperty("DbProviderFactory", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            return dbProviderFactoryProperty?.GetValue(connection) is DbProviderFactory dbProviderFactory ? dbProviderFactory : null;
+            // DbProviderFactories was introduced in netcoreapp2.1 but it is easy to get the DbProviderFactory through reflection
+            var type = connection.GetType();
+            var dbProviderFactoryProperty = type.GetProperty("DbProviderFactory", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            if (dbProviderFactoryProperty == null)
+                throw new System.MissingFieldException(type.FullName, "DbProviderFactory");
+            return (DbProviderFactory)dbProviderFactoryProperty.GetValue(connection);
 #else
             return DbProviderFactories.GetFactory(connection);
 #endif
