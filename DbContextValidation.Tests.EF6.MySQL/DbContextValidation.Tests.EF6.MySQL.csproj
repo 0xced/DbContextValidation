@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net452</TargetFramework>
-    <DefineConstants>$(DefineConstants);PROVIDER_MYSQL</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="MySql.Data.EntityFramework" Version="8.0.14" />

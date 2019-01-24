@@ -15,20 +15,7 @@ using Xunit;
 
 namespace DbContextValidation.Tests
 {
-    
-#if PROVIDER_MYSQL
-    public class MySQL : IClassFixture<DatabaseFixture>
-#elif PROVIDER_NPGSQL
-    public class Npgsql : IClassFixture<DatabaseFixture>
-#elif PROVIDER_POMELO
-    public class Pomelo : IClassFixture<DatabaseFixture>
-#elif PROVIDER_SQLITE
-    public class SQLite : IClassFixture<DatabaseFixture>
-#elif PROVIDER_SQLSERVER
-    public class SqlServer : IClassFixture<DatabaseFixture>
-#else
-#error Undefined provider
-#endif
+    public class ValidatorTests : IClassFixture<DatabaseFixture>
     {
         private class AccumulatorProgress<T> : IProgress<T>
         {
@@ -44,19 +31,7 @@ namespace DbContextValidation.Tests
         
         private readonly DbContextValidator _defaultValidator;
 
-#if PROVIDER_MYSQL
-        public MySQL()
-#elif PROVIDER_NPGSQL
-        public Npgsql()
-#elif PROVIDER_POMELO
-        public Pomelo()
-#elif PROVIDER_SQLITE
-        public SQLite()
-#elif PROVIDER_SQLSERVER
-        public SqlServer()
-#else
-#error Undefined provider
-#endif
+        public ValidatorTests()
         {
             _defaultValidator = new DbContextValidator(StringComparer.InvariantCulture);
         }
