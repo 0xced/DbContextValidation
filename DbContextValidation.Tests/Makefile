@@ -29,9 +29,9 @@ sqlite:
 	rm -f DbContextValidation.sqlite3
 	sqlite3 DbContextValidation.sqlite3 < SQL.Common/CreateTables.sql
 
+# Ordered by size
 pull_docker_images:
 	docker pull postgres:10.5-alpine
+	docker pull jacobalberty/firebird:3.0.4
 	docker pull mysql/mysql-server:5.7
 	docker pull genschsa/mssql-server-linux
-	docker pull sath89/oracle-12c:r1
-	docker pull jacobalberty/firebird:3.0.4
