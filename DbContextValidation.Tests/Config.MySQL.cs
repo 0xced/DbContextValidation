@@ -27,5 +27,10 @@ namespace DbContextValidation.Tests
                 "--detach",
                 "mysql/mysql-server:5.7");
         }
+
+        public static string[] SqlScripts(Func<string, string> sqlDirectory)
+        {
+            return new string[0];
+        }
     }
 }

@@ -16,5 +16,10 @@ namespace DbContextValidation.Tests
         {
             throw new NotSupportedException("SQLite doesn't require a Docker container.");
         }
+
+        public static string[] SqlScripts(Func<string, string> sqlDirectory)
+        {
+            return new string[0];
+        }
     }
 }

@@ -26,5 +26,10 @@ namespace DbContextValidation.Tests
                 "--detach",
                 "genschsa/mssql-server-linux:latest");
         }
+
+        public static string[] SqlScripts(Func<string, string> sqlDirectory)
+        {
+            return new string[0];
+        }
     }
 }

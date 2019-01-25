@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -108,6 +109,15 @@ namespace DbContextValidation.Tests
                     {
                         connection.Open();
                         WriteDiagnostic($"It took {stopWatch.Elapsed.TotalSeconds:F1} seconds for the {provider} database to become available.");
+                        var scripts = Config.SqlScripts(SqlDirectory);
+                        foreach (var script in scripts)
+                        {
+                            WriteDiagnostic($"Executing script{Environment.NewLine}{script}");
+                            var command = connection.CreateCommand();
+                            command.CommandText = script;
+                            command.CommandType = CommandType.Text;
+                            command.ExecuteNonQuery();
+                        }
                         break;
                     }
                     catch (Exception exception)

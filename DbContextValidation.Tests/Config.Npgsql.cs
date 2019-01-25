@@ -26,5 +26,10 @@ namespace DbContextValidation.Tests
                 "--detach",
                 "postgres:10.5-alpine");
         }
+
+        public static string[] SqlScripts(Func<string, string> sqlDirectory)
+        {
+            return new string[0];
+        }
     }
 }
