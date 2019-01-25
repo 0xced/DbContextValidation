@@ -107,7 +107,10 @@ namespace DbContextValidation.Tests
                 {
                     try
                     {
-                        connection.Open();
+                        if (connection.State != ConnectionState.Open)
+                        {
+                            connection.Open();
+                        }
                         WriteDiagnostic($"It took {stopWatch.Elapsed.TotalSeconds:F1} seconds for the {provider} database to become available.");
                         var scripts = Config.SqlScripts(SqlDirectory);
                         foreach (var script in scripts)
