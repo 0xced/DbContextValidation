@@ -24,7 +24,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EF6.SqlServer", "DbContextValidation.Tests.EF6.SqlServer\DbContextValidation.Tests.EF6.SqlServer.csproj", "{069D4810-4E3A-42D2-9EDD-516778562B20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EFCore.Pomelo", "DbContextValidation.Tests.EFCore.Pomelo\DbContextValidation.Tests.EFCore.Pomelo.csproj", "{F853F82D-6364-4DCC-BAF1-3ACB0073E6B9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EFCore.MySQL.Pomelo", "DbContextValidation.Tests.EFCore.MySQL.Pomelo\DbContextValidation.Tests.EFCore.MySQL.Pomelo.csproj", "{F853F82D-6364-4DCC-BAF1-3ACB0073E6B9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EF6.Firebird", "DbContextValidation.Tests.EF6.Firebird\DbContextValidation.Tests.EF6.Firebird.csproj", "{4A87E902-B841-4697-87F1-7062C6D5BD08}"
 EndProject
