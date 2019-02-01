@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ using Xunit;
 
 namespace DbContextValidation.Tests
 {
+    [SuppressMessage("ReSharper", "VSTHRD200", Justification = "Naming all tests methods with the Async suffix feels weird")]
     public class ValidatorTests : IClassFixture<DatabaseFixture>
     {
         private class AccumulatorProgress<T> : IProgress<T>
@@ -47,8 +49,8 @@ namespace DbContextValidation.Tests
                 Func<Task> customersTask = async () => { await context.Customers.ToListAsync(); };
                 Func<Task> ordersTask = async () => { await context.Orders.ToListAsync(); };
                 // ReSharper restore AccessToDisposedClosure
-                customersTask.Should().NotThrow();
-                ordersTask.Should().NotThrow();
+                await customersTask.Should().NotThrowAsync();
+                await ordersTask.Should().NotThrowAsync();
             }
         }
         

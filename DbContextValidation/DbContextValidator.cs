@@ -55,7 +55,7 @@ namespace DbContextValidation.EF6
                 var expectedColumnNames = modelTable.ColumnNames;
                 try
                 {
-                    var databaseTable = await context.GetDbConnection().GetTable(_selectStatement, schema, tableName);
+                    var databaseTable = await context.GetDbConnection().GetTableAsync(_selectStatement, schema, tableName);
                     var missingColumns = expectedColumnNames.Except(databaseTable.ColumnNames, _columnNameEqualityComparer).ToList();
                     if (missingColumns.Any())
                     {
