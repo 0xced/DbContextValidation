@@ -9,22 +9,14 @@ namespace DbContextValidation.EF6
     /// </summary>
     public abstract class ValidationError
     {
-        internal ValidationError(string schema, string tableName)
+        internal ValidationError(Table table)
         {
-            Schema = schema;
-            TableName = tableName;
+            Table = table;
         }
-
-        /// <summary>
-        /// The schema of the table. May be <code>null</code> as some providers (e.g. SQLite, MySQL) do not support schemata.
-        /// </summary>
-        public string Schema { get; }
         
         /// <summary>
-        /// The name of the table.
+        /// The table that is defined in the DbContext model.
         /// </summary>
-        public string TableName { get; }
-
-        internal string TableDescription => string.IsNullOrEmpty(Schema) ? TableName : $"{Schema}.{TableName}";
+        public Table Table { get; }
     }
 }

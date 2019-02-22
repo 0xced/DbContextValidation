@@ -11,7 +11,7 @@ namespace DbContextValidation.EF6
     /// </summary>
     public class MissingColumnsError : ValidationError
     {
-        internal MissingColumnsError(string schema, string tableName, IReadOnlyCollection<string> columnNames) : base(schema, tableName)
+        internal MissingColumnsError(Table table, IReadOnlyCollection<string> columnNames) : base(table)
         {
             ColumnNames = columnNames;
         }
@@ -25,7 +25,7 @@ namespace DbContextValidation.EF6
         /// <returns>A sentence describing the table name and all its missing columns.</returns>
         public override string ToString()
         {
-            return $"Table {TableDescription} is missing {ColumnNames.Count} column{(ColumnNames.Count > 1 ? "s" : "")}: {string.Join(",", ColumnNames)}";
+            return $"Table {Table} is missing {ColumnNames.Count} column{(ColumnNames.Count > 1 ? "s" : "")}: {string.Join(",", ColumnNames)}";
         }
     }
 }

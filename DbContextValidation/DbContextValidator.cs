@@ -42,11 +42,10 @@ namespace DbContextValidation.EF6
         }
 
         /// <inheritdoc />
-        public async Task<IReadOnlyCollection<ValidationError>> ValidateContextAsync(DbContext context, IProgress<float> progress = null, CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyCollection<ValidationError>> ValidateContextAsync(DbContext context, IProgress<Table> progress = null, CancellationToken cancellationToken = default)
         {
             var errors = new List<ValidationError>();
             var modelTables = context.GetModelTables();
-            var i = 0;
             foreach (var modelTable in modelTables)
             {
                 cancellationToken.ThrowIfCancellationRequested();
@@ -59,18 +58,18 @@ namespace DbContextValidation.EF6
                     var missingColumns = expectedColumnNames.Except(databaseTable.ColumnNames, _columnNameEqualityComparer).ToList();
                     if (missingColumns.Any())
                     {
-                        errors.Add(new MissingColumnsError(schema, tableName, missingColumns));
+                        errors.Add(new MissingColumnsError(modelTable, missingColumns));
                     }
                 }
                 catch (TableNotFoundException exception)
                 {
-                    errors.Add(new MissingTableError(schema, tableName, exception));
+                    errors.Add(new MissingTableError(modelTable, exception));
                 }
-                progress?.Report(++i / (float)modelTables.Count);
+                progress?.Report(modelTable);
             }
             return errors;
         }
-        
+
         private static string DefaultSelectStatement(string schema, string tableName, DbCommandBuilder commandBuilder)
         {
             var hasSchema = !string.IsNullOrEmpty(schema);

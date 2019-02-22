@@ -9,7 +9,7 @@ namespace DbContextValidation.EF6
     /// </summary>
     public class MissingTableError : ValidationError
     {
-        internal MissingTableError(string schema, string tableName, TableNotFoundException exception) : base(schema, tableName)
+        internal MissingTableError(Table table, TableNotFoundException exception) : base(table)
         {
             MissingTableException = exception;
         }
@@ -23,7 +23,7 @@ namespace DbContextValidation.EF6
         /// <returns>A sentence describing the missing table.</returns>
         public override string ToString()
         {
-            return $"Table {TableDescription} is missing";
+            return $"Table {Table} is missing";
         }
     }
 }

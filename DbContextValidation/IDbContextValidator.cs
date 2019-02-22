@@ -23,9 +23,9 @@ namespace DbContextValidation.EF6
         /// Validates all the table and column names of entities defined in the DbContext model against the actual database associated to the context.
         /// </summary>
         /// <param name="context">The context you want to validate against its actual database connection.</param>
-        /// <param name="progress">A progress reporting numbers between 0.0 and 1.0 representing the completed fraction of the validation process. If <code>null</code>, no progress is reported.</param>
+        /// <param name="progress">A progress reporting the validated <see cref="Table"/>s. If <code>null</code>, no progress is reported.</param>
         /// <param name="cancellationToken">A <see cref="CancellationToken"/> that you can use to abort the validation process.</param>
         /// <returns>A collection of <see cref="ValidationError"/>s, i.e. when an entity defined in the model does not have a matching table and column names in the database. If the context model exactly matches the actual database then an empty collection is returned.</returns>
-        Task<IReadOnlyCollection<ValidationError>> ValidateContextAsync(DbContext context, IProgress<float> progress = null, CancellationToken cancellationToken = default);
+        Task<IReadOnlyCollection<ValidationError>> ValidateContextAsync(DbContext context, IProgress<Table> progress = null, CancellationToken cancellationToken = default);
     }
 }
