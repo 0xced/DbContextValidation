@@ -9,9 +9,9 @@ namespace DbContextValidation.Tests
 
         private const string Host = "localhost";
         public static ushort? Port;
-        private const string Sid = "xe";
+        private const string Sid = "XE";
         private const string User = "system";
-        private const string Password = "oracle";
+        private const string Password = "Oracle18";
 
         public static string ConnectionString => $"User Id={User};Password={Password};Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST={Host})(PORT={Port}))(CONNECT_DATA=(SID={Sid})))";
 
@@ -22,7 +22,7 @@ namespace DbContextValidation.Tests
             return string.Join(" ",
                 "--publish 1521/tcp",
                 "--detach",
-                "wnameless/oracle-xe-11g:18.04");
+                "quillbuilduser/oracle-18-xe:latest");
         }
 
         public static string[] SqlScripts(Func<string, string> sqlDirectory)
