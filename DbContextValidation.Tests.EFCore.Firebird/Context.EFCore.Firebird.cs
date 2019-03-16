@@ -1,5 +1,4 @@
-﻿using FirebirdSql.EntityFrameworkCore.Firebird.Extensions;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 // ReSharper disable once CheckNamespace
 namespace DbContextValidation.Tests
