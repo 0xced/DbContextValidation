@@ -32,6 +32,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EF6.Oracle", "DbContextValidation.Tests.EF6.Oracle\DbContextValidation.Tests.EF6.Oracle.csproj", "{F0649B94-7E7E-4CB7-8638-58EF03266EE8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DbContextValidation.Tests.props", "DbContextValidation.Tests.props", "{649B128C-8697-42BA-9734-0D42F42F83FC}"
+ProjectSection(SolutionItems) = preProject
+	DbContextValidation.Tests\DbContextValidation.Tests.EF6.props = DbContextValidation.Tests\DbContextValidation.Tests.EF6.props
+	DbContextValidation.Tests\DbContextValidation.Tests.EFCore.props = DbContextValidation.Tests\DbContextValidation.Tests.EFCore.props
+	DbContextValidation.Tests\DbContextValidation.Tests.props = DbContextValidation.Tests\DbContextValidation.Tests.props
+EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
