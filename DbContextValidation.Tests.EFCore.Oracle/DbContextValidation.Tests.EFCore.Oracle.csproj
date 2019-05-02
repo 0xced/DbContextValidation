@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Oracle.EntityFrameworkCore" Version="2.18.0-beta3" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\DbContextValidation.Tests\Config.Oracle.cs" />
+  </ItemGroup>
+  <Import Project="..\DbContextValidation.Tests\DbContextValidation.Tests.EFCore.props" />
+</Project>
