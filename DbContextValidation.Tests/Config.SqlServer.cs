@@ -1,35 +1,25 @@
-﻿using System;
-
-namespace DbContextValidation.Tests
+﻿namespace DbContextValidation.Tests
 {
-    public static class Config
+    public class Configuration : ConfigurationBase, IDockerDatabaseConfiguration
     {
-        public static readonly string Schema = "dbo";
+        public const string Schema = "dbo";
 
         private const string Host = "localhost";
-        public static ushort? Port;
         private const string Database = "tempdb";
         private const string User = "sa";
         private const string Password = "SqlServer-doc4er";
 
-        public static string ConnectionString => $"Server={Host},{Port};Database={Database};User Id={User};Password={Password}";
+        public string ConnectionString(ushort port) => $"Server={Host},{port};Database={Database};User Id={User};Password={Password}";
 
-        public static readonly string DockerContainerName = "DbContextValidation.Tests.SqlServer";
+        public string ContainerName => "DbContextValidation.Tests.SqlServer";
 
-        public static string DockerArguments(Func<string, string> sqlDirectory)
-        {
-            return string.Join(" ",
-                "-e ACCEPT_EULA=Y",
-                $"-e MSSQL_SA_PASSWORD={Password}",
-                $"--volume \"{sqlDirectory("SQL.SqlServer")}:/docker-entrypoint-initdb.d:ro\"",
-                "--publish 1433/tcp",
-                "--detach",
-                "genschsa/mssql-server-linux:latest");
-        }
-
-        public static string[] SqlScripts(Func<string, string> sqlDirectory)
-        {
-            return new string[0];
-        }
+        public string[] Arguments => new [] {
+            "-e ACCEPT_EULA=Y",
+            $"-e MSSQL_SA_PASSWORD={Password}",
+            $"--volume \"{SqlDirectory("SQL.SqlServer")}:/docker-entrypoint-initdb.d:ro\"",
+            "--publish 1433/tcp",
+            "--detach",
+            "genschsa/mssql-server-linux:latest",
+        };
     }
 }

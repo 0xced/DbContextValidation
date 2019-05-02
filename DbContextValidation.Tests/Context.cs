@@ -21,7 +21,11 @@ namespace DbContextValidation.Tests
             Database.SetInitializer<ContextWithMixedCaseColumns>(null);
 #endif
         }
-        
+
+        public ValidContext(string connectionString) : base(connectionString)
+        {
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 #if NETFRAMEWORK
@@ -30,7 +34,7 @@ namespace DbContextValidation.Tests
              * > By convention, the database provider will choose the most appropriate default schema. For example, Microsoft SQL Server will use the dbo schema and SQLite will not use a schema (since schemas are not supported in SQLite).
              * But EF 6 needs a bit of help to choose an appropriate default schema.
              */
-            var isSqlServer = Config.Schema == "dbo";
+            var isSqlServer = Database.Connection.GetType().FullName == "System.Data.SqlClient.SqlConnection";
             if (!isSqlServer) // setting "" as default schema for SqlServer somehow turns it into "CodeFirstDatabase"
             {
                 modelBuilder.HasDefaultSchema("");
@@ -46,18 +50,29 @@ namespace DbContextValidation.Tests
 
     public class ValidContextWithExplicitSchema : ValidContext
     {
+        private readonly string _schema;
+
+        public ValidContextWithExplicitSchema(string connectionString, string schema) : base(connectionString)
+        {
+            _schema = schema;
+        }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            if (Config.Schema != null) // Some databases don't support schemata at all (e.g. SQLite, MySQL)
+            if (_schema != null) // Some databases don't support schemata at all (e.g. SQLite, MySQL)
             {
-                modelBuilder.HasDefaultSchema(Config.Schema);
+                modelBuilder.HasDefaultSchema(_schema);
             }
         }
     }
     
     public class ContextWithUnknownSchema : ValidContext
     {
+        public ContextWithUnknownSchema(string connectionString) : base(connectionString)
+        {
+        }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -67,6 +82,10 @@ namespace DbContextValidation.Tests
     
     public class ContextWithMisspelledCustomersTable : ValidContext
     {
+        public ContextWithMisspelledCustomersTable(string connectionString) : base(connectionString)
+        {
+        }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -76,6 +95,10 @@ namespace DbContextValidation.Tests
 
     public class ContextWithMisspelledOrderDateColumn : ValidContext
     {
+        public ContextWithMisspelledOrderDateColumn(string connectionString) : base(connectionString)
+        {
+        }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -85,6 +108,10 @@ namespace DbContextValidation.Tests
     
     public class ContextWithMixedCaseColumns : ValidContext
     {
+        public ContextWithMixedCaseColumns(string connectionString) : base(connectionString)
+        {
+        }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

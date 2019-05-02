@@ -1,7 +1,6 @@
 using System;
 using System.Data;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -11,44 +10,77 @@ using Xunit.Sdk;
 
 namespace DbContextValidation.Tests
 {
-    public class DatabaseFixture : IDisposable
+    public class DockerDatabaseFixture : IDisposable
     {
         private readonly IMessageSink _sink;
+        private readonly IDockerDatabaseConfiguration _configuration;
 
-        public DatabaseFixture(IMessageSink sink)
+        public DockerDatabaseFixture(IMessageSink sink)
         {
             _sink = sink ?? throw new ArgumentNullException(nameof(sink));
-            
-            if (Config.DockerContainerName == null)
-                return;
 
-            DockerContainerStart();
-            WaitForDatabase(TimeSpan.FromSeconds(30));
+            // Ideally this IDockerDatabaseConfiguration should be injected but it's not possible with xUnit (2.4.1)
+            _configuration = GetDockerDatabaseConfiguration();
+
+            if (_configuration.ContainerName == null)
+            {
+                ConnectionString = _configuration.ConnectionString(0);
+                return;
+            }
+
+            ConnectionString = DockerContainerStart();
+            WaitForDatabase();
         }
+
+        private static IDockerDatabaseConfiguration GetDockerDatabaseConfiguration()
+        {
+            var assembly = Assembly.GetExecutingAssembly();
+            var configurationTypes = assembly.ExportedTypes.Where(e => e.GetInterfaces().Any(i => i == typeof(IDockerDatabaseConfiguration))).ToList();
+            if (configurationTypes.Count == 0)
+                throw new InvalidOperationException($"The assembly under test ({assembly.GetName().Name}) must have one public type implementing the '{nameof(IDockerDatabaseConfiguration)}' interface.");
+            if (configurationTypes.Count > 1)
+                throw new InvalidOperationException($"The assembly under test ({assembly.GetName().Name}) must have only one public type implementing the '{nameof(IDockerDatabaseConfiguration)}' interface but {configurationTypes.Count} were found: {string.Join(", ", configurationTypes.Select(e => e.FullName))}.");
+
+            var configurationType = configurationTypes[0];
+            var constructorInfo = configurationType.GetConstructor(Type.EmptyTypes);
+            if (constructorInfo == null)
+                throw new InvalidOperationException($"The '{configurationType.FullName}' type must have a public default constructor.");
+
+            return (IDockerDatabaseConfiguration)constructorInfo.Invoke(new object[0]);
+        }
+
+        public string ConnectionString { get; }
 
         public void Dispose()
         {
-            if (Config.DockerContainerName == null)
+            if (_configuration.ContainerName == null)
                 return;
 
-            RunDocker("stop " + Config.DockerContainerName, waitForExit: false);
+            RunDocker($"stop \"{_configuration.ContainerName}\"", waitForExit: false);
         }
         
-        private void DockerContainerStart()
+        private string DockerContainerStart()
         {
             try
             {
-                RunDocker("start " + Config.DockerContainerName);
+                RunDocker($"start \"{_configuration.ContainerName}\"");
             }
             catch (Exception e) when (e.Message.Contains("No such container"))
             {
-                RunDocker($"run --name {Config.DockerContainerName} " + Config.DockerArguments(SqlDirectory));
+                RunDocker($"run --name \"{_configuration.ContainerName}\" " + string.Join(" ", _configuration.Arguments));
             }
-            var portLine = RunDocker($"port {Config.DockerContainerName}").TrimEnd('\n');
+
+            var port = DockerContainerGetPort();
+            return _configuration.ConnectionString(port);
+        }
+
+        private ushort DockerContainerGetPort()
+        {
+            var portLine = RunDocker($"port \"{_configuration.ContainerName}\"").TrimEnd('\n');
             var port = Regex.Match(portLine, @"-> 0\.0\.0\.0:(?<port>\d+)").Groups["port"];
             if (!port.Success)
                 throw new ApplicationException($"Could not find port in '{portLine}'");
-            Config.Port = ushort.Parse(port.Value);
+            return ushort.Parse(port.Value);
         }
 
         private string RunDocker(string arguments, bool waitForExit = true)
@@ -74,35 +106,17 @@ namespace DbContextValidation.Tests
             }
         }
 
-        private static string SqlDirectory(string directoryName)
-        {
-            var testsDirectory = Environment.GetEnvironmentVariable("TESTS_DIRECTORY");
-            if (testsDirectory == null)
-            {
-                var assemblyDirectory = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory;
-                var solutionDirectory = assemblyDirectory?.Parent?.Parent?.Parent?.Parent?.FullName ?? throw new FileNotFoundException("Solution directory not found");
-                testsDirectory = Path.Combine(solutionDirectory, "DbContextValidation.Tests");
-            }
-            var sqlDirectory = Path.Combine(testsDirectory, directoryName);
-            if (!Directory.Exists(sqlDirectory))
-            {
-                throw new FileNotFoundException($"Directory with SQL scripts not found ({sqlDirectory})", sqlDirectory);
-            }
-            return sqlDirectory;
-        }
-
-        private void WaitForDatabase(TimeSpan timeout)
+        private void WaitForDatabase()
         {
             var stopWatch = Stopwatch.StartNew();
-            using (var context = new ValidContext())
+            using (var context = new ValidContext(ConnectionString))
             {
 #if NETFRAMEWORK
                 var connection = context.Database.Connection;
 #else
                 var connection = Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.GetDbConnection(context.Database);
 #endif
-                var provider = Config.DockerContainerName.Split('.').Last();
-                WriteDiagnostic($"Waiting for {provider} database to be available on {connection.ConnectionString}");
+                WriteDiagnostic($"Waiting for database to be available on {connection.ConnectionString}");
                 while (true)
                 {
                     try
@@ -111,8 +125,8 @@ namespace DbContextValidation.Tests
                         {
                             connection.Open();
                         }
-                        WriteDiagnostic($"It took {stopWatch.Elapsed.TotalSeconds:F1} seconds for the {provider} database to become available.");
-                        var scripts = Config.SqlScripts(SqlDirectory);
+                        WriteDiagnostic($"It took {stopWatch.Elapsed.TotalSeconds:F1} seconds for the database to become available.");
+                        var scripts = _configuration.SqlScripts;
                         foreach (var script in scripts)
                         {
                             WriteDiagnostic($"Executing script{Environment.NewLine}{script}");
@@ -126,9 +140,9 @@ namespace DbContextValidation.Tests
                     catch (Exception exception)
                     {
                         Thread.Sleep(TimeSpan.FromSeconds(1));
-                        if (stopWatch.Elapsed > timeout)
+                        if (stopWatch.Elapsed > _configuration.Timeout)
                         {
-                            throw new TimeoutException($"{provider} database was not available after waiting for {timeout.TotalSeconds:F1} seconds.", exception);
+                            throw new TimeoutException($"Database was not available after waiting for {_configuration.Timeout.TotalSeconds:F1} seconds.", exception);
                         }
                     }
                 }

@@ -17,7 +17,7 @@ using Xunit;
 namespace DbContextValidation.Tests
 {
     [SuppressMessage("ReSharper", "VSTHRD200", Justification = "Naming all tests methods with the Async suffix feels weird")]
-    public class ValidatorTests : IClassFixture<DatabaseFixture>
+    public class ValidatorTests : IClassFixture<DockerDatabaseFixture>
     {
         private class AccumulatorProgress<T> : IProgress<T>
         {
@@ -32,16 +32,18 @@ namespace DbContextValidation.Tests
         }
         
         private readonly DbContextValidator _defaultValidator;
+        private readonly string _connectionString;
 
-        public ValidatorTests()
+        public ValidatorTests(DockerDatabaseFixture dockerDatabaseFixture)
         {
             _defaultValidator = new DbContextValidator(StringComparer.InvariantCulture);
+            _connectionString = dockerDatabaseFixture.ConnectionString;
         }
 
         [Fact]
         public async Task Validator_ValidContext_ReturnNoErrors()
         {
-            using (var context = new ValidContext())
+            using (var context = new ValidContext(_connectionString))
             {
                 var errors = await _defaultValidator.ValidateContextAsync(context);
                 errors.Should().BeEmpty();
@@ -57,7 +59,7 @@ namespace DbContextValidation.Tests
         [Fact]
         public async Task Validator_ValidContextWithExplicitSchema_ReturnNoErrors()
         {
-            using (var context = new ValidContextWithExplicitSchema())
+            using (var context = new ValidContextWithExplicitSchema(_connectionString, Configuration.Schema))
             {
                 var errors = await _defaultValidator.ValidateContextAsync(context);
                 errors.Should().BeEmpty();
@@ -68,7 +70,7 @@ namespace DbContextValidation.Tests
         public async Task Validator_ValidContext_ReportsProgress()
         {
             var progress = new AccumulatorProgress<Table>();
-            using (var context = new ValidContext())
+            using (var context = new ValidContext(_connectionString))
             {
                 await _defaultValidator.ValidateContextAsync(context, progress);
                 progress.Items.Select(e => e.TableName).Should().BeEquivalentTo("tCustomers", "tOrders");
@@ -78,7 +80,7 @@ namespace DbContextValidation.Tests
         [Fact]
         public void Validator_ValidContext_SupportsCancellation()
         {
-            using (var context = new ValidContext())
+            using (var context = new ValidContext(_connectionString))
             {
                 var validationTask = _defaultValidator.ValidateContextAsync(context, cancellationToken: new CancellationToken(true));
                 validationTask.Status.Should().Be(TaskStatus.Canceled);
@@ -88,7 +90,7 @@ namespace DbContextValidation.Tests
         [Fact]
         public async Task Validator_UnknownSchema_ReturnsMissingTableErrors()
         {
-            using (var context = new ContextWithUnknownSchema())
+            using (var context = new ContextWithUnknownSchema(_connectionString))
             {
                 var errors = await _defaultValidator.ValidateContextAsync(context);
                 errors.Should().OnlyContain(e => e.Table.Schema == "unknown");
@@ -100,7 +102,7 @@ namespace DbContextValidation.Tests
         [Fact]
         public async Task Validator_MisspelledCustomersTable_ReturnsMissingTableError()
         {
-            using (var context = new ContextWithMisspelledCustomersTable())
+            using (var context = new ContextWithMisspelledCustomersTable(_connectionString))
             {
                 var errors = await _defaultValidator.ValidateContextAsync(context);
                 var error = errors.Should().ContainSingle().Subject;
@@ -112,7 +114,7 @@ namespace DbContextValidation.Tests
         [Fact]
         public async Task Validator_MisspelledOrderDateColumn_ReturnsMissingColumnsError()
         {
-            using (var context = new ContextWithMisspelledOrderDateColumn())
+            using (var context = new ContextWithMisspelledOrderDateColumn(_connectionString))
             {
                 var errors = await _defaultValidator.ValidateContextAsync(context);
                 var error = errors.Should().ContainSingle().Subject;
@@ -126,7 +128,7 @@ namespace DbContextValidation.Tests
         [Fact]
         public async Task Validator_CaseInsensitiveColumnNameComparison_ReturnNoErrors()
         {
-            using (var context = new ContextWithMixedCaseColumns())
+            using (var context = new ContextWithMixedCaseColumns(_connectionString))
             {
                 var caseInsensitiveValidator = new DbContextValidator(StringComparer.InvariantCultureIgnoreCase);
                 var errors = await caseInsensitiveValidator.ValidateContextAsync(context);
@@ -137,7 +139,7 @@ namespace DbContextValidation.Tests
         [Fact]
         public async Task Validator_CaseSensitiveColumnNameComparison_ReturnsMissingColumnsError()
         {
-            using (var context = new ContextWithMixedCaseColumns())
+            using (var context = new ContextWithMixedCaseColumns(_connectionString))
             {
                 var errors = await _defaultValidator.ValidateContextAsync(context);
                 var error = errors.Should().ContainSingle().Subject; 

@@ -1,40 +1,39 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 
 namespace DbContextValidation.Tests
 {
-    public static class Config
+    public class Configuration : ConfigurationBase, IDockerDatabaseConfiguration
     {
-        public static readonly string Schema = null;
-
+        public const string Schema = null;
+        
         private const string Host = "localhost";
-        public static ushort? Port;
         private const string Sid = "XE";
         private const string User = "system";
         private const string Password = "Oracle18";
 
-        public static string ConnectionString => $"User Id={User};Password={Password};Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST={Host})(PORT={Port}))(CONNECT_DATA=(SID={Sid})))";
+        public string ConnectionString(ushort port) => $"User Id={User};Password={Password};Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST={Host})(PORT={port}))(CONNECT_DATA=(SID={Sid})))";
 
-        public static readonly string DockerContainerName = "DbContextValidation.Tests.Oracle";
+        public string ContainerName => "DbContextValidation.Tests.Oracle";
 
-        public static string DockerArguments(Func<string, string> sqlDirectory)
+        public string[] Arguments => new [] {
+            "--publish 1521/tcp",
+            "--detach",
+            "quillbuilduser/oracle-18-xe:latest",
+        };
+
+        public override string[] SqlScripts
         {
-            return string.Join(" ",
-                "--publish 1521/tcp",
-                "--detach",
-                "quillbuilduser/oracle-18-xe:latest");
-        }
-
-        public static string[] SqlScripts(Func<string, string> sqlDirectory)
-        {
-            var directory = sqlDirectory("SQL.Oracle");
-            return new []
+            get
             {
-                File.ReadAllText(Path.Combine(directory, "1. Drop tOrders.sql")),
-                File.ReadAllText(Path.Combine(directory, "2. Drop tCustomers.sql")),
-                File.ReadAllText(Path.Combine(directory, "3. Create tCustomers.sql")),
-                File.ReadAllText(Path.Combine(directory, "4. Create tOrders.sql")),
-            };
+                var directory = SqlDirectory("SQL.Oracle");
+                return new []
+                {
+                    File.ReadAllText(Path.Combine(directory, "1. Drop tOrders.sql")),
+                    File.ReadAllText(Path.Combine(directory, "2. Drop tCustomers.sql")),
+                    File.ReadAllText(Path.Combine(directory, "3. Create tCustomers.sql")),
+                    File.ReadAllText(Path.Combine(directory, "4. Create tOrders.sql")),
+                };
+            }
         }
     }
 }

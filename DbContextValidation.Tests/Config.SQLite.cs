@@ -2,24 +2,14 @@
 
 namespace DbContextValidation.Tests
 {
-    public static class Config
+    public class Configuration : ConfigurationBase, IDockerDatabaseConfiguration
     {
-        public static readonly string Schema = null;
+        public const string Schema = null;
 
-        public static ushort? Port;
-        
-        public static readonly string ConnectionString = "Data Source=DbContextValidation.sqlite3";
+        public string ConnectionString(ushort port) => "Data Source=DbContextValidation.sqlite3";
 
-        public static readonly string DockerContainerName = null;
+        public string ContainerName => null;
 
-        public static string DockerArguments(Func<string, string> sqlDirectory)
-        {
-            throw new NotSupportedException("SQLite doesn't require a Docker container.");
-        }
-
-        public static string[] SqlScripts(Func<string, string> sqlDirectory)
-        {
-            return new string[0];
-        }
+        public string[] Arguments => throw new NotSupportedException("SQLite doesn't require a Docker container.");
     }
 }

@@ -30,7 +30,7 @@ namespace DbContextValidation.Tests
     [DbConfigurationType(typeof(SQLiteConfiguration))] 
     public abstract class Context : DbContext
     {
-        protected Context() : base(Config.ConnectionString)
+        protected Context(string connectionString) : base(connectionString)
         {
         }
     }

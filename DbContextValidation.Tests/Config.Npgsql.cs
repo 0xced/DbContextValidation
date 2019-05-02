@@ -1,35 +1,25 @@
-﻿using System;
-
-namespace DbContextValidation.Tests
+﻿namespace DbContextValidation.Tests
 {
-    public static class Config
+    public class Configuration : ConfigurationBase, IDockerDatabaseConfiguration
     {
-        public static readonly string Schema = "public";
+        public const string Schema = "public";
 
         private const string Host = "localhost";
-        public static ushort? Port;
         private const string Database = "DbContextValidation";
         private const string User = "postgres";
         private const string Password = "docker";
 
-        public static string ConnectionString => $"Host={Host};Port={Port};Database={Database};UserName={User};Password={Password}";
+        public string ConnectionString(ushort port) => $"Host={Host};Port={port};Database={Database};UserName={User};Password={Password}";
+        
+        public string ContainerName => "DbContextValidation.Tests.Npgsql";
 
-        public static readonly string DockerContainerName = "DbContextValidation.Tests.Npgsql";
-
-        public static string DockerArguments(Func<string, string> sqlDirectory)
-        {
-            return string.Join(" ",
-                $"-e POSTGRES_PASSWORD={Password}",
-                $"-e POSTGRES_DB={Database}",
-                $"--volume \"{sqlDirectory("SQL.Common")}:/docker-entrypoint-initdb.d:ro\"",
-                "--publish 5432/tcp",
-                "--detach",
-                "postgres:10.5-alpine");
-        }
-
-        public static string[] SqlScripts(Func<string, string> sqlDirectory)
-        {
-            return new string[0];
-        }
+        public string[] Arguments => new [] {
+            $"-e POSTGRES_PASSWORD={Password}",
+            $"-e POSTGRES_DB={Database}",
+            $"--volume \"{SqlDirectory("SQL.Common")}:/docker-entrypoint-initdb.d:ro\"",
+            "--publish 5432/tcp",
+            "--detach",
+            "postgres:10.5-alpine",
+        };
     }
 }

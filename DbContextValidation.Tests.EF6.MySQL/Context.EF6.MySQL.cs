@@ -7,7 +7,7 @@ namespace DbContextValidation.Tests
     [DbConfigurationType(typeof(MySqlEFConfiguration))] 
     public abstract class Context : DbContext
     {
-        protected Context() : base(Config.ConnectionString)
+        protected Context(string connectionString) : base(connectionString)
         {
         }
     }
