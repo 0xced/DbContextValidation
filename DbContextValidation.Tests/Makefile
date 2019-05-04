@@ -16,10 +16,7 @@ build_ef6:
 	msbuild "${TESTS_DIR}/.."
 
 build_efcore:
-	dotnet publish --runtime osx-x64 "${TESTS_DIR}"/../DbContextValidation.Tests.EFCore.SQLite/*.csproj
-	dotnet publish --runtime osx-x64 "${TESTS_DIR}"/../DbContextValidation.Tests.EFCore.MySQL/*.csproj
-	dotnet publish --runtime osx-x64 "${TESTS_DIR}"/../DbContextValidation.Tests.EFCore.Npgsql/*.csproj
-	dotnet publish --runtime osx-x64 "${TESTS_DIR}"/../DbContextValidation.Tests.EFCore.SqlServer/*.csproj
+	for csproj in "${TESTS_DIR}"/../DbContextValidation.Tests.EFCore.*/*.csproj; do dotnet publish --runtime osx-x64 $${csproj}; done
 
 clean:
 	find "${TESTS_DIR}/.." -name "bin" -print0 | xargs -0 rm -r
