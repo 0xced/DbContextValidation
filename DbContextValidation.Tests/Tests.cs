@@ -14,7 +14,24 @@ using Microsoft.EntityFrameworkCore;
 #endif
 using Xunit;
 
+#if PROVIDER_FIREBIRD
+namespace DbContextValidation.Tests.Firebird
+#elif PROVIDER_MYSQL
+namespace DbContextValidation.Tests.MySQL
+#elif PROVIDER_MYSQL_POMELO
+namespace DbContextValidation.Tests.MySQL.Pomelo
+#elif PROVIDER_NPGSQL
+namespace DbContextValidation.Tests.Npgsql
+#elif PROVIDER_ORACLE
+namespace DbContextValidation.Tests.Oracle
+#elif PROVIDER_SQLITE
+namespace DbContextValidation.Tests.SQLite
+#elif PROVIDER_SQLSERVER
+namespace DbContextValidation.Tests.SqlServer
+#else
+#error Make sure to define a PROVIDER_* constant in the tests project
 namespace DbContextValidation.Tests
+#endif
 {
     [SuppressMessage("ReSharper", "VSTHRD200", Justification = "Naming all tests methods with the Async suffix feels weird")]
     public class ValidatorTests : IClassFixture<DockerDatabaseFixture>

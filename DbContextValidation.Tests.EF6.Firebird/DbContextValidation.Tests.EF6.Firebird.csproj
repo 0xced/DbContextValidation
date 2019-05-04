@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net452</TargetFramework>
+    <DefineConstants>$(DefineConstants);PROVIDER_FIREBIRD</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="EntityFramework.Firebird" Version="6.6.0" />
