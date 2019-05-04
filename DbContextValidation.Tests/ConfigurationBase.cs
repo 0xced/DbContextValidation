@@ -16,8 +16,9 @@ namespace DbContextValidation.Tests
             if (testsDirectory == null)
             {
                 var assemblyDirectory = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory;
-                var solutionDirectory = assemblyDirectory?.Parent?.Parent?.Parent?.Parent?.FullName ?? throw new FileNotFoundException("Solution directory not found");
-                testsDirectory = Path.Combine(solutionDirectory, "DbContextValidation.Tests");
+                var targetFrameworkDirectory = assemblyDirectory?.Name == "publish" ? assemblyDirectory.Parent?.Parent : assemblyDirectory; 
+                var solutionDirectory = targetFrameworkDirectory?.Parent?.Parent?.Parent?.Parent ?? throw new FileNotFoundException("Solution directory not found");
+                testsDirectory = Path.Combine(solutionDirectory.FullName, "DbContextValidation.Tests");
             }
             var sqlDirectory = Path.Combine(testsDirectory, directoryName);
             if (!Directory.Exists(sqlDirectory))
