@@ -13,8 +13,6 @@ namespace DbContextValidation.Tests
 
         public string ConnectionString(ushort port) => $"DataSource={Host};Port={port};Database={Database};User={User};Password={Password}";
 
-        public string ContainerName => "DbContextValidation.Tests.Firebird";
-
         public string[] Arguments => new [] {
             $"-e FIREBIRD_DATABASE={Database}",
             $"-e FIREBIRD_USER={User}",

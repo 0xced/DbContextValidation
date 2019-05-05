@@ -11,8 +11,6 @@
 
         public string ConnectionString(ushort port) => $"Server={Host},{port};Database={Database};User Id={User};Password={Password}";
 
-        public string ContainerName => "DbContextValidation.Tests.SqlServer";
-
         public string[] Arguments => new [] {
             "-e ACCEPT_EULA=Y",
             $"-e MSSQL_SA_PASSWORD={Password}",

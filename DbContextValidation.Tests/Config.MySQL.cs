@@ -11,8 +11,6 @@
 
         public string ConnectionString(ushort port) => $"Host={Host};Port={port};Database={Database};UserName={User};Password={Password}";
 
-        public string ContainerName => "DbContextValidation.Tests.MySQL";
-
         public string[] Arguments => new [] {
             $"-e MYSQL_ROOT_PASSWORD={Password}",
             $"-e MYSQL_DATABASE={Database}",

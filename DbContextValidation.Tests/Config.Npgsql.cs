@@ -10,8 +10,6 @@
         private const string Password = "docker";
 
         public string ConnectionString(ushort port) => $"Host={Host};Port={port};Database={Database};UserName={User};Password={Password}";
-        
-        public string ContainerName => "DbContextValidation.Tests.Npgsql";
 
         public string[] Arguments => new [] {
             $"-e POSTGRES_PASSWORD={Password}",

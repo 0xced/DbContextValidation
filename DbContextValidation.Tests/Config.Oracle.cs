@@ -13,8 +13,6 @@ namespace DbContextValidation.Tests
 
         public string ConnectionString(ushort port) => $"User Id={User};Password={Password};Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST={Host})(PORT={port}))(CONNECT_DATA=(SID={Sid})))";
 
-        public string ContainerName => "DbContextValidation.Tests.Oracle";
-
         public string[] Arguments => new [] {
             "--publish 1521/tcp",
             "--detach",

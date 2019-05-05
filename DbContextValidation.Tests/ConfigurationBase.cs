@@ -1,12 +1,17 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using Xunit;
 
 namespace DbContextValidation.Tests
 {
     public class ConfigurationBase
     {
         public virtual TimeSpan Timeout => TimeSpan.FromSeconds(30);
+
+        private readonly Lazy<string> _containerName = new Lazy<string>(() => Assembly.GetExecutingAssembly().ExportedTypes.Single(e => e.GetInterfaces().FirstOrDefault() == typeof(IClassFixture<DockerDatabaseFixture>)).Namespace);
+        public virtual string ContainerName => _containerName.Value;
 
         public virtual string[] SqlScripts => new string[0];
 
