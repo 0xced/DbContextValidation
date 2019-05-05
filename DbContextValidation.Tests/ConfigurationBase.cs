@@ -7,9 +7,9 @@ namespace DbContextValidation.Tests
     public class ConfigurationBase
     {
         public virtual TimeSpan Timeout => TimeSpan.FromSeconds(30);
-        
+
         public virtual string[] SqlScripts => new string[0];
-        
+
         protected static string SqlDirectory(string directoryName)
         {
             var testsDirectory = Environment.GetEnvironmentVariable("TESTS_DIRECTORY");
