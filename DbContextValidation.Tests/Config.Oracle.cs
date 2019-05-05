@@ -5,7 +5,7 @@ namespace DbContextValidation.Tests
     public class Configuration : ConfigurationBase, IDockerDatabaseConfiguration
     {
         public const string Schema = null;
-        
+
         private const string Host = "localhost";
         private const string Sid = "XE";
         private const string User = "system";
