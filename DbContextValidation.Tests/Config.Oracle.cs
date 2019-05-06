@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Xunit.Fixture.DockerDb;
 
 namespace DbContextValidation.Tests
 {
@@ -12,6 +13,8 @@ namespace DbContextValidation.Tests
         private const string Password = "Oracle18";
 
         public string ConnectionString(ushort port) => $"User Id={User};Password={Password};Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST={Host})(PORT={port}))(CONNECT_DATA=(SID={Sid})))";
+
+        public System.Data.Common.DbProviderFactory ProviderFactory => global::Oracle.ManagedDataAccess.Client.OracleClientFactory.Instance;
 
         public string[] Arguments => new [] {
             "--publish 1521/tcp",

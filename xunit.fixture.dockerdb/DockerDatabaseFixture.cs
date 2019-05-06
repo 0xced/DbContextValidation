@@ -8,7 +8,7 @@ using System.Threading;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
-namespace DbContextValidation.Tests
+namespace Xunit.Fixture.DockerDb
 {
     public class DockerDatabaseFixture : IDisposable
     {
@@ -34,19 +34,24 @@ namespace DbContextValidation.Tests
 
         private static IDockerDatabaseConfiguration GetDockerDatabaseConfiguration()
         {
-            var assembly = Assembly.GetExecutingAssembly();
-            var configurationTypes = assembly.ExportedTypes.Where(e => e.GetInterfaces().Any(i => i == typeof(IDockerDatabaseConfiguration))).ToList();
-            if (configurationTypes.Count == 0)
-                throw new InvalidOperationException($"The assembly under test ({assembly.GetName().Name}) must have one public type implementing the '{nameof(IDockerDatabaseConfiguration)}' interface.");
-            if (configurationTypes.Count > 1)
-                throw new InvalidOperationException($"The assembly under test ({assembly.GetName().Name}) must have only one public type implementing the '{nameof(IDockerDatabaseConfiguration)}' interface but {configurationTypes.Count} were found: {string.Join(", ", configurationTypes.Select(e => e.FullName))}.");
+            var executingAssemblyName = Assembly.GetExecutingAssembly().GetName();
+            var assembliesUnderTest = AppDomain.CurrentDomain.GetAssemblies().Where(e => e.GetReferencedAssemblies().Any(reference => AssemblyName.ReferenceMatchesDefinition(reference, executingAssemblyName)));
+            foreach (var assembly in assembliesUnderTest)
+            {
+                var configurationTypes = assembly.ExportedTypes.Where(e => e.GetInterfaces().Any(i => i == typeof(IDockerDatabaseConfiguration))).ToList();
+                if (configurationTypes.Count == 0)
+                    continue;
+                if (configurationTypes.Count > 1)
+                    throw new InvalidOperationException($"The assembly under test ({assembly.GetName().Name}) must have only one public type implementing the '{nameof(IDockerDatabaseConfiguration)}' interface but {configurationTypes.Count} were found: {string.Join(", ", configurationTypes.Select(e => e.FullName))}.");
 
-            var configurationType = configurationTypes[0];
-            var constructorInfo = configurationType.GetConstructor(Type.EmptyTypes);
-            if (constructorInfo == null)
-                throw new InvalidOperationException($"The '{configurationType.FullName}' type must have a public default constructor.");
+                var configurationType = configurationTypes[0];
+                var constructorInfo = configurationType.GetConstructor(Type.EmptyTypes);
+                if (constructorInfo == null)
+                    throw new InvalidOperationException($"The '{configurationType.FullName}' type must have a public default constructor.");
 
-            return (IDockerDatabaseConfiguration)constructorInfo.Invoke(new object[0]);
+                return (IDockerDatabaseConfiguration)constructorInfo.Invoke(new object[0]);
+            }
+            throw new InvalidOperationException($"Could not find the assembly under test (i.e. where a referenced assembly matches {executingAssemblyName.Name})");
         }
 
         public string ConnectionString { get; }
@@ -109,41 +114,37 @@ namespace DbContextValidation.Tests
         private void WaitForDatabase()
         {
             var stopWatch = Stopwatch.StartNew();
-            using (var context = new ValidContext(ConnectionString))
+            var connection = _configuration.ProviderFactory.CreateConnection() ?? throw new InvalidOperationException($"Failed to create a connection with {_configuration.ProviderFactory}.");
+            connection.ConnectionString = ConnectionString;
+            WriteDiagnostic($"Waiting for database to be available on {connection.ConnectionString}");
+            while (true)
             {
-#if NETFRAMEWORK
-                var connection = context.Database.Connection;
-#else
-                var connection = Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.GetDbConnection(context.Database);
-#endif
-                WriteDiagnostic($"Waiting for database to be available on {connection.ConnectionString}");
-                while (true)
+                try
                 {
-                    try
+                    if (connection.State != ConnectionState.Open)
                     {
-                        if (connection.State != ConnectionState.Open)
-                        {
-                            connection.Open();
-                        }
-                        WriteDiagnostic($"It took {stopWatch.Elapsed.TotalSeconds:F1} seconds for the database to become available.");
-                        var scripts = _configuration.SqlScripts;
-                        foreach (var script in scripts)
-                        {
-                            WriteDiagnostic($"Executing script{Environment.NewLine}{script}");
-                            var command = connection.CreateCommand();
-                            command.CommandText = script;
-                            command.CommandType = CommandType.Text;
-                            command.ExecuteNonQuery();
-                        }
-                        break;
+                        connection.Open();
                     }
-                    catch (Exception exception)
+
+                    WriteDiagnostic($"It took {stopWatch.Elapsed.TotalSeconds:F1} seconds for the database to become available.");
+                    var scripts = _configuration.SqlScripts;
+                    foreach (var script in scripts)
                     {
-                        Thread.Sleep(TimeSpan.FromSeconds(1));
-                        if (stopWatch.Elapsed > _configuration.Timeout)
-                        {
-                            throw new TimeoutException($"Database was not available after waiting for {_configuration.Timeout.TotalSeconds:F1} seconds.", exception);
-                        }
+                        WriteDiagnostic($"Executing script{Environment.NewLine}{script}");
+                        var command = connection.CreateCommand();
+                        command.CommandText = script;
+                        command.CommandType = CommandType.Text;
+                        command.ExecuteNonQuery();
+                    }
+
+                    break;
+                }
+                catch (Exception exception)
+                {
+                    Thread.Sleep(TimeSpan.FromSeconds(1));
+                    if (stopWatch.Elapsed > _configuration.Timeout)
+                    {
+                        throw new TimeoutException($"Database was not available after waiting for {_configuration.Timeout.TotalSeconds:F1} seconds.", exception);
                     }
                 }
             }

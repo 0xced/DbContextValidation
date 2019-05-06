@@ -8,10 +8,8 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)ConfigurationBase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Context.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DockerDatabaseFixture.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\Customer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Entities\Order.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)IDockerConfiguration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Tests.cs" />
   </ItemGroup>
 </Project>

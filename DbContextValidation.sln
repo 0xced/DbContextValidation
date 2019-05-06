@@ -41,6 +41,8 @@ EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EFCore.Oracle", "DbContextValidation.Tests.EFCore.Oracle\DbContextValidation.Tests.EFCore.Oracle.csproj", "{96686015-DF03-46E8-86CD-87C0675FE181}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xunit.fixture.dockerdb", "xunit.fixture.dockerdb\xunit.fixture.dockerdb.csproj", "{AE1C2396-7C3A-4D9A-A9F8-6685C68B83BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -107,5 +109,9 @@ Global
 		{96686015-DF03-46E8-86CD-87C0675FE181}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96686015-DF03-46E8-86CD-87C0675FE181}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96686015-DF03-46E8-86CD-87C0675FE181}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE1C2396-7C3A-4D9A-A9F8-6685C68B83BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE1C2396-7C3A-4D9A-A9F8-6685C68B83BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE1C2396-7C3A-4D9A-A9F8-6685C68B83BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE1C2396-7C3A-4D9A-A9F8-6685C68B83BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Xunit.Fixture.DockerDb;
 
 namespace DbContextValidation.Tests
 {
@@ -12,6 +13,8 @@ namespace DbContextValidation.Tests
         private const string Password = "docker";
 
         public string ConnectionString(ushort port) => $"DataSource={Host};Port={port};Database={Database};User={User};Password={Password}";
+
+        public System.Data.Common.DbProviderFactory ProviderFactory => FirebirdSql.Data.FirebirdClient.FirebirdClientFactory.Instance;
 
         public string[] Arguments => new [] {
             $"-e FIREBIRD_DATABASE={Database}",

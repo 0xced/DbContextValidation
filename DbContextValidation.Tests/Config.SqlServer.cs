@@ -1,4 +1,6 @@
-﻿namespace DbContextValidation.Tests
+﻿using Xunit.Fixture.DockerDb;
+
+namespace DbContextValidation.Tests
 {
     public class Configuration : ConfigurationBase, IDockerDatabaseConfiguration
     {
@@ -10,6 +12,8 @@
         private const string Password = "SqlServer-doc4er";
 
         public string ConnectionString(ushort port) => $"Server={Host},{port};Database={Database};User Id={User};Password={Password}";
+
+        public System.Data.Common.DbProviderFactory ProviderFactory => System.Data.SqlClient.SqlClientFactory.Instance;
 
         public string[] Arguments => new [] {
             "-e ACCEPT_EULA=Y",

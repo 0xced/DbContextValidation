@@ -1,4 +1,5 @@
 ﻿using System;
+using Xunit.Fixture.DockerDb;
 
 namespace DbContextValidation.Tests
 {
@@ -7,6 +8,12 @@ namespace DbContextValidation.Tests
         public const string Schema = null;
 
         public string ConnectionString(ushort port) => "Data Source=DbContextValidation.sqlite3";
+
+#if NETFRAMEWORK
+        public System.Data.Common.DbProviderFactory ProviderFactory => System.Data.SQLite.SQLiteFactory.Instance;
+#else
+        public System.Data.Common.DbProviderFactory ProviderFactory => Microsoft.Data.Sqlite.SqliteFactory.Instance;
+#endif
 
         public override string ContainerName => null;
 
