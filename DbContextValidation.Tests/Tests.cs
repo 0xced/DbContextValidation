@@ -35,7 +35,7 @@ namespace DbContextValidation.Tests
 #endif
 {
     [SuppressMessage("ReSharper", "VSTHRD200", Justification = "Naming all tests methods with the Async suffix feels weird")]
-    public class ValidatorTests : IClassFixture<DockerDatabaseFixture>
+    public class ValidatorTests : IClassFixture<DockerDatabaseFixture<Configuration>>
     {
         private class AccumulatorProgress<T> : IProgress<T>
         {
@@ -52,7 +52,7 @@ namespace DbContextValidation.Tests
         private readonly DbContextValidator _defaultValidator;
         private readonly string _connectionString;
 
-        public ValidatorTests(DockerDatabaseFixture dockerDatabaseFixture)
+        public ValidatorTests(DockerDatabaseFixture<Configuration> dockerDatabaseFixture)
         {
             _defaultValidator = new DbContextValidator(StringComparer.InvariantCulture);
             _connectionString = dockerDatabaseFixture.ConnectionString;

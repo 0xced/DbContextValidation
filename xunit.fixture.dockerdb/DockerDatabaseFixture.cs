@@ -1,8 +1,6 @@
 using System;
 using System.Data;
 using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
 using Xunit.Abstractions;
@@ -10,7 +8,7 @@ using Xunit.Sdk;
 
 namespace Xunit.Fixture.DockerDb
 {
-    public class DockerDatabaseFixture : IDisposable
+    public class DockerDatabaseFixture<T> : IDisposable where T : IDockerDatabaseConfiguration, new()
     {
         private readonly IMessageSink _sink;
         private readonly IDockerDatabaseConfiguration _configuration;
@@ -18,9 +16,7 @@ namespace Xunit.Fixture.DockerDb
         public DockerDatabaseFixture(IMessageSink sink)
         {
             _sink = sink ?? throw new ArgumentNullException(nameof(sink));
-
-            // Ideally this IDockerDatabaseConfiguration should be injected but it's not possible with xUnit (2.4.1)
-            _configuration = GetDockerDatabaseConfiguration();
+            _configuration = new T();
 
             if (_configuration.ContainerName == null)
             {
@@ -30,28 +26,6 @@ namespace Xunit.Fixture.DockerDb
 
             ConnectionString = DockerContainerStart();
             WaitForDatabase();
-        }
-
-        private static IDockerDatabaseConfiguration GetDockerDatabaseConfiguration()
-        {
-            var executingAssemblyName = Assembly.GetExecutingAssembly().GetName();
-            var assembliesUnderTest = AppDomain.CurrentDomain.GetAssemblies().Where(e => e.GetReferencedAssemblies().Any(reference => AssemblyName.ReferenceMatchesDefinition(reference, executingAssemblyName)));
-            foreach (var assembly in assembliesUnderTest)
-            {
-                var configurationTypes = assembly.ExportedTypes.Where(e => e.GetInterfaces().Any(i => i == typeof(IDockerDatabaseConfiguration))).ToList();
-                if (configurationTypes.Count == 0)
-                    continue;
-                if (configurationTypes.Count > 1)
-                    throw new InvalidOperationException($"The assembly under test ({assembly.GetName().Name}) must have only one public type implementing the '{nameof(IDockerDatabaseConfiguration)}' interface but {configurationTypes.Count} were found: {string.Join(", ", configurationTypes.Select(e => e.FullName))}.");
-
-                var configurationType = configurationTypes[0];
-                var constructorInfo = configurationType.GetConstructor(Type.EmptyTypes);
-                if (constructorInfo == null)
-                    throw new InvalidOperationException($"The '{configurationType.FullName}' type must have a public default constructor.");
-
-                return (IDockerDatabaseConfiguration)constructorInfo.Invoke(new object[0]);
-            }
-            throw new InvalidOperationException($"Could not find the assembly under test (i.e. where a referenced assembly matches {executingAssemblyName.Name})");
         }
 
         public string ConnectionString { get; }
