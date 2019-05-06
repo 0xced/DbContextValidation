@@ -18,20 +18,44 @@ namespace DbContextValidation.Tests
 
         protected static string SqlDirectory(string directoryName)
         {
+            var testsDirectory = TestsDirectory();
+            var sqlDirectory = Path.Combine(testsDirectory.FullName, directoryName);
+            if (!Directory.Exists(sqlDirectory))
+            {
+                throw new FileNotFoundException($"SQL directory not found ({sqlDirectory})", sqlDirectory);
+            }
+            return sqlDirectory;
+        }
+
+        protected static string SqlFile(string fileName)
+        {
+            var testsDirectory = TestsDirectory();
+            var sqlFile = Path.Combine(testsDirectory.FullName, fileName);
+            if (!File.Exists(sqlFile))
+            {
+                throw new FileNotFoundException($"SQL file not found ({sqlFile})", sqlFile);
+            }
+            return sqlFile;
+        }
+
+        private static DirectoryInfo TestsDirectory()
+        {
+            DirectoryInfo testsDirectoryInfo;
             var testsDirectory = Environment.GetEnvironmentVariable("TESTS_DIRECTORY");
-            if (testsDirectory == null)
+            if (testsDirectory != null)
+            {
+                testsDirectoryInfo = new DirectoryInfo(testsDirectory);
+            }
+            else
             {
                 var assemblyDirectory = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory;
                 var targetFrameworkDirectory = assemblyDirectory?.Name == "publish" ? assemblyDirectory.Parent?.Parent : assemblyDirectory; 
                 var solutionDirectory = targetFrameworkDirectory?.Parent?.Parent?.Parent?.Parent ?? throw new FileNotFoundException("Solution directory not found");
-                testsDirectory = Path.Combine(solutionDirectory.FullName, "DbContextValidation.Tests");
+                testsDirectoryInfo = new DirectoryInfo(Path.Combine(solutionDirectory.FullName, "DbContextValidation.Tests"));
             }
-            var sqlDirectory = Path.Combine(testsDirectory, directoryName);
-            if (!Directory.Exists(sqlDirectory))
-            {
-                throw new FileNotFoundException($"Directory with SQL scripts not found ({sqlDirectory})", sqlDirectory);
-            }
-            return sqlDirectory;
+            if (!testsDirectoryInfo.Exists)
+                throw new FileNotFoundException($"Tests directory not found ({testsDirectoryInfo.FullName})", testsDirectoryInfo.FullName);
+            return testsDirectoryInfo;
         }
     }
 }
