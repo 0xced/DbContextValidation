@@ -81,37 +81,43 @@ namespace Xunit.Fixture.DockerDb
 
         private ushort DockerContainerGetPort()
         {
-            var portLine = RunDocker($"port \"{_configuration.ContainerName}\"").TrimEnd('\n');
+            var portLine = RunDocker($"port \"{_configuration.ContainerName}\"");
             var port = Regex.Match(portLine, @"-> 0\.0\.0\.0:(?<port>\d+)").Groups["port"];
             if (!port.Success)
                 throw new ApplicationException($"Could not find port in '{portLine}'");
             return ushort.Parse(port.Value);
         }
 
-        private string RunDocker(string arguments, bool waitForExit = true)
+        private string RunDocker(string arguments, bool waitForExit = true, bool trimResult = true)
         {
-            var startInfo = new ProcessStartInfo("docker", arguments) { UseShellExecute = false, RedirectStandardOutput = true, RedirectStandardError = true };
-            using (var docker = new Process {StartInfo = startInfo})
+            return RunProcess("docker", arguments, waitForExit, trimResult);
+        }
+
+        private string RunProcess(string command, string arguments, bool waitForExit = true, bool trimResult = true)
+        {
+            var startInfo = new ProcessStartInfo(command, arguments) { UseShellExecute = false, RedirectStandardOutput = true, RedirectStandardError = true };
+            using (var process = new Process {StartInfo = startInfo})
             {
-                WriteDiagnostic($"> docker {arguments}");
+                WriteDiagnostic($"> {command} {arguments}");
                 try
                 {
-                    docker.Start();
+                    process.Start();
                 }
                 catch (Exception exception)
                 {
-                    throw new ApplicationException($"Failed to run `docker {arguments}` Is docker installed?", exception);
+                    throw new ApplicationException($"Failed to run `{command} {arguments}` Is {command} installed?", exception);
                 }
                 if (waitForExit)
                 {
-                    docker.WaitForExit();
-                    WriteDiagnostic($"({docker.ExitCode}) docker {docker.StartInfo.Arguments}");
-                    if (docker.ExitCode != 0)
+                    process.WaitForExit();
+                    WriteDiagnostic($"({process.ExitCode}) {command} {process.StartInfo.Arguments}");
+                    if (process.ExitCode != 0)
                     {
-                        var error = docker.StandardError.ReadToEnd();
+                        var error = process.StandardError.ReadToEnd();
                         throw new ApplicationException(error);
                     }
-                    return docker.StandardOutput.ReadToEnd();
+                    var result = process.StandardOutput.ReadToEnd();
+                    return trimResult ? result.TrimEnd('\n') : result;
                 }
                 return null;
             }
