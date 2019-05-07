@@ -120,30 +120,32 @@ namespace Xunit.Fixture.DockerDb
         private void WaitForDatabase()
         {
             var stopWatch = Stopwatch.StartNew();
-            var connection = _configuration.ProviderFactory.CreateConnection() ?? throw new InvalidOperationException($"Failed to create a connection with {_configuration.ProviderFactory}.");
-            connection.ConnectionString = ConnectionString;
-            WriteDiagnostic($"Waiting for database to be available on {connection.ConnectionString}");
-            while (true)
+            using (var connection = _configuration.ProviderFactory.CreateConnection() ?? throw new InvalidOperationException($"Failed to create a connection with {_configuration.ProviderFactory}."))
             {
-                try
+                connection.ConnectionString = ConnectionString;
+                WriteDiagnostic($"Waiting for database to be available on {connection.ConnectionString}");
+                while (true)
                 {
-                    if (connection.State != ConnectionState.Open)
+                    try
                     {
-                        connection.Open();
+                        if (connection.State != ConnectionState.Open)
+                        {
+                            connection.Open();
+                        }
+                        WriteDiagnostic($"It took {stopWatch.Elapsed.TotalSeconds:F1} seconds for the database to become available.");
+                        break;
                     }
-                    WriteDiagnostic($"It took {stopWatch.Elapsed.TotalSeconds:F1} seconds for the database to become available.");
-                    break;
-                }
-                catch (Exception exception)
-                {
-                    Thread.Sleep(TimeSpan.FromSeconds(1));
-                    if (stopWatch.Elapsed > _configuration.Timeout)
+                    catch (Exception exception)
                     {
-                        throw new TimeoutException($"Database was not available after waiting for {_configuration.Timeout.TotalSeconds:F1} seconds.", exception);
+                        Thread.Sleep(TimeSpan.FromSeconds(1));
+                        if (stopWatch.Elapsed > _configuration.Timeout)
+                        {
+                            throw new TimeoutException($"Database was not available after waiting for {_configuration.Timeout.TotalSeconds:F1} seconds.", exception);
+                        }
                     }
                 }
+                RunScripts(connection);
             }
-            RunScripts(connection);
         }
 
         private void RunScripts(IDbConnection connection)
