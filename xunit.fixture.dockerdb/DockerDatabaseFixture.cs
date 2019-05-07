@@ -91,11 +91,17 @@ namespace Xunit.Fixture.DockerDb
         private string RunDocker(string arguments, bool waitForExit = true)
         {
             var startInfo = new ProcessStartInfo("docker", arguments) { UseShellExecute = false, RedirectStandardOutput = true, RedirectStandardError = true };
-            using (var docker = Process.Start(startInfo))
+            using (var docker = new Process {StartInfo = startInfo})
             {
-                if (docker == null)
-                    throw new ApplicationException($"Failed to run `docker {arguments}`");
                 WriteDiagnostic($"> docker {arguments}");
+                try
+                {
+                    docker.Start();
+                }
+                catch (Exception exception)
+                {
+                    throw new ApplicationException($"Failed to run `docker {arguments}` Is docker installed?", exception);
+                }
                 if (waitForExit)
                 {
                     docker.WaitForExit();
