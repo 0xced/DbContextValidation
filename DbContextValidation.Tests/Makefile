@@ -7,6 +7,8 @@ test_ef6: build_ef6
 	mono ~/.nuget/packages/xunit.runner.console/2.4.1/tools/net452/xunit.console.exe "${TESTS_DIR}"/../DbContextValidation.Tests.EF6.*/bin/Debug/*/*.Tests.EF6.*.dll -noshadow -html Report.EF6.html -parallel all
 
 test_efcore: build_efcore
+	dotnet vstest "${TESTS_DIR}"/../DbContextValidation.Tests.EFCore.*/bin/Debug/*/osx-x64/publish/*.Tests.EFCore.*.dll --logger:"console;verbosity=normal" --parallel
+	# Running tests in parallel (-parallel all) doesn't work, we get System.MissingMethodException but it works in parallel when running through dotnet vstest. Is this a bug in the xunit console runner?
 	dotnet ~/.nuget/packages/xunit.runner.console/2.4.1/tools/netcoreapp2.0/xunit.console.dll "${TESTS_DIR}"/../DbContextValidation.Tests.EFCore.*/bin/Debug/*/osx-x64/publish/*.Tests.EFCore.*.dll -html Report.EFCore.html
 
 build: build_ef6 build_efcore
