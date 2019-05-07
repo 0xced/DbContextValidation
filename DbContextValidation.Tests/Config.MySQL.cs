@@ -6,12 +6,11 @@ namespace DbContextValidation.Tests
     {
         public const string Schema = null;
 
-        private const string Host = "localhost";
         private const string Database = "DbContextValidation";
         private const string User = "root";
         private const string Password = "docker";
 
-        public string ConnectionString(ushort port) => $"Host={Host};Port={port};Database={Database};UserName={User};Password={Password}";
+        public string ConnectionString(string host, ushort port) => $"Host={host};Port={port};Database={Database};UserName={User};Password={Password}";
 
         public System.Data.Common.DbProviderFactory ProviderFactory => MySql.Data.MySqlClient.MySqlClientFactory.Instance;
 

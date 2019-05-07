@@ -7,12 +7,11 @@ namespace DbContextValidation.Tests
     {
         public const string Schema = null;
 
-        private const string Host = "localhost";
         private const string Database = "DbContextValidation";
         private const string User = "firebird";
         private const string Password = "docker";
 
-        public string ConnectionString(ushort port) => $"DataSource={Host};Port={port};Database={Database};User={User};Password={Password}";
+        public string ConnectionString(string host, ushort port) => $"DataSource={host};Port={port};Database={Database};User={User};Password={Password}";
 
         public System.Data.Common.DbProviderFactory ProviderFactory => FirebirdSql.Data.FirebirdClient.FirebirdClientFactory.Instance;
 

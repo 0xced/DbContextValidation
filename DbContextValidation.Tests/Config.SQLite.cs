@@ -7,7 +7,7 @@ namespace DbContextValidation.Tests
     {
         public const string Schema = null;
 
-        public string ConnectionString(ushort port) => $"Data Source={SqlFile("DbContextValidation.sqlite3")}";
+        public string ConnectionString(string host, ushort port) => $"Data Source={SqlFile("DbContextValidation.sqlite3")}";
 
 #if NETFRAMEWORK
         public System.Data.Common.DbProviderFactory ProviderFactory => System.Data.SQLite.SQLiteFactory.Instance;

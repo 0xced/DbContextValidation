@@ -6,12 +6,11 @@ namespace DbContextValidation.Tests
     {
         public const string Schema = "public";
 
-        private const string Host = "localhost";
         private const string Database = "DbContextValidation";
         private const string User = "postgres";
         private const string Password = "docker";
 
-        public string ConnectionString(ushort port) => $"Host={Host};Port={port};Database={Database};UserName={User};Password={Password}";
+        public string ConnectionString(string host, ushort port) => $"Host={host};Port={port};Database={Database};UserName={User};Password={Password}";
 
         public System.Data.Common.DbProviderFactory ProviderFactory => global::Npgsql.NpgsqlFactory.Instance;
 

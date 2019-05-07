@@ -7,12 +7,11 @@ namespace DbContextValidation.Tests
     {
         public const string Schema = null;
 
-        private const string Host = "localhost";
         private const string Sid = "XE";
         private const string User = "system";
         private const string Password = "Oracle18";
 
-        public string ConnectionString(ushort port) => $"User Id={User};Password={Password};Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST={Host})(PORT={port}))(CONNECT_DATA=(SID={Sid})))";
+        public string ConnectionString(string host, ushort port) => $"User Id={User};Password={Password};Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST={host})(PORT={port}))(CONNECT_DATA=(SID={Sid})))";
 
         public System.Data.Common.DbProviderFactory ProviderFactory => global::Oracle.ManagedDataAccess.Client.OracleClientFactory.Instance;
 

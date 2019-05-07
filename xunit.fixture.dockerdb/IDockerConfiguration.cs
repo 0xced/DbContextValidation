@@ -5,7 +5,7 @@ namespace Xunit.Fixture.DockerDb
 {
     public interface IDockerDatabaseConfiguration
     {
-        string ConnectionString(ushort port);
+        string ConnectionString(string host, ushort port);
 
         DbProviderFactory ProviderFactory { get; }
         TimeSpan Timeout { get; }

@@ -6,12 +6,11 @@ namespace DbContextValidation.Tests
     {
         public const string Schema = "dbo";
 
-        private const string Host = "localhost";
         private const string Database = "tempdb";
         private const string User = "sa";
         private const string Password = "SqlServer-doc4er";
 
-        public string ConnectionString(ushort port) => $"Server={Host},{port};Database={Database};User Id={User};Password={Password}";
+        public string ConnectionString(string host, ushort port) => $"Server={host},{port};Database={Database};User Id={User};Password={Password}";
 
         public System.Data.Common.DbProviderFactory ProviderFactory => System.Data.SqlClient.SqlClientFactory.Instance;
 

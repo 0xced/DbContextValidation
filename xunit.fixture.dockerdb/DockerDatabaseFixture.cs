@@ -24,7 +24,7 @@ namespace Xunit.Fixture.DockerDb
 
             if (_configuration.ContainerName == null)
             {
-                ConnectionString = _configuration.ConnectionString(0);
+                ConnectionString = _configuration.ConnectionString(DockerGetHost(), 0);
                 return;
             }
 
@@ -76,7 +76,19 @@ namespace Xunit.Fixture.DockerDb
             }
 
             var port = DockerContainerGetPort();
-            return _configuration.ConnectionString(port);
+            return _configuration.ConnectionString(DockerGetHost(), port);
+        }
+
+        private string DockerGetHost()
+        {
+            try
+            {
+                return RunProcess("docker-machine", "ip");
+            }
+            catch (Exception)
+            {
+                return "localhost";
+            }
         }
 
         private ushort DockerContainerGetPort()
