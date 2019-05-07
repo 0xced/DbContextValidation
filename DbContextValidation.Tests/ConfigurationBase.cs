@@ -24,7 +24,7 @@ namespace DbContextValidation.Tests
             {
                 throw new FileNotFoundException($"SQL directory not found ({sqlDirectory})", sqlDirectory);
             }
-            return sqlDirectory;
+            return NormalizePath(sqlDirectory);
         }
 
         protected static string SqlFile(string fileName)
@@ -36,6 +36,20 @@ namespace DbContextValidation.Tests
                 throw new FileNotFoundException($"SQL file not found ({sqlFile})", sqlFile);
             }
             return sqlFile;
+        }
+
+        // See https://github.com/docker/compose/blob/1.24.0/compose/config/types.py#L127-L136
+        private static string NormalizePath(string path)
+        {
+            try
+            {
+                return string.Join("", new Uri(path).Segments.Select(e => e.Replace(":", "")));
+            }
+            catch (UriFormatException)
+            {
+                // This is a already a unix-style path
+                return path;
+            }
         }
 
         private static DirectoryInfo TestsDirectory()
