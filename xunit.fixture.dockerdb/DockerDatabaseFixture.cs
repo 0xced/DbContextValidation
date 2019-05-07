@@ -131,18 +131,7 @@ namespace Xunit.Fixture.DockerDb
                     {
                         connection.Open();
                     }
-
                     WriteDiagnostic($"It took {stopWatch.Elapsed.TotalSeconds:F1} seconds for the database to become available.");
-                    var scripts = _configuration.SqlScripts;
-                    foreach (var script in scripts)
-                    {
-                        WriteDiagnostic($"Executing script{Environment.NewLine}{script}");
-                        var command = connection.CreateCommand();
-                        command.CommandText = script;
-                        command.CommandType = CommandType.Text;
-                        command.ExecuteNonQuery();
-                    }
-
                     break;
                 }
                 catch (Exception exception)
@@ -153,6 +142,20 @@ namespace Xunit.Fixture.DockerDb
                         throw new TimeoutException($"Database was not available after waiting for {_configuration.Timeout.TotalSeconds:F1} seconds.", exception);
                     }
                 }
+            }
+            RunScripts(connection);
+        }
+
+        private void RunScripts(IDbConnection connection)
+        {
+            var scripts = _configuration.SqlScripts;
+            foreach (var script in scripts)
+            {
+                WriteDiagnostic($"Executing script{Environment.NewLine}{script}");
+                var command = connection.CreateCommand();
+                command.CommandText = script;
+                command.CommandType = CommandType.Text;
+                command.ExecuteNonQuery();
             }
         }
 
