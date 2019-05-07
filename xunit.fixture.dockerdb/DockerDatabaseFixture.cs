@@ -107,7 +107,7 @@ namespace Xunit.Fixture.DockerDb
 
         private string RunProcess(string command, string arguments, bool waitForExit = true, bool trimResult = true)
         {
-            var startInfo = new ProcessStartInfo(command, arguments) { UseShellExecute = false, RedirectStandardOutput = true, RedirectStandardError = true };
+            var startInfo = new ProcessStartInfo(command, arguments) { CreateNoWindow = true, UseShellExecute = false, RedirectStandardOutput = true, RedirectStandardError = true };
             using (var process = new Process {StartInfo = startInfo})
             {
                 WriteDiagnostic($"> {command} {arguments}");
