@@ -2,7 +2,7 @@
 using Npgsql;
 
 // ReSharper disable once CheckNamespace
-namespace DbContextValidation.Tests
+namespace DbContextValidation.Tests.Npgsql
 {
     public class NpgsqlConfiguration : DbConfiguration
     {

@@ -3,7 +3,7 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity.SqlServer;
 
 // ReSharper disable once CheckNamespace
-namespace DbContextValidation.Tests
+namespace DbContextValidation.Tests.SqlServer
 {
     public class SqlServerConfiguration : DbConfiguration
     {

@@ -1,6 +1,10 @@
 ﻿using Xunit.Fixture.DockerDb;
 
-namespace DbContextValidation.Tests
+#if PROVIDER_MYSQL_POMELO
+namespace DbContextValidation.Tests.MySQL.Pomelo
+#else
+namespace DbContextValidation.Tests.MySQL
+#endif
 {
     public class Configuration : ConfigurationBase, IDockerDatabaseConfiguration
     {

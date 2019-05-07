@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 
 // ReSharper disable once CheckNamespace
-namespace DbContextValidation.Tests
+namespace DbContextValidation.Tests.Npgsql
 {
     public abstract class Context : DbContext
     {

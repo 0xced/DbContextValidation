@@ -6,7 +6,7 @@ using System.Data.SQLite;
 using System.Data.SQLite.EF6;
 
 // ReSharper disable once CheckNamespace
-namespace DbContextValidation.Tests
+namespace DbContextValidation.Tests.SQLite
 {
     public class SQLiteConnectionFactory : IDbConnectionFactory
     {

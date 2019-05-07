@@ -2,7 +2,7 @@
 using MySql.Data.EntityFramework;
 
 // ReSharper disable once CheckNamespace
-namespace DbContextValidation.Tests
+namespace DbContextValidation.Tests.MySQL
 {
     [DbConfigurationType(typeof(MySqlEFConfiguration))] 
     public abstract class Context : DbContext

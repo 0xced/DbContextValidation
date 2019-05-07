@@ -3,7 +3,7 @@ using EntityFramework.Firebird;
 using FirebirdSql.Data.FirebirdClient;
 
 // ReSharper disable once CheckNamespace
-namespace DbContextValidation.Tests
+namespace DbContextValidation.Tests.Firebird
 {
     public class FirebirdConfiguration : DbConfiguration
     {

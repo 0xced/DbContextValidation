@@ -3,7 +3,7 @@ using Oracle.ManagedDataAccess.Client;
 using Oracle.ManagedDataAccess.EntityFramework;
 
 // ReSharper disable once CheckNamespace
-namespace DbContextValidation.Tests
+namespace DbContextValidation.Tests.Oracle
 {
     public class OracleConfiguration : DbConfiguration
     {

@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Xunit.Fixture.DockerDb;
 
-namespace DbContextValidation.Tests
+namespace DbContextValidation.Tests.Oracle
 {
     public class Configuration : ConfigurationBase, IDockerDatabaseConfiguration
     {

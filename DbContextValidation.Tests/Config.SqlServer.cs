@@ -1,6 +1,6 @@
 ﻿using Xunit.Fixture.DockerDb;
 
-namespace DbContextValidation.Tests
+namespace DbContextValidation.Tests.SqlServer
 {
     public class Configuration : ConfigurationBase, IDockerDatabaseConfiguration
     {

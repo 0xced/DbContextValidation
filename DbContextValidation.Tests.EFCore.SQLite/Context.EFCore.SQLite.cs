@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 
 // ReSharper disable once CheckNamespace
-namespace DbContextValidation.Tests
+namespace DbContextValidation.Tests.SQLite
 {
     public abstract class Context : DbContext
     {
