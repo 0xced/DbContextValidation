@@ -140,7 +140,7 @@ namespace Xunit.Fixture.DockerDb
                         Thread.Sleep(TimeSpan.FromSeconds(1));
                         if (stopWatch.Elapsed > _configuration.Timeout)
                         {
-                            throw new TimeoutException($"Database was not available after waiting for {_configuration.Timeout.TotalSeconds:F1} seconds.", exception);
+                            throw new TimeoutException($"Database was not available on \"{connection.ConnectionString}\" after waiting for {_configuration.Timeout.TotalSeconds:F1} seconds.", exception);
                         }
                     }
                 }
