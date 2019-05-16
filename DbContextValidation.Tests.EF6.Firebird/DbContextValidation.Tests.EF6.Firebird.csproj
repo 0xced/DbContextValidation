@@ -5,7 +5,6 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="EntityFramework.Firebird" Version="6.6.0" />
-    <PackageReference Include="FirebirdSql.Data.FirebirdClient" Version="6.6.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\DbContextValidation.Tests\Config.Firebird.cs" />
