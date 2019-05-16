@@ -20,7 +20,7 @@ namespace Xunit.Fixture.DockerDb
 
             if (_configuration.ContainerName == null)
             {
-                ConnectionString = _configuration.ConnectionString(DockerGetHost(), 0);
+                ConnectionString = _configuration.ConnectionString(null, 0);
                 return;
             }
 
@@ -49,8 +49,9 @@ namespace Xunit.Fixture.DockerDb
                 RunDocker($"run --name \"{_configuration.ContainerName}\" " + string.Join(" ", _configuration.Arguments));
             }
 
+            var host = DockerGetHost();
             var port = DockerContainerGetPort();
-            return _configuration.ConnectionString(DockerGetHost(), port);
+            return _configuration.ConnectionString(host, port);
         }
 
         private string DockerGetHost()
