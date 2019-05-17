@@ -1,4 +1,5 @@
-﻿using Xunit.Fixture.DockerDb;
+﻿using System;
+using Xunit.Fixture.DockerDb;
 
 namespace DbContextValidation.Tests.SqlServer
 {
@@ -13,6 +14,8 @@ namespace DbContextValidation.Tests.SqlServer
         public string ConnectionString(string host, ushort port) => $"Server={host},{port};Database={Database};User Id={User};Password={Password}";
 
         public System.Data.Common.DbProviderFactory ProviderFactory => System.Data.SqlClient.SqlClientFactory.Instance;
+
+        public override TimeSpan Timeout => TimeSpan.FromSeconds(45);
 
         public string[] Arguments => new [] {
             "-e ACCEPT_EULA=Y",

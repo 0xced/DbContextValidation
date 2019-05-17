@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Xunit.Fixture.DockerDb;
 
 namespace DbContextValidation.Tests.Oracle
@@ -14,6 +15,8 @@ namespace DbContextValidation.Tests.Oracle
         public string ConnectionString(string host, ushort port) => $"User Id={User};Password={Password};Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST={host})(PORT={port}))(CONNECT_DATA=(SID={Sid})))";
 
         public System.Data.Common.DbProviderFactory ProviderFactory => global::Oracle.ManagedDataAccess.Client.OracleClientFactory.Instance;
+
+        public override TimeSpan Timeout => TimeSpan.FromSeconds(45);
 
         public string[] Arguments => new [] {
             "--publish 1521/tcp",
