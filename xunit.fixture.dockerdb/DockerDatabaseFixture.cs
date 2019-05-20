@@ -12,6 +12,7 @@ namespace Xunit.Fixture.DockerDb
     {
         private readonly IMessageSink _sink;
         private readonly IDockerDatabaseConfiguration _configuration;
+        private DateTime _dockerStartDateTime;
 
         public DockerDatabaseFixture(IMessageSink sink)
         {
@@ -42,6 +43,7 @@ namespace Xunit.Fixture.DockerDb
         {
             try
             {
+                _dockerStartDateTime = DateTime.Now;
                 RunDocker($"start \"{_configuration.ContainerName}\"");
             }
             catch (Exception e) when (e.Message.Contains("No such container"))
@@ -58,7 +60,7 @@ namespace Xunit.Fixture.DockerDb
         {
             try
             {
-                return RunProcess("docker-machine", "ip");
+                return RunProcess("docker-machine", "ip").output;
             }
             catch (Exception)
             {
@@ -68,19 +70,32 @@ namespace Xunit.Fixture.DockerDb
 
         private ushort DockerContainerGetPort()
         {
-            var portLine = RunDocker($"port \"{_configuration.ContainerName}\"");
+            var portLine = RunDocker($"port \"{_configuration.ContainerName}\"").output;
             var port = Regex.Match(portLine, @"-> 0\.0\.0\.0:(?<port>\d+)").Groups["port"];
             if (!port.Success)
-                throw new ApplicationException($"Could not find port in '{portLine}'");
+            {
+                string logs;
+                try
+                {
+                    var (output, error) = RunDocker($"logs --since {_dockerStartDateTime:O} \"{_configuration.ContainerName}\"", trimResult: false);
+                    logs = !string.IsNullOrWhiteSpace(error) ? error : output;
+                }
+                catch
+                {
+                    logs = "";
+                }
+                var message = string.IsNullOrWhiteSpace(logs) ? "Please check its logs." : "Here are its logs: " + Environment.NewLine + logs;
+                throw new ApplicationException($"The '{_configuration.ContainerName}' container failed to start properly. {message}");
+            }
             return ushort.Parse(port.Value);
         }
 
-        private string RunDocker(string arguments, bool waitForExit = true, bool trimResult = true)
+        private (string output, string error) RunDocker(string arguments, bool waitForExit = true, bool trimResult = true)
         {
             return RunProcess("docker", arguments, waitForExit, trimResult);
         }
 
-        private string RunProcess(string command, string arguments, bool waitForExit = true, bool trimResult = true)
+        private (string output, string error) RunProcess(string command, string arguments, bool waitForExit = true, bool trimResult = true)
         {
             var startInfo = new ProcessStartInfo(command, arguments) { CreateNoWindow = true, UseShellExecute = false, RedirectStandardOutput = true, RedirectStandardError = true };
             using (var process = new Process {StartInfo = startInfo})
@@ -98,15 +113,15 @@ namespace Xunit.Fixture.DockerDb
                 {
                     process.WaitForExit();
                     WriteDiagnostic($"({process.ExitCode}) {command} {process.StartInfo.Arguments}");
+                    var error = process.StandardError.ReadToEnd();
                     if (process.ExitCode != 0)
                     {
-                        var error = process.StandardError.ReadToEnd();
                         throw new ApplicationException(error);
                     }
-                    var result = process.StandardOutput.ReadToEnd();
-                    return trimResult ? result.TrimEnd('\n') : result;
+                    var output = process.StandardOutput.ReadToEnd();
+                    return trimResult ? (output.TrimEnd('\n'), error.TrimEnd('\n')) : (output, error);
                 }
-                return null;
+                return (null, null);
             }
         }
 
