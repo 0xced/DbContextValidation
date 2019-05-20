@@ -1,4 +1,6 @@
-﻿using Xunit.Fixture.DockerDb;
+﻿using System.Collections.Generic;
+using System.IO;
+using Xunit.Fixture.DockerDb;
 
 #if PROVIDER_MYSQL_POMELO
 namespace DbContextValidation.Tests.MySQL.Pomelo
@@ -18,14 +20,17 @@ namespace DbContextValidation.Tests.MySQL
 
         public System.Data.Common.DbProviderFactory ProviderFactory => MySql.Data.MySqlClient.MySqlClientFactory.Instance;
 
-        public string[] Arguments => new [] {
-            $"-e MYSQL_ROOT_PASSWORD={Password}",
-            $"-e MYSQL_DATABASE={Database}",
-            "-e MYSQL_ROOT_HOST=%",
-            $"--volume \"{SqlDirectory("SQL.MySQL")}:/docker-entrypoint-initdb.d:ro\"",
-            "--publish 3306/tcp",
-            "--detach",
-            "mysql/mysql-server:5.7",
+        public string ImageName => "mysql/mysql-server:5.7";
+
+        public override IReadOnlyDictionary<string, string> EnvironmentVariables => new Dictionary<string, string>
+        {
+            ["MYSQL_DATABASE"] = Database,
+            ["MYSQL_ROOT_PASSWORD"] = Password,
+            ["MYSQL_ROOT_HOST"] = "%",
         };
+
+        public ushort Port => 3306;
+
+        public override IReadOnlyDictionary<DirectoryInfo, string> Volumes => new Dictionary<DirectoryInfo, string> { [SqlDirectory("SQL.MySQL")] = "/docker-entrypoint-initdb.d" };
     }
 }

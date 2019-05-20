@@ -1,4 +1,6 @@
-﻿using Xunit.Fixture.DockerDb;
+﻿using System.Collections.Generic;
+using System.IO;
+using Xunit.Fixture.DockerDb;
 
 namespace DbContextValidation.Tests.Npgsql
 {
@@ -14,13 +16,16 @@ namespace DbContextValidation.Tests.Npgsql
 
         public System.Data.Common.DbProviderFactory ProviderFactory => global::Npgsql.NpgsqlFactory.Instance;
 
-        public string[] Arguments => new [] {
-            $"-e POSTGRES_PASSWORD={Password}",
-            $"-e POSTGRES_DB={Database}",
-            $"--volume \"{SqlDirectory("SQL.Common")}:/docker-entrypoint-initdb.d:ro\"",
-            "--publish 5432/tcp",
-            "--detach",
-            "postgres:10.5-alpine",
+        public string ImageName => "postgres:10.5-alpine";
+
+        public override IReadOnlyDictionary<string, string> EnvironmentVariables => new Dictionary<string, string>
+        {
+            ["POSTGRES_DB"] = Database,
+            ["POSTGRES_PASSWORD"] = Password,
         };
+
+        public ushort Port => 5432;
+
+        public override IReadOnlyDictionary<DirectoryInfo, string> Volumes => new Dictionary<DirectoryInfo, string> { [SqlDirectory("SQL.Common")] = "/docker-entrypoint-initdb.d" };
     }
 }

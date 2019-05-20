@@ -1,6 +1,8 @@
 using System;
 using System.Data;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using Xunit.Abstractions;
@@ -38,7 +40,36 @@ namespace Xunit.Fixture.DockerDb
 
             RunDocker($"stop \"{_configuration.ContainerName}\"", waitForExit: false);
         }
-        
+
+        // See https://github.com/docker/compose/blob/1.24.0/compose/config/types.py#L127-L136
+        private static string NormalizedPath(DirectoryInfo directory)
+        {
+            var segments = new Uri(directory.FullName).Segments;
+            // The drive must be lowercase, see https://docs.docker.com/toolbox/toolbox_install_windows/#optional-add-shared-directories
+            if (segments[1].EndsWith(":/"))
+                segments[1] = segments[1].Replace(":", "").ToLower();
+            return string.Join("", segments);
+        }
+
+        private string GetDockerRunArguments()
+        {
+            var volumes = _configuration.Volumes.Select(e => (hostDirectory: NormalizedPath(e.Key), containerDirectory: e.Value)).ToList();
+            if (volumes.Any(e => e.hostDirectory.Contains(":") || e.containerDirectory.Contains(":")))
+                throw new InvalidOperationException($"The '{nameof(_configuration.Volumes)}' mapping must not contain paths with the colon (:) character.");
+            
+            var environmentVariablesArguments = _configuration.EnvironmentVariables.Select(e => $"--env \"{e.Key}\"=\"{e.Value}\"");
+            var volumesArguments = volumes.Select(e => $"--volume \"{e.hostDirectory}:{e.containerDirectory}\"");
+            var arguments = environmentVariablesArguments.Concat(volumesArguments)
+                .Concat(new []
+                {
+                    $"--name \"{_configuration.ContainerName}\"",
+                    $"--publish {_configuration.Port}/tcp",
+                    "--detach",
+                    $"\"{_configuration.ImageName}\"",
+                });
+            return string.Join(" ", arguments);
+        }
+
         private string DockerContainerStart()
         {
             try
@@ -48,7 +79,8 @@ namespace Xunit.Fixture.DockerDb
             }
             catch (Exception e) when (e.Message.Contains("No such container"))
             {
-                RunDocker($"run --name \"{_configuration.ContainerName}\" " + string.Join(" ", _configuration.Arguments));
+                var arguments = GetDockerRunArguments();
+                RunDocker("run " + arguments);
             }
 
             var host = DockerGetHost();
@@ -158,12 +190,11 @@ namespace Xunit.Fixture.DockerDb
 
         private void RunScripts(IDbConnection connection)
         {
-            var scripts = _configuration.SqlScripts;
-            foreach (var script in scripts)
+            foreach (var statement in _configuration.SqlStatements)
             {
-                WriteDiagnostic($"Executing script{Environment.NewLine}{script}");
+                WriteDiagnostic($"Executing SQL statement{Environment.NewLine}{statement}");
                 var command = connection.CreateCommand();
-                command.CommandText = script;
+                command.CommandText = statement;
                 command.CommandType = CommandType.Text;
                 command.ExecuteNonQuery();
             }

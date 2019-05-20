@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -31,42 +32,37 @@ namespace DbContextValidation.Tests
         private readonly Lazy<string> _containerName = new Lazy<string>(() => Assembly.GetExecutingAssembly().ExportedTypes.Single(e => e.GetInterfaces().FirstOrDefault() == typeof(IClassFixture<DockerDatabaseFixture<Configuration>>)).Namespace);
         public virtual string ContainerName => _containerName.Value;
 
-        public virtual string[] SqlScripts => new string[0];
+        public virtual IReadOnlyDictionary<string, string> EnvironmentVariables => new Dictionary<string, string>();
 
-        protected static string SqlDirectory(string directoryName)
+        public virtual IReadOnlyDictionary<DirectoryInfo, string> Volumes => new Dictionary<DirectoryInfo, string>();
+
+        public virtual IEnumerable<string> SqlStatements => Enumerable.Empty<string>();
+
+        protected static IEnumerable<string> ReadSqlStatements(DirectoryInfo directory)
         {
-            var testsDirectory = TestsDirectory();
-            var sqlDirectory = Path.Combine(testsDirectory.FullName, directoryName);
-            if (!Directory.Exists(sqlDirectory))
-            {
-                throw new FileNotFoundException($"SQL directory not found ({sqlDirectory})", sqlDirectory);
-            }
-            return NormalizePath(sqlDirectory);
+            return directory.GetFiles("*.sql").OrderBy(file => file.Name).Select(file => File.ReadAllText(file.FullName));
         }
 
-        protected static string SqlFile(string fileName)
+        protected static DirectoryInfo SqlDirectory(string directoryName)
         {
             var testsDirectory = TestsDirectory();
-            var sqlFile = Path.Combine(testsDirectory.FullName, fileName);
-            if (!File.Exists(sqlFile))
+            var sqlDirectory = new DirectoryInfo(Path.Combine(testsDirectory.FullName, directoryName));
+            if (!sqlDirectory.Exists)
             {
-                throw new FileNotFoundException($"SQL file not found ({sqlFile})", sqlFile);
+                throw new FileNotFoundException($"SQL directory not found ({sqlDirectory.FullName})", sqlDirectory.FullName);
+            }
+            return sqlDirectory;
+        }
+
+        protected static FileInfo SqlFile(string fileName)
+        {
+            var testsDirectory = TestsDirectory();
+            var sqlFile = new FileInfo(Path.Combine(testsDirectory.FullName, fileName));
+            if (!sqlFile.Exists)
+            {
+                throw new FileNotFoundException($"SQL file not found ({sqlFile.FullName})", sqlFile.FullName);
             }
             return sqlFile;
-        }
-
-        // See https://github.com/docker/compose/blob/1.24.0/compose/config/types.py#L127-L136
-        private static string NormalizePath(string path)
-        {
-            try
-            {
-                return string.Join("", new Uri(path).Segments.Select(e => e.Replace(":", "")));
-            }
-            catch (UriFormatException)
-            {
-                // This is a already a unix-style path
-                return path;
-            }
         }
 
         private static DirectoryInfo TestsDirectory()

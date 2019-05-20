@@ -17,6 +17,8 @@ namespace DbContextValidation.Tests.SQLite
 
         public override string ContainerName => null;
 
-        public string[] Arguments => throw new NotSupportedException("SQLite doesn't require a Docker container.");
+        public string ImageName => throw new NotSupportedException("SQLite doesn't require a Docker container.");
+
+        public ushort Port => throw new NotSupportedException("SQLite doesn't require a Docker container.");
     }
 }

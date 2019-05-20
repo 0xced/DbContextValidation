@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Xunit.Fixture.DockerDb;
 
@@ -18,25 +19,10 @@ namespace DbContextValidation.Tests.Oracle
 
         public override TimeSpan Timeout => TimeSpan.FromSeconds(45);
 
-        public string[] Arguments => new [] {
-            "--publish 1521/tcp",
-            "--detach",
-            "quillbuilduser/oracle-18-xe:latest",
-        };
+        public string ImageName => "quillbuilduser/oracle-18-xe:latest";
 
-        public override string[] SqlScripts
-        {
-            get
-            {
-                var directory = SqlDirectory("SQL.Oracle");
-                return new []
-                {
-                    File.ReadAllText(Path.Combine(directory, "1. Drop tOrders.sql")),
-                    File.ReadAllText(Path.Combine(directory, "2. Drop tCustomers.sql")),
-                    File.ReadAllText(Path.Combine(directory, "3. Create tCustomers.sql")),
-                    File.ReadAllText(Path.Combine(directory, "4. Create tOrders.sql")),
-                };
-            }
-        }
+        public ushort Port => 1521;
+
+        public override IEnumerable<string> SqlStatements => ReadSqlStatements(SqlDirectory("SQL.Oracle"));
     }
 }

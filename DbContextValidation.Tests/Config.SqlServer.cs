@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using Xunit.Fixture.DockerDb;
 
 namespace DbContextValidation.Tests.SqlServer
@@ -17,13 +19,16 @@ namespace DbContextValidation.Tests.SqlServer
 
         public override TimeSpan Timeout => TimeSpan.FromSeconds(45);
 
-        public string[] Arguments => new [] {
-            "-e ACCEPT_EULA=Y",
-            $"-e MSSQL_SA_PASSWORD={Password}",
-            $"--volume \"{SqlDirectory("SQL.SqlServer")}:/docker-entrypoint-initdb.d:ro\"",
-            "--publish 1433/tcp",
-            "--detach",
-            "genschsa/mssql-server-linux:latest",
+        public string ImageName => "genschsa/mssql-server-linux:latest";
+
+        public override IReadOnlyDictionary<string, string> EnvironmentVariables => new Dictionary<string, string>
+        {
+            ["ACCEPT_EULA"] = "Y",
+            ["MSSQL_SA_PASSWORD"] = Password,
         };
+
+        public ushort Port => 1433;
+
+        public override IReadOnlyDictionary<DirectoryInfo, string> Volumes => new Dictionary<DirectoryInfo, string> { [SqlDirectory("SQL.SqlServer")] = "/docker-entrypoint-initdb.d" };
     }
 }

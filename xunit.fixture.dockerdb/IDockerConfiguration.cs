@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Data.Common;
+using System.IO;
 
 namespace Xunit.Fixture.DockerDb
 {
@@ -9,8 +11,12 @@ namespace Xunit.Fixture.DockerDb
 
         DbProviderFactory ProviderFactory { get; }
         TimeSpan Timeout { get; }
+
         string ContainerName { get; }
-        string[] Arguments { get; }
-        string[] SqlScripts { get; }
+        string ImageName { get; }
+        IReadOnlyDictionary<string, string> EnvironmentVariables { get; }
+        ushort Port { get; }
+        IReadOnlyDictionary<DirectoryInfo, string> Volumes { get; }
+        IEnumerable<string> SqlStatements { get; }
     }
 }

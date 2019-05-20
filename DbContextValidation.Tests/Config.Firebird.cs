@@ -1,4 +1,4 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
 using Xunit.Fixture.DockerDb;
 
 namespace DbContextValidation.Tests.Firebird
@@ -15,29 +15,18 @@ namespace DbContextValidation.Tests.Firebird
 
         public System.Data.Common.DbProviderFactory ProviderFactory => FirebirdSql.Data.FirebirdClient.FirebirdClientFactory.Instance;
 
-        public string[] Arguments => new [] {
-            $"-e FIREBIRD_DATABASE={Database}",
-            $"-e FIREBIRD_USER={User}",
-            $"-e FIREBIRD_PASSWORD={Password}",
-            "-e EnableWireCrypt=true",
-            "--publish 3050/tcp",
-            "--detach",
-            "jacobalberty/firebird:3.0.4",
+        public string ImageName => "jacobalberty/firebird:3.0.4";
+
+        public override IReadOnlyDictionary<string, string> EnvironmentVariables => new Dictionary<string, string>
+        {
+            ["FIREBIRD_DATABASE"] = Database,
+            ["FIREBIRD_USER"] = User,
+            ["FIREBIRD_PASSWORD"] = Password,
+            ["EnableWireCrypt"] = "true",
         };
 
-        public override string[] SqlScripts
-        {
-            get
-            {
-                var directory = SqlDirectory("SQL.Firebird");
-                return new []
-                {
-                    File.ReadAllText(Path.Combine(directory, "1. Drop tOrders.sql")),
-                    File.ReadAllText(Path.Combine(directory, "2. Drop tCustomers.sql")),
-                    File.ReadAllText(Path.Combine(directory, "3. Create tCustomers.sql")),
-                    File.ReadAllText(Path.Combine(directory, "4. Create tOrders.sql")),
-                };
-            }
-        }
+        public ushort Port => 3050;
+
+        public override IEnumerable<string> SqlStatements => ReadSqlStatements(SqlDirectory("SQL.Firebird"));
     }
 }
