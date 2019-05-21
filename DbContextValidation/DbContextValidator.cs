@@ -41,11 +41,18 @@ namespace DbContextValidation.EF6
             _selectStatement = selectStatement ?? DefaultSelectStatement;
         }
 
+        /// <param name="context">The context</param>
+        /// <returns>An enumerable collection of the database tables defined in the given context.</returns>
+        protected virtual IEnumerable<Table> GetModelTables(DbContext context)
+        {
+            return context.GetModelTables();
+        }
+
         /// <inheritdoc />
         public async Task<IReadOnlyCollection<ValidationError>> ValidateContextAsync(DbContext context, IProgress<Table> progress = null, CancellationToken cancellationToken = default)
         {
             var errors = new List<ValidationError>();
-            var modelTables = context.GetModelTables();
+            var modelTables = GetModelTables(context);
             foreach (var modelTable in modelTables)
             {
                 cancellationToken.ThrowIfCancellationRequested();
