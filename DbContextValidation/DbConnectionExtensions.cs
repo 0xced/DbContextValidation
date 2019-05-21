@@ -11,7 +11,7 @@ namespace DbContextValidation.EF6
 {
     internal static class DbConnectionExtensions
     {
-        internal static async Task<Table> GetTableAsync(this DbConnection connection, SelectStatement selectStatement, string schema, string tableName)
+        internal static async Task<Table> GetTableAsync(this DbConnection connection, string schema, string tableName)
         {
             var columnNames = new List<string>();
             var wasClosed = connection.State == ConnectionState.Closed;
@@ -20,7 +20,7 @@ namespace DbContextValidation.EF6
 
             var dbProviderFactory = connection.GetProviderFactory();
             var commandBuilder = dbProviderFactory.CreateCommandBuilder();
-            var commandText = selectStatement(schema, tableName, commandBuilder);
+            var commandText = SelectStatement(schema, tableName, commandBuilder);
             try
             {
                 using (var command = connection.CreateCommand())
@@ -46,6 +46,20 @@ namespace DbContextValidation.EF6
                     connection.Close();
             }
             return new Table(schema, tableName, columnNames);
+        }
+
+        /// <param name="schema">The schema of the table. May be <code>null</code> as some providers (e.g. SQLite, MySQL) do not support schemata.</param>
+        /// <param name="tableName">The name of the table.</param>
+        /// <param name="commandBuilder">The <see cref="DbCommandBuilder"/> of the provider, may be <code>null</code>.</param>
+        /// <returns>A select statement used to retrieve all column names in a database.</returns>
+        private static string SelectStatement(string schema, string tableName, DbCommandBuilder commandBuilder)
+        {
+            var hasSchema = !string.IsNullOrEmpty(schema);
+            var quotedSchema = hasSchema ? commandBuilder?.QuoteIdentifier(schema) ?? schema : null;
+            var quotedTableName = commandBuilder?.QuoteIdentifier(tableName) ?? tableName;
+            var schemaSeparator = commandBuilder?.SchemaSeparator ?? ".";
+            var tableDescription = hasSchema ? quotedSchema + schemaSeparator + quotedTableName : quotedTableName;
+            return $"SELECT * FROM {tableDescription} WHERE 1=0";
         }
 
         // ReSharper disable once SuggestBaseTypeForParameter
