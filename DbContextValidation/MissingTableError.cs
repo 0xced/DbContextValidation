@@ -9,7 +9,12 @@ namespace DbContextValidation.EF6
     /// </summary>
     public class MissingTableError : ValidationError
     {
-        internal MissingTableError(Table table, TableNotFoundException exception) : base(table)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MissingTableError"/> class.
+        /// </summary>
+        /// <param name="table">The missing table that is defined in the DbContext model.</param>
+        /// <param name="exception">The exception that occured when trying to get the table.</param>
+        public MissingTableError(Table table, TableNotFoundException exception) : base(table)
         {
             MissingTableException = exception;
         }

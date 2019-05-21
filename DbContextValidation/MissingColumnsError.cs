@@ -11,7 +11,12 @@ namespace DbContextValidation.EF6
     /// </summary>
     public class MissingColumnsError : ValidationError
     {
-        internal MissingColumnsError(Table table, IReadOnlyCollection<string> columnNames) : base(table)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MissingColumnsError"/> class.
+        /// </summary>
+        /// <param name="table">The table with missing columns that is defined in the DbContext model.</param>
+        /// <param name="columnNames">The names of the missing columns.</param>
+        public MissingColumnsError(Table table, IReadOnlyCollection<string> columnNames) : base(table)
         {
             ColumnNames = columnNames;
         }

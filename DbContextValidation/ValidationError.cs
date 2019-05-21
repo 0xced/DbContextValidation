@@ -9,7 +9,11 @@ namespace DbContextValidation.EF6
     /// </summary>
     public abstract class ValidationError
     {
-        internal ValidationError(Table table)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ValidationError"/> class.
+        /// </summary>
+        /// <param name="table">The table that is defined in the DbContext model.</param>
+        protected ValidationError(Table table)
         {
             Table = table;
         }
