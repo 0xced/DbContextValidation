@@ -4,7 +4,7 @@
     <DefineConstants>$(DefineConstants);PROVIDER_ORACLE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Oracle.ManagedDataAccess.EntityFramework" Version="18.3.0" />
+    <PackageReference Include="Oracle.ManagedDataAccess.EntityFramework" Version="19.3.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\DbContextValidation.Tests\Config.Oracle.cs" />
