@@ -4,7 +4,7 @@
     <DefineConstants>$(DefineConstants);PROVIDER_MYSQL</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="MySql.Data.EntityFramework" Version="8.0.16" />
+    <PackageReference Include="MySql.Data.EntityFramework" Version="8.0.17" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\DbContextValidation.Tests\Config.MySQL.cs" />
