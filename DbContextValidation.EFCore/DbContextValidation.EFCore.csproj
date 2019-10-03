@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <!-- There is no "Package" UI in JetBrains Rider, see https://stackoverflow.com/questions/42138418/equivalent-to-assemblyinfo-in-dotnet-core-csproj/42143079#42143079 -->
     <Version>1.0.0</Version>
     <Authors>Cédric Luthi</Authors>
     <PackageId>DbContextValidation.EFCore</PackageId>
