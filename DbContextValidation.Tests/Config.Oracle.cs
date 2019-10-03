@@ -9,9 +9,9 @@ namespace DbContextValidation.Tests.Oracle
     {
         public const string Schema = null;
 
-        private const string Sid = "XE";
+        private const string Sid = "xe";
         private const string User = "system";
-        private const string Password = "Oracle18";
+        private const string Password = "oracle";
 
         public string ConnectionString(string host, ushort port) => $"User Id={User};Password={Password};Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST={host})(PORT={port}))(CONNECT_DATA=(SID={Sid})))";
 
@@ -19,7 +19,7 @@ namespace DbContextValidation.Tests.Oracle
 
         public override TimeSpan Timeout => TimeSpan.FromSeconds(45);
 
-        public string ImageName => "quillbuilduser/oracle-18-xe:latest";
+        public string ImageName => "wnameless/oracle-xe-11g-r2";
 
         public ushort Port => 1521;
 
