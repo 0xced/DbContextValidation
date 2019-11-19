@@ -11,8 +11,8 @@
     </ItemGroup>
   </Target>
   <ItemGroup>
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.111" GeneratePathProperty="true" />
-    <PackageReference Include="System.Data.SQLite.EF6" Version="1.0.111" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.112" GeneratePathProperty="true" />
+    <PackageReference Include="System.Data.SQLite.EF6" Version="1.0.112" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\DbContextValidation.Tests\Config.SQLite.cs" />
