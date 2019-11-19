@@ -4,7 +4,7 @@
     <DefineConstants>$(DefineConstants);PROVIDER_MYSQL_POMELO</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.0" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="2.2.6" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\DbContextValidation.Tests\Config.MySQL.cs" />
