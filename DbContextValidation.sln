@@ -49,6 +49,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EFCore3.SqlServer", "DbContextValidation.Tests.EFCore3.SqlServer\DbContextValidation.Tests.EFCore3.SqlServer.csproj", "{EE2F4EF1-1C50-4E9C-B60C-1D7B419C81FD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EFCore3.MySQL.Pomelo", "DbContextValidation.Tests.EFCore3.MySQL.Pomelo\DbContextValidation.Tests.EFCore3.MySQL.Pomelo.csproj", "{FF50415E-A4DA-4616-9BB9-D1A44668C7FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -135,5 +137,9 @@ Global
 		{71AEEEE3-11CB-4616-98F5-35ABB66EA9B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71AEEEE3-11CB-4616-98F5-35ABB66EA9B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71AEEEE3-11CB-4616-98F5-35ABB66EA9B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF50415E-A4DA-4616-9BB9-D1A44668C7FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF50415E-A4DA-4616-9BB9-D1A44668C7FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF50415E-A4DA-4616-9BB9-D1A44668C7FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF50415E-A4DA-4616-9BB9-D1A44668C7FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
