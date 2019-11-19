@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using Xunit.Fixture.DockerDb;
+using Xunit.Fixture.Docker;
 
 #if PROVIDER_MYSQL_POMELO
 namespace DbContextValidation.Tests.MySQL.Pomelo
@@ -8,7 +8,7 @@ namespace DbContextValidation.Tests.MySQL.Pomelo
 namespace DbContextValidation.Tests.MySQL
 #endif
 {
-    public class Configuration : ConfigurationBase, IDockerDatabaseConfiguration
+    public class Configuration : ConfigurationBase, IDockerContainerConfiguration, IDatabaseConfiguration
     {
         public const string Schema = null;
 

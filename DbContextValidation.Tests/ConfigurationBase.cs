@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Xunit;
-using Xunit.Fixture.DockerDb;
+using Xunit.Fixture.Docker;
 
 #if PROVIDER_FIREBIRD
 namespace DbContextValidation.Tests.Firebird

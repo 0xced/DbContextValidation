@@ -41,7 +41,7 @@ EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EFCore.Oracle", "DbContextValidation.Tests.EFCore.Oracle\DbContextValidation.Tests.EFCore.Oracle.csproj", "{96686015-DF03-46E8-86CD-87C0675FE181}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xunit.fixture.dockerdb", "xunit.fixture.dockerdb\xunit.fixture.dockerdb.csproj", "{AE1C2396-7C3A-4D9A-A9F8-6685C68B83BA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xunit.Fixture.Docker", "..\Xunit.Fixture.Docker\Xunit.Fixture.Docker\Xunit.Fixture.Docker.csproj", "{71AEEEE3-11CB-4616-98F5-35ABB66EA9B9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EFCore3.Npgsql", "DbContextValidation.Tests.EFCore3.Npgsql\DbContextValidation.Tests.EFCore3.Npgsql.csproj", "{8C02FCCF-2F12-42B7-98D5-C5A172EE503D}"
 EndProject
@@ -131,5 +131,9 @@ Global
 		{EE2F4EF1-1C50-4E9C-B60C-1D7B419C81FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE2F4EF1-1C50-4E9C-B60C-1D7B419C81FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE2F4EF1-1C50-4E9C-B60C-1D7B419C81FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71AEEEE3-11CB-4616-98F5-35ABB66EA9B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71AEEEE3-11CB-4616-98F5-35ABB66EA9B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71AEEEE3-11CB-4616-98F5-35ABB66EA9B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71AEEEE3-11CB-4616-98F5-35ABB66EA9B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using Xunit.Fixture.DockerDb;
+using Xunit.Fixture.Docker;
 
 namespace DbContextValidation.Tests.Firebird
 {
-    public class Configuration : ConfigurationBase, IDockerDatabaseConfiguration
+    public class Configuration : ConfigurationBase, IDockerContainerConfiguration, IDatabaseConfiguration
     {
         public const string Schema = null;
 

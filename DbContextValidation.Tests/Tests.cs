@@ -13,7 +13,7 @@ using DbContextValidation.EFCore;
 using Microsoft.EntityFrameworkCore;
 #endif
 using Xunit;
-using Xunit.Fixture.DockerDb;
+using Xunit.Fixture.Docker;
 
 #if PROVIDER_FIREBIRD
 namespace DbContextValidation.Tests.Firebird

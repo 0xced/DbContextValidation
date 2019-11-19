@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using Xunit.Fixture.DockerDb;
+using Xunit.Fixture.Docker;
 
 namespace DbContextValidation.Tests.Npgsql
 {
-    public class Configuration : ConfigurationBase, IDockerDatabaseConfiguration
+    public class Configuration : ConfigurationBase, IDockerContainerConfiguration, IDatabaseConfiguration
     {
         public const string Schema = "public";
 
