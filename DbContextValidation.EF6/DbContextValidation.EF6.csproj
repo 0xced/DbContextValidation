@@ -1,10 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net45</TargetFramework>
-    <Authors>Cédric Luthi</Authors>
     <NeutralLanguage>en</NeutralLanguage>
+    <Authors>Cédric Luthi</Authors>
     <Copyright>Copyright © Cédric Luthi</Copyright>
     <Description>DbContext validation against a db schema with Entity Framework 6</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/0xced/DbContextValidation</PackageProjectUrl>
+    <PackageTags>EntityFramework EF EF6 DbContext</PackageTags>
+    <RepositoryUrl>https://github.com/0xced/DbContextValidation</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <ItemGroup>

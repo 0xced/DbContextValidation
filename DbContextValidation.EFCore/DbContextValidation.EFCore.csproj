@@ -1,10 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Authors>Cédric Luthi</Authors>
     <NeutralLanguage>en</NeutralLanguage>
+    <Authors>Cédric Luthi</Authors>
     <Copyright>Copyright © Cédric Luthi</Copyright>
     <Description>DbContext validation against a db schema with Entity Framework Core</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/0xced/DbContextValidation</PackageProjectUrl>
+    <PackageTags>EntityFramework EF EFCore DbContext</PackageTags>
+    <RepositoryUrl>https://github.com/0xced/DbContextValidation</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <ItemGroup>
