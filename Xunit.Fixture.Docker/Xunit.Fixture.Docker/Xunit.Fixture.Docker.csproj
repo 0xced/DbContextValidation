@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+      <!-- Can't use netstandard2.0 else we get the following exception: Could not load file or assembly xunit.execution.dotnet -->
+      <TargetFrameworks>net46;netcoreapp2.1</TargetFrameworks>
+      <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="xunit.extensibility.execution" Version="2.4.1" />
+      <PackageReference Include="System.ValueTuple" Version="4.5.0" Condition="'$(TargetFrameworkIdentifier)'=='.NETFramework'" />
+    </ItemGroup>
+
+</Project>

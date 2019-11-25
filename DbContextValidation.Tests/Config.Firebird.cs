@@ -25,8 +25,6 @@ namespace DbContextValidation.Tests.Firebird
             ["EnableWireCrypt"] = "true",
         };
 
-        public ushort Port => 3050;
-
         public override IEnumerable<string> SqlStatements => ReadSqlStatements(SqlDirectory("SQL.Firebird"));
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using Xunit.Fixture.Docker;
+﻿using Xunit.Fixture.Docker;
 
 namespace DbContextValidation.Tests.SQLite
 {
@@ -15,10 +14,6 @@ namespace DbContextValidation.Tests.SQLite
         public System.Data.Common.DbProviderFactory ProviderFactory => Microsoft.Data.Sqlite.SqliteFactory.Instance;
 #endif
 
-        public override string ContainerName => null;
-
-        public string ImageName => null; //throw new NotSupportedException("SQLite doesn't require a Docker container.");
-
-        public ushort Port => 0; //throw new NotSupportedException("SQLite doesn't require a Docker container.");
+        public string ImageName => null;
     }
 }

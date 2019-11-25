@@ -24,8 +24,6 @@ namespace DbContextValidation.Tests.Npgsql
             ["POSTGRES_PASSWORD"] = Password,
         };
 
-        public ushort Port => 5432;
-
         public override IReadOnlyDictionary<DirectoryInfo, string> Volumes => new Dictionary<DirectoryInfo, string> { [SqlDirectory("SQL.Common")] = "/docker-entrypoint-initdb.d" };
     }
 }

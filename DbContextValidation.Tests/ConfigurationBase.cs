@@ -32,6 +32,8 @@ namespace DbContextValidation.Tests
         private readonly Lazy<string> _containerName = new Lazy<string>(() => Assembly.GetExecutingAssembly().ExportedTypes.Single(e => e.GetInterfaces().FirstOrDefault() == typeof(IClassFixture<DockerDatabaseFixture<Configuration>>)).Namespace);
         public virtual string ContainerName => _containerName.Value;
 
+        public virtual ushort? Port => null;
+
         public virtual IReadOnlyDictionary<string, string> EnvironmentVariables => new Dictionary<string, string>();
 
         public virtual IReadOnlyDictionary<DirectoryInfo, string> Volumes => new Dictionary<DirectoryInfo, string>();
@@ -76,7 +78,7 @@ namespace DbContextValidation.Tests
             else
             {
                 var assemblyDirectory = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory;
-                var targetFrameworkDirectory = assemblyDirectory?.Name == "publish" ? assemblyDirectory.Parent?.Parent : assemblyDirectory; 
+                var targetFrameworkDirectory = assemblyDirectory?.Name == "publish" ? assemblyDirectory.Parent?.Parent : assemblyDirectory;
                 var solutionDirectory = targetFrameworkDirectory?.Parent?.Parent?.Parent?.Parent ?? throw new FileNotFoundException("Solution directory not found");
                 testsDirectoryInfo = new DirectoryInfo(Path.Combine(solutionDirectory.FullName, "DbContextValidation.Tests"));
             }

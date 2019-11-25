@@ -41,8 +41,6 @@ EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EFCore.Oracle", "DbContextValidation.Tests.EFCore.Oracle\DbContextValidation.Tests.EFCore.Oracle.csproj", "{96686015-DF03-46E8-86CD-87C0675FE181}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xunit.Fixture.Docker", "..\Xunit.Fixture.Docker\Xunit.Fixture.Docker\Xunit.Fixture.Docker.csproj", "{71AEEEE3-11CB-4616-98F5-35ABB66EA9B9}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EFCore3.Npgsql", "DbContextValidation.Tests.EFCore3.Npgsql\DbContextValidation.Tests.EFCore3.Npgsql.csproj", "{8C02FCCF-2F12-42B7-98D5-C5A172EE503D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EFCore3.SQLite", "DbContextValidation.Tests.EFCore3.SQLite\DbContextValidation.Tests.EFCore3.SQLite.csproj", "{80387AF8-1927-4EC1-A4C8-E293B9965BA0}"
@@ -50,6 +48,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EFCore3.SqlServer", "DbContextValidation.Tests.EFCore3.SqlServer\DbContextValidation.Tests.EFCore3.SqlServer.csproj", "{EE2F4EF1-1C50-4E9C-B60C-1D7B419C81FD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EFCore3.MySQL.Pomelo", "DbContextValidation.Tests.EFCore3.MySQL.Pomelo\DbContextValidation.Tests.EFCore3.MySQL.Pomelo.csproj", "{FF50415E-A4DA-4616-9BB9-D1A44668C7FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xunit.Fixture.Docker", "Xunit.Fixture.Docker\Xunit.Fixture.Docker\Xunit.Fixture.Docker.csproj", "{71AEEEE3-11CB-4616-98F5-35ABB66EA9B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
