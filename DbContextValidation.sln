@@ -1,10 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.EF6", "DbContextValidation.EF6\DbContextValidation.EF6.csproj", "{5E5057B0-3FF8-48CA-B925-F5BA17CA64D9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.EF6", "DbContextValidation\EF6\DbContextValidation.EF6.csproj", "{5E5057B0-3FF8-48CA-B925-F5BA17CA64D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.EFCore", "DbContextValidation.EFCore\DbContextValidation.EFCore.csproj", "{CDB94E4C-9A46-42CA-AB16-AC46BBC60B88}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "DbContextValidation", "DbContextValidation\DbContextValidation.shproj", "{F9569881-513F-46AF-8BC8-CE5E31A3DEB8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.EFCore", "DbContextValidation\EFCore\DbContextValidation.EFCore.csproj", "{CDB94E4C-9A46-42CA-AB16-AC46BBC60B88}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "DbContextValidation.Tests", "DbContextValidation.Tests\DbContextValidation.Tests.shproj", "{FD83F4DD-8750-4D33-B8EE-0E0A2019F88C}"
 EndProject
