@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <DefineConstants>$(DefineConstants);PROVIDER_NPGSQL</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.2.4" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\DbContextValidation.Tests\Config.Npgsql.cs" />
+  </ItemGroup>
+</Project>

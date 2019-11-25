@@ -1,0 +1,21 @@
+<Project>
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="5.9.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(MSBuildThisFileDirectory)\..\Xunit.Fixture.Docker\Xunit.Fixture.Docker\Xunit.Fixture.Docker.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)\ConfigurationBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)\Context.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)\Tests.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)\Entities\*.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildThisFileDirectory)\..\Directory.Build.props" />
+</Project>

@@ -79,7 +79,7 @@ namespace DbContextValidation.Tests
             {
                 var assemblyDirectory = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory;
                 var targetFrameworkDirectory = assemblyDirectory?.Name == "publish" ? assemblyDirectory.Parent?.Parent : assemblyDirectory;
-                var solutionDirectory = targetFrameworkDirectory?.Parent?.Parent?.Parent?.Parent ?? throw new FileNotFoundException("Solution directory not found");
+                var solutionDirectory = targetFrameworkDirectory?.Parent?.Parent?.Parent?.Parent?.Parent?.Parent ?? throw new FileNotFoundException("Solution directory not found");
                 testsDirectoryInfo = new DirectoryInfo(Path.Combine(solutionDirectory.FullName, "DbContextValidation.Tests"));
             }
             if (!testsDirectoryInfo.Exists)

@@ -1,6 +1,0 @@
-<Project>
-  <ItemGroup>
-    <ProjectReference Include="..\DbContextValidation.EF6\DbContextValidation.EF6.csproj" />
-  </ItemGroup>
-  <Import Project="DbContextValidation.Tests.props" />
-</Project>

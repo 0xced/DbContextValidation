@@ -4,50 +4,56 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.EF6", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.EFCore", "DbContextValidation\EFCore\DbContextValidation.EFCore.csproj", "{CDB94E4C-9A46-42CA-AB16-AC46BBC60B88}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "DbContextValidation.Tests", "DbContextValidation.Tests\DbContextValidation.Tests.shproj", "{FD83F4DD-8750-4D33-B8EE-0E0A2019F88C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EFCore.Npgsql", "DbContextValidation.Tests.EFCore.Npgsql\DbContextValidation.Tests.EFCore.Npgsql.csproj", "{DB85519B-A8BD-433E-87BE-A3D61EDCB0AB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EF6.Npgsql", "DbContextValidation.Tests.EF6.Npgsql\DbContextValidation.Tests.EF6.Npgsql.csproj", "{8CE4038B-6865-4F4F-838E-DBFA5D0B08F5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EF6.SQLite", "DbContextValidation.Tests.EF6.SQLite\DbContextValidation.Tests.EF6.SQLite.csproj", "{78313926-8712-4EB1-9A9F-2296F7C12B47}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EFCore.SQLite", "DbContextValidation.Tests.EFCore.SQLite\DbContextValidation.Tests.EFCore.SQLite.csproj", "{705C7586-1270-490A-BB8D-7C6E33A742DE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EFCore.MySQL", "DbContextValidation.Tests.EFCore.MySQL\DbContextValidation.Tests.EFCore.MySQL.csproj", "{2E495A48-B063-45D7-AA84-0F4895EBEBAB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EF6.MySQL", "DbContextValidation.Tests.EF6.MySQL\DbContextValidation.Tests.EF6.MySQL.csproj", "{3F3EF38E-EFE9-44A6-AF30-D4DDAF5014BA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EFCore.SqlServer", "DbContextValidation.Tests.EFCore.SqlServer\DbContextValidation.Tests.EFCore.SqlServer.csproj", "{74F38B54-EC0E-44DD-9F26-DC62A78B1EF2}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EF6.SqlServer", "DbContextValidation.Tests.EF6.SqlServer\DbContextValidation.Tests.EF6.SqlServer.csproj", "{069D4810-4E3A-42D2-9EDD-516778562B20}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EFCore.MySQL.Pomelo", "DbContextValidation.Tests.EFCore.MySQL.Pomelo\DbContextValidation.Tests.EFCore.MySQL.Pomelo.csproj", "{F853F82D-6364-4DCC-BAF1-3ACB0073E6B9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EF6.Firebird", "DbContextValidation.Tests.EF6.Firebird\DbContextValidation.Tests.EF6.Firebird.csproj", "{4A87E902-B841-4697-87F1-7062C6D5BD08}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EFCore.Firebird", "DbContextValidation.Tests.EFCore.Firebird\DbContextValidation.Tests.EFCore.Firebird.csproj", "{D496D8F3-77B6-4006-9ED4-5F66D4448E3E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EF6.Oracle", "DbContextValidation.Tests.EF6.Oracle\DbContextValidation.Tests.EF6.Oracle.csproj", "{F0649B94-7E7E-4CB7-8638-58EF03266EE8}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DbContextValidation.Tests.props", "DbContextValidation.Tests.props", "{649B128C-8697-42BA-9734-0D42F42F83FC}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DbContextValidation.Tests", "DbContextValidation.Tests", "{649B128C-8697-42BA-9734-0D42F42F83FC}"
 ProjectSection(SolutionItems) = preProject
-	DbContextValidation.Tests\DbContextValidation.Tests.EF6.props = DbContextValidation.Tests\DbContextValidation.Tests.EF6.props
-	DbContextValidation.Tests\DbContextValidation.Tests.EFCore.props = DbContextValidation.Tests\DbContextValidation.Tests.EFCore.props
-	DbContextValidation.Tests\DbContextValidation.Tests.props = DbContextValidation.Tests\DbContextValidation.Tests.props
+	DbContextValidation.Tests\Directory.Build.props = DbContextValidation.Tests\Directory.Build.props
 EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EFCore.Oracle", "DbContextValidation.Tests.EFCore.Oracle\DbContextValidation.Tests.EFCore.Oracle.csproj", "{96686015-DF03-46E8-86CD-87C0675FE181}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EF6", "EF6", "{968AE637-6F4B-476B-AB1D-D61C70309EB1}"
+ProjectSection(SolutionItems) = preProject
+	DbContextValidation.Tests\EF6\Directory.Build.props = DbContextValidation.Tests\EF6\Directory.Build.props
+EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EFCore3.Npgsql", "DbContextValidation.Tests.EFCore3.Npgsql\DbContextValidation.Tests.EFCore3.Npgsql.csproj", "{8C02FCCF-2F12-42B7-98D5-C5A172EE503D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EF6.Firebird", "DbContextValidation.Tests\EF6\Firebird\DbContextValidation.Tests.EF6.Firebird.csproj", "{4A87E902-B841-4697-87F1-7062C6D5BD08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EFCore3.SQLite", "DbContextValidation.Tests.EFCore3.SQLite\DbContextValidation.Tests.EFCore3.SQLite.csproj", "{80387AF8-1927-4EC1-A4C8-E293B9965BA0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EF6.MySQL", "DbContextValidation.Tests\EF6\MySQL\DbContextValidation.Tests.EF6.MySQL.csproj", "{3F3EF38E-EFE9-44A6-AF30-D4DDAF5014BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EFCore3.SqlServer", "DbContextValidation.Tests.EFCore3.SqlServer\DbContextValidation.Tests.EFCore3.SqlServer.csproj", "{EE2F4EF1-1C50-4E9C-B60C-1D7B419C81FD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EF6.Npgsql", "DbContextValidation.Tests\EF6\Npgsql\DbContextValidation.Tests.EF6.Npgsql.csproj", "{8CE4038B-6865-4F4F-838E-DBFA5D0B08F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EFCore3.MySQL.Pomelo", "DbContextValidation.Tests.EFCore3.MySQL.Pomelo\DbContextValidation.Tests.EFCore3.MySQL.Pomelo.csproj", "{FF50415E-A4DA-4616-9BB9-D1A44668C7FC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EF6.Oracle", "DbContextValidation.Tests\EF6\Oracle\DbContextValidation.Tests.EF6.Oracle.csproj", "{F0649B94-7E7E-4CB7-8638-58EF03266EE8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EF6.SQLite", "DbContextValidation.Tests\EF6\SQLite\DbContextValidation.Tests.EF6.SQLite.csproj", "{78313926-8712-4EB1-9A9F-2296F7C12B47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EF6.SqlServer", "DbContextValidation.Tests\EF6\SqlServer\DbContextValidation.Tests.EF6.SqlServer.csproj", "{069D4810-4E3A-42D2-9EDD-516778562B20}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EFCore", "EFCore", "{77821D8A-2123-497C-A009-DC0EE74CD7FC}"
+ProjectSection(SolutionItems) = preProject
+	DbContextValidation.Tests\EFCore\Directory.Build.props = DbContextValidation.Tests\EFCore\Directory.Build.props
+EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EFCore.Firebird", "DbContextValidation.Tests\EFCore\Firebird\DbContextValidation.Tests.EFCore.Firebird.csproj", "{11A8D88F-CA02-4062-A61C-21757DAFEB82}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EFCore.MySQL", "DbContextValidation.Tests\EFCore\MySQL\DbContextValidation.Tests.EFCore.MySQL.csproj", "{9D5B65AD-7B6C-4E00-84FB-5D4FE7871D9F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EFCore.MySQL.Pomelo", "DbContextValidation.Tests\EFCore\MySQL.Pomelo\DbContextValidation.Tests.EFCore.MySQL.Pomelo.csproj", "{1BF3D4C7-952D-460A-BCF6-C9DA8CC76FC1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EFCore.Npgsql", "DbContextValidation.Tests\EFCore\Npgsql\DbContextValidation.Tests.EFCore.Npgsql.csproj", "{F1AC71E4-7757-4405-A936-74EEC6465774}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EFCore.Oracle", "DbContextValidation.Tests\EFCore\Oracle\DbContextValidation.Tests.EFCore.Oracle.csproj", "{DCE331A3-5620-4CDC-9ACF-038817E8AADC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EFCore.SQLite", "DbContextValidation.Tests\EFCore\SQLite\DbContextValidation.Tests.EFCore.SQLite.csproj", "{30380B94-DFFE-451D-B1C8-48EFFF33247A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EFCore.SqlServer", "DbContextValidation.Tests\EFCore\SqlServer\DbContextValidation.Tests.EFCore.SqlServer.csproj", "{68D937B1-1C17-479F-B7D8-42D8F3240E71}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Xunit.Fixture.Docker", "Xunit.Fixture.Docker\Xunit.Fixture.Docker\Xunit.Fixture.Docker.csproj", "{71AEEEE3-11CB-4616-98F5-35ABB66EA9B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EFCore3.MySQL.Pomelo", "DbContextValidation.Tests\EFCore3\MySQL.Pomelo\DbContextValidation.Tests.EFCore3.MySQL.Pomelo.csproj", "{7F0B0384-C5CF-45C9-A5AA-D4D5E7171036}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EFCore3.Npgsql", "DbContextValidation.Tests\EFCore3\Npgsql\DbContextValidation.Tests.EFCore3.Npgsql.csproj", "{6EC0AA7F-52AF-4365-AA74-CF20E6323373}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EFCore3.SQLite", "DbContextValidation.Tests\EFCore3\SQLite\DbContextValidation.Tests.EFCore3.SQLite.csproj", "{C7AF5F01-E4E7-4FCE-8692-A58D9DD10002}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EFCore3.SqlServer", "DbContextValidation.Tests\EFCore3\SqlServer\DbContextValidation.Tests.EFCore3.SqlServer.csproj", "{81D5E268-9200-4A54-B6E1-AADB47F051BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,10 +69,6 @@ Global
 		{CDB94E4C-9A46-42CA-AB16-AC46BBC60B88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CDB94E4C-9A46-42CA-AB16-AC46BBC60B88}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CDB94E4C-9A46-42CA-AB16-AC46BBC60B88}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DB85519B-A8BD-433E-87BE-A3D61EDCB0AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DB85519B-A8BD-433E-87BE-A3D61EDCB0AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DB85519B-A8BD-433E-87BE-A3D61EDCB0AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DB85519B-A8BD-433E-87BE-A3D61EDCB0AB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8CE4038B-6865-4F4F-838E-DBFA5D0B08F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8CE4038B-6865-4F4F-838E-DBFA5D0B08F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8CE4038B-6865-4F4F-838E-DBFA5D0B08F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -75,69 +77,94 @@ Global
 		{78313926-8712-4EB1-9A9F-2296F7C12B47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78313926-8712-4EB1-9A9F-2296F7C12B47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78313926-8712-4EB1-9A9F-2296F7C12B47}.Release|Any CPU.Build.0 = Release|Any CPU
-		{705C7586-1270-490A-BB8D-7C6E33A742DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{705C7586-1270-490A-BB8D-7C6E33A742DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{705C7586-1270-490A-BB8D-7C6E33A742DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{705C7586-1270-490A-BB8D-7C6E33A742DE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2E495A48-B063-45D7-AA84-0F4895EBEBAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2E495A48-B063-45D7-AA84-0F4895EBEBAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2E495A48-B063-45D7-AA84-0F4895EBEBAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2E495A48-B063-45D7-AA84-0F4895EBEBAB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3F3EF38E-EFE9-44A6-AF30-D4DDAF5014BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3F3EF38E-EFE9-44A6-AF30-D4DDAF5014BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F3EF38E-EFE9-44A6-AF30-D4DDAF5014BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F3EF38E-EFE9-44A6-AF30-D4DDAF5014BA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{74F38B54-EC0E-44DD-9F26-DC62A78B1EF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{74F38B54-EC0E-44DD-9F26-DC62A78B1EF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{74F38B54-EC0E-44DD-9F26-DC62A78B1EF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{74F38B54-EC0E-44DD-9F26-DC62A78B1EF2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{069D4810-4E3A-42D2-9EDD-516778562B20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{069D4810-4E3A-42D2-9EDD-516778562B20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{069D4810-4E3A-42D2-9EDD-516778562B20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{069D4810-4E3A-42D2-9EDD-516778562B20}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F853F82D-6364-4DCC-BAF1-3ACB0073E6B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F853F82D-6364-4DCC-BAF1-3ACB0073E6B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F853F82D-6364-4DCC-BAF1-3ACB0073E6B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F853F82D-6364-4DCC-BAF1-3ACB0073E6B9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4A87E902-B841-4697-87F1-7062C6D5BD08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4A87E902-B841-4697-87F1-7062C6D5BD08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A87E902-B841-4697-87F1-7062C6D5BD08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A87E902-B841-4697-87F1-7062C6D5BD08}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D496D8F3-77B6-4006-9ED4-5F66D4448E3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D496D8F3-77B6-4006-9ED4-5F66D4448E3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D496D8F3-77B6-4006-9ED4-5F66D4448E3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D496D8F3-77B6-4006-9ED4-5F66D4448E3E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F0649B94-7E7E-4CB7-8638-58EF03266EE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F0649B94-7E7E-4CB7-8638-58EF03266EE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F0649B94-7E7E-4CB7-8638-58EF03266EE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F0649B94-7E7E-4CB7-8638-58EF03266EE8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{96686015-DF03-46E8-86CD-87C0675FE181}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{96686015-DF03-46E8-86CD-87C0675FE181}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{96686015-DF03-46E8-86CD-87C0675FE181}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{96686015-DF03-46E8-86CD-87C0675FE181}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AE1C2396-7C3A-4D9A-A9F8-6685C68B83BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AE1C2396-7C3A-4D9A-A9F8-6685C68B83BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE1C2396-7C3A-4D9A-A9F8-6685C68B83BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE1C2396-7C3A-4D9A-A9F8-6685C68B83BA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8C02FCCF-2F12-42B7-98D5-C5A172EE503D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8C02FCCF-2F12-42B7-98D5-C5A172EE503D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8C02FCCF-2F12-42B7-98D5-C5A172EE503D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8C02FCCF-2F12-42B7-98D5-C5A172EE503D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{80387AF8-1927-4EC1-A4C8-E293B9965BA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{80387AF8-1927-4EC1-A4C8-E293B9965BA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{80387AF8-1927-4EC1-A4C8-E293B9965BA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{80387AF8-1927-4EC1-A4C8-E293B9965BA0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EE2F4EF1-1C50-4E9C-B60C-1D7B419C81FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EE2F4EF1-1C50-4E9C-B60C-1D7B419C81FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EE2F4EF1-1C50-4E9C-B60C-1D7B419C81FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EE2F4EF1-1C50-4E9C-B60C-1D7B419C81FD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{71AEEEE3-11CB-4616-98F5-35ABB66EA9B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{71AEEEE3-11CB-4616-98F5-35ABB66EA9B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71AEEEE3-11CB-4616-98F5-35ABB66EA9B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71AEEEE3-11CB-4616-98F5-35ABB66EA9B9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FF50415E-A4DA-4616-9BB9-D1A44668C7FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FF50415E-A4DA-4616-9BB9-D1A44668C7FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FF50415E-A4DA-4616-9BB9-D1A44668C7FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FF50415E-A4DA-4616-9BB9-D1A44668C7FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11A8D88F-CA02-4062-A61C-21757DAFEB82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11A8D88F-CA02-4062-A61C-21757DAFEB82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11A8D88F-CA02-4062-A61C-21757DAFEB82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11A8D88F-CA02-4062-A61C-21757DAFEB82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D5B65AD-7B6C-4E00-84FB-5D4FE7871D9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D5B65AD-7B6C-4E00-84FB-5D4FE7871D9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D5B65AD-7B6C-4E00-84FB-5D4FE7871D9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D5B65AD-7B6C-4E00-84FB-5D4FE7871D9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BF3D4C7-952D-460A-BCF6-C9DA8CC76FC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BF3D4C7-952D-460A-BCF6-C9DA8CC76FC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BF3D4C7-952D-460A-BCF6-C9DA8CC76FC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BF3D4C7-952D-460A-BCF6-C9DA8CC76FC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1AC71E4-7757-4405-A936-74EEC6465774}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1AC71E4-7757-4405-A936-74EEC6465774}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1AC71E4-7757-4405-A936-74EEC6465774}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1AC71E4-7757-4405-A936-74EEC6465774}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCE331A3-5620-4CDC-9ACF-038817E8AADC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCE331A3-5620-4CDC-9ACF-038817E8AADC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCE331A3-5620-4CDC-9ACF-038817E8AADC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCE331A3-5620-4CDC-9ACF-038817E8AADC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30380B94-DFFE-451D-B1C8-48EFFF33247A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30380B94-DFFE-451D-B1C8-48EFFF33247A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30380B94-DFFE-451D-B1C8-48EFFF33247A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30380B94-DFFE-451D-B1C8-48EFFF33247A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68D937B1-1C17-479F-B7D8-42D8F3240E71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68D937B1-1C17-479F-B7D8-42D8F3240E71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68D937B1-1C17-479F-B7D8-42D8F3240E71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68D937B1-1C17-479F-B7D8-42D8F3240E71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F0B0384-C5CF-45C9-A5AA-D4D5E7171036}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F0B0384-C5CF-45C9-A5AA-D4D5E7171036}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F0B0384-C5CF-45C9-A5AA-D4D5E7171036}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F0B0384-C5CF-45C9-A5AA-D4D5E7171036}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EC0AA7F-52AF-4365-AA74-CF20E6323373}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EC0AA7F-52AF-4365-AA74-CF20E6323373}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EC0AA7F-52AF-4365-AA74-CF20E6323373}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EC0AA7F-52AF-4365-AA74-CF20E6323373}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7AF5F01-E4E7-4FCE-8692-A58D9DD10002}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7AF5F01-E4E7-4FCE-8692-A58D9DD10002}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7AF5F01-E4E7-4FCE-8692-A58D9DD10002}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7AF5F01-E4E7-4FCE-8692-A58D9DD10002}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81D5E268-9200-4A54-B6E1-AADB47F051BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81D5E268-9200-4A54-B6E1-AADB47F051BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81D5E268-9200-4A54-B6E1-AADB47F051BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81D5E268-9200-4A54-B6E1-AADB47F051BD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{968AE637-6F4B-476B-AB1D-D61C70309EB1} = {649B128C-8697-42BA-9734-0D42F42F83FC}
+		{4A87E902-B841-4697-87F1-7062C6D5BD08} = {968AE637-6F4B-476B-AB1D-D61C70309EB1}
+		{3F3EF38E-EFE9-44A6-AF30-D4DDAF5014BA} = {968AE637-6F4B-476B-AB1D-D61C70309EB1}
+		{8CE4038B-6865-4F4F-838E-DBFA5D0B08F5} = {968AE637-6F4B-476B-AB1D-D61C70309EB1}
+		{F0649B94-7E7E-4CB7-8638-58EF03266EE8} = {968AE637-6F4B-476B-AB1D-D61C70309EB1}
+		{78313926-8712-4EB1-9A9F-2296F7C12B47} = {968AE637-6F4B-476B-AB1D-D61C70309EB1}
+		{069D4810-4E3A-42D2-9EDD-516778562B20} = {968AE637-6F4B-476B-AB1D-D61C70309EB1}
+		{77821D8A-2123-497C-A009-DC0EE74CD7FC} = {649B128C-8697-42BA-9734-0D42F42F83FC}
+		{11A8D88F-CA02-4062-A61C-21757DAFEB82} = {77821D8A-2123-497C-A009-DC0EE74CD7FC}
+		{9D5B65AD-7B6C-4E00-84FB-5D4FE7871D9F} = {77821D8A-2123-497C-A009-DC0EE74CD7FC}
+		{1BF3D4C7-952D-460A-BCF6-C9DA8CC76FC1} = {77821D8A-2123-497C-A009-DC0EE74CD7FC}
+		{F1AC71E4-7757-4405-A936-74EEC6465774} = {77821D8A-2123-497C-A009-DC0EE74CD7FC}
+		{DCE331A3-5620-4CDC-9ACF-038817E8AADC} = {77821D8A-2123-497C-A009-DC0EE74CD7FC}
+		{30380B94-DFFE-451D-B1C8-48EFFF33247A} = {77821D8A-2123-497C-A009-DC0EE74CD7FC}
+		{68D937B1-1C17-479F-B7D8-42D8F3240E71} = {77821D8A-2123-497C-A009-DC0EE74CD7FC}
+		{7F0B0384-C5CF-45C9-A5AA-D4D5E7171036} = {77821D8A-2123-497C-A009-DC0EE74CD7FC}
+		{6EC0AA7F-52AF-4365-AA74-CF20E6323373} = {77821D8A-2123-497C-A009-DC0EE74CD7FC}
+		{C7AF5F01-E4E7-4FCE-8692-A58D9DD10002} = {77821D8A-2123-497C-A009-DC0EE74CD7FC}
+		{81D5E268-9200-4A54-B6E1-AADB47F051BD} = {77821D8A-2123-497C-A009-DC0EE74CD7FC}
 	EndGlobalSection
 EndGlobal
