@@ -18,6 +18,6 @@
   </ItemGroup>
   <Import Project="..\DbContextValidation\DbContextValidation.projitems" Label="Shared" />
   <PropertyGroup>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(PackageId).xml</DocumentationFile>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 </Project>
