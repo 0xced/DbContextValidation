@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <DefineConstants>$(DefineConstants);PROVIDER_MYSQL</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="MySql.Data.EntityFramework" Version="8.0.18" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(TestsDirectory)\Config.MySQL.cs" />
+  </ItemGroup>
+</Project>

@@ -1,6 +1,0 @@
-<Project>
-  <ItemGroup>
-    <ProjectReference Include="$(MSBuildThisFileDirectory)\..\..\DbContextValidation\EF6\DbContextValidation.EF6.csproj" />
-  </ItemGroup>
-  <Import Project="$(MSBuildThisFileDirectory)\..\Directory.Build.props" />
-</Project>

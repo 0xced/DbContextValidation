@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <DefineConstants>$(DefineConstants);PROVIDER_SQLSERVER</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(TestsDirectory)\Config.SqlServer.cs" />
+    <Compile Include="$(TestsDirectory)\EFCore2\SqlServer\Context.EFCore.SqlServer.cs" />
+  </ItemGroup>
+</Project>
