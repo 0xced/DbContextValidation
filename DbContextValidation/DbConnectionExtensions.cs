@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Threading;
 using System.Threading.Tasks;
 
 #if EFCORE
@@ -11,12 +12,12 @@ namespace DbContextValidation.EF6
 {
     internal static class DbConnectionExtensions
     {
-        internal static async Task<Table> GetTableAsync(this DbConnection connection, string schema, string tableName)
+        internal static async Task<Table> GetTableAsync(this DbConnection connection, string schema, string tableName, CancellationToken cancellationToken)
         {
             var columnNames = new List<string>();
             var wasClosed = connection.State == ConnectionState.Closed;
             if (wasClosed)
-                await connection.OpenAsync();
+                await connection.OpenAsync(cancellationToken);
 
             var dbProviderFactory = connection.GetProviderFactory();
             var commandBuilder = dbProviderFactory.CreateCommandBuilder();
@@ -27,7 +28,7 @@ namespace DbContextValidation.EF6
                 {
                     command.CommandText = commandText;
                     command.CommandType = CommandType.Text;
-                    using (var reader = await command.ExecuteReaderAsync())
+                    using (var reader = await command.ExecuteReaderAsync(cancellationToken))
                     {
                         for (var i = 0; i < reader.FieldCount; i++)
                         {
