@@ -21,7 +21,7 @@ namespace DbContextValidation.Tests.SqlServer
         public System.Data.Common.DbProviderFactory ProviderFactory => System.Data.SqlClient.SqlClientFactory.Instance;
 #endif
 
-        public override TimeSpan Timeout => TimeSpan.FromSeconds(45);
+        public override TimeSpan Timeout => TimeSpan.FromMinutes(2);
 
         public string ImageName => "genschsa/mssql-server-linux:latest";
 

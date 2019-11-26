@@ -27,7 +27,7 @@ namespace DbContextValidation.Tests
 {
     public class ConfigurationBase
     {
-        public virtual TimeSpan Timeout => TimeSpan.FromSeconds(20);
+        public virtual TimeSpan Timeout => TimeSpan.FromMinutes(1);
 
         private readonly Lazy<string> _containerName = new Lazy<string>(() => Assembly.GetExecutingAssembly().ExportedTypes.Single(e => e.GetInterfaces().FirstOrDefault() == typeof(IClassFixture<DockerDatabaseFixture<Configuration>>)).Namespace);
         public virtual string ContainerName => _containerName.Value;
