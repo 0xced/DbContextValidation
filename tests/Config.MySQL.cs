@@ -16,7 +16,7 @@ namespace DbContextValidation.Tests.MySQL
         private const string User = "root";
         private const string Password = "docker";
 
-        public string ConnectionString(string host, ushort port) => $"Host={(host == "localhost" ? "127.0.0.1" : host)};Port={port};Database={Database};UserName={User};Password={Password}";
+        public string ConnectionString(string host, ushort port) => $"Host={host};Port={port};Database={Database};UserName={User};Password={Password}";
 
         public System.Data.Common.DbProviderFactory ProviderFactory => MySql.Data.MySqlClient.MySqlClientFactory.Instance;
 

@@ -77,7 +77,7 @@ namespace Xunit.Fixture.Docker
             }
             catch (Exception)
             {
-                return "localhost";
+                return "127.0.0.1";
             }
         }
 
