@@ -48,7 +48,7 @@ namespace DbContextValidation.Tests
                 _items.Add(value);
             }
         }
-        
+
         private readonly DbContextValidator _defaultValidator;
         private readonly string _connectionString;
 
@@ -73,7 +73,7 @@ namespace DbContextValidation.Tests
                 await ordersTask.Should().NotThrowAsync();
             }
         }
-        
+
         [Fact]
         public async Task Validator_ValidContextWithExplicitSchema_ReturnNoErrors()
         {
@@ -83,7 +83,7 @@ namespace DbContextValidation.Tests
                 errors.Should().BeEmpty();
             }
         }
-        
+
         [Fact]
         public async Task Validator_ValidContext_ReportsProgress()
         {
@@ -94,7 +94,7 @@ namespace DbContextValidation.Tests
                 progress.Items.Select(e => e.TableName).Should().BeEquivalentTo("tCustomers", "tOrders");
             }
         }
-        
+
         [Fact]
         public void Validator_ValidContext_SupportsCancellation()
         {
@@ -116,7 +116,7 @@ namespace DbContextValidation.Tests
                 errors.Select(e => e.Table.TableName).Should().BeEquivalentTo("tCustomers", "tOrders");
             }
         }
-        
+
         [Fact]
         public async Task Validator_MisspelledCustomersTable_ReturnsMissingTableError()
         {
@@ -128,7 +128,7 @@ namespace DbContextValidation.Tests
                 error.Should().BeOfType<MissingTableError>();
             }
         }
-        
+
         [Fact]
         public async Task Validator_MisspelledOrderDateColumn_ReturnsMissingColumnsError()
         {
@@ -142,7 +142,7 @@ namespace DbContextValidation.Tests
                     .Which.Should().Be("OrderFate");
             }
         }
-        
+
         [Fact]
         public async Task Validator_CaseInsensitiveColumnNameComparison_ReturnNoErrors()
         {
@@ -153,14 +153,14 @@ namespace DbContextValidation.Tests
                 errors.Should().BeEmpty();
             }
         }
-        
+
         [Fact]
         public async Task Validator_CaseSensitiveColumnNameComparison_ReturnsMissingColumnsError()
         {
             using (var context = new ContextWithMixedCaseColumns(_connectionString))
             {
                 var errors = await _defaultValidator.ValidateContextAsync(context);
-                var error = errors.Should().ContainSingle().Subject; 
+                var error = errors.Should().ContainSingle().Subject;
                 error.Table.TableName.Should().Be("tOrders");
                 error.Should().BeOfType<MissingColumnsError>()
                     .Which.ColumnNames.Should().BeEquivalentTo("oRdErDaTe", "cUsToMeRiD");
