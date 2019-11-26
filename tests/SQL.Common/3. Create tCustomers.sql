@@ -5,10 +5,3 @@ CREATE TABLE "tCustomers" (
   "AddressLine2" VARCHAR(200) NOT NULL,
   "AddressLine3" VARCHAR NOT NULL
 );
-
-CREATE TABLE "tOrders" (
-  "Id" SERIAL PRIMARY KEY,
-  "OrderDate" TIMESTAMP NOT NULL,
-  "CustomerId" INTEGER NOT NULL,
-  FOREIGN KEY("CustomerId") REFERENCES "tCustomers"("Id")
-);

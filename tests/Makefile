@@ -27,7 +27,7 @@ clean:
 
 sqlite:
 	rm -f DbContextValidation.sqlite3
-	sqlite3 DbContextValidation.sqlite3 < SQL.Common/CreateTables.sql
+	cat SQL.Common/* | sqlite3 DbContextValidation.sqlite3
 
 # Ordered by size
 pull_docker_images:

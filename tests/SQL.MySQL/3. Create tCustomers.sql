@@ -5,10 +5,3 @@ CREATE TABLE tCustomers (
   AddressLine2 VARCHAR(200) NOT NULL,
   AddressLine3 TEXT NOT NULL -- 65,535 bytes, see https://stackoverflow.com/questions/13932750/tinytext-text-mediumtext-and-longtext-maximum-storage-sizes/13932834#13932834
 );
-
-CREATE TABLE tOrders (
-  Id SERIAL PRIMARY KEY,
-  OrderDate TIMESTAMP NOT NULL,
-  CustomerId BIGINT UNSIGNED NOT NULL,
-  FOREIGN KEY(CustomerId) REFERENCES tCustomers(Id)
-);

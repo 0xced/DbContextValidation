@@ -29,9 +29,6 @@ namespace DbContextValidation.Tests.MySQL
             ["MYSQL_ROOT_HOST"] = "%",
         };
 
-        public override IReadOnlyDictionary<DirectoryInfo, string> Volumes => new Dictionary<DirectoryInfo, string>
-        {
-            [SqlDirectory("SQL.MySQL")] = "/docker-entrypoint-initdb.d"
-        };
+        public override IEnumerable<string> SqlStatements => ReadSqlStatements(SqlDirectory("SQL.MySQL"));
     }
 }

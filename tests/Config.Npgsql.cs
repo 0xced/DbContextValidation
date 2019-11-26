@@ -24,9 +24,6 @@ namespace DbContextValidation.Tests.Npgsql
             ["POSTGRES_PASSWORD"] = Password,
         };
 
-        public override IReadOnlyDictionary<DirectoryInfo, string> Volumes => new Dictionary<DirectoryInfo, string>
-        {
-            [SqlDirectory("SQL.Common")] = "/docker-entrypoint-initdb.d"
-        };
+        public override IEnumerable<string> SqlStatements => ReadSqlStatements(SqlDirectory("SQL.Common"));
     }
 }

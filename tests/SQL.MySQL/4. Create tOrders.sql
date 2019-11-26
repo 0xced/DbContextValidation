@@ -1,0 +1,6 @@
+CREATE TABLE tOrders (
+  Id SERIAL PRIMARY KEY,
+  OrderDate TIMESTAMP NOT NULL,
+  CustomerId BIGINT UNSIGNED NOT NULL,
+  FOREIGN KEY(CustomerId) REFERENCES tCustomers(Id)
+);

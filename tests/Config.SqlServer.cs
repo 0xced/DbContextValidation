@@ -31,9 +31,6 @@ namespace DbContextValidation.Tests.SqlServer
             ["MSSQL_SA_PASSWORD"] = Password,
         };
 
-        public override IReadOnlyDictionary<DirectoryInfo, string> Volumes => new Dictionary<DirectoryInfo, string>
-        {
-            [SqlDirectory("SQL.SqlServer")] = "/docker-entrypoint-initdb.d"
-        };
+        public override IEnumerable<string> SqlStatements => ReadSqlStatements(SqlDirectory("SQL.SqlServer"));
     }
 }

@@ -1,16 +1,7 @@
-USE tempdb
-
 CREATE TABLE tCustomers (
   Id INT IDENTITY(1, 1) PRIMARY KEY,
   Name VARCHAR(50) NOT NULL,
   AddressLine1 VARCHAR(100) NOT NULL,
   AddressLine2 VARCHAR(200) NOT NULL,
   AddressLine3 VARCHAR NOT NULL
-);
-
-CREATE TABLE tOrders (
-  Id INT IDENTITY(1, 1) PRIMARY KEY,
-  OrderDate TIMESTAMP NOT NULL,
-  CustomerId INTEGER NOT NULL,
-  FOREIGN KEY (CustomerId) REFERENCES tCustomers(Id)
 );
