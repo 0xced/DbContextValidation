@@ -50,23 +50,24 @@ namespace Xunit.Fixture.Docker
                 var ports = ContainerInfo.Ports;
                 if (ports.Count == 0)
                     throw new ApplicationException($"The docker image {Configuration.ImageName} does not expose any port.");
-                ushort hostPort;
                 var containerPort = Configuration.Port;
+                (ushort containerPort, ushort hostPort) portMapping;
                 if (containerPort.HasValue)
                 {
-                    var portMapping = ports.SingleOrDefault(p => p.containerPort == containerPort.Value);
+                    portMapping = ports.SingleOrDefault(p => p.containerPort == containerPort.Value);
                     if (portMapping == default)
                     {
                         throw new ApplicationException($"The docker image '{Configuration.ImageName}' does not expose port {containerPort.Value}. " +
                                                        $"Please check the documentation of this docker image and fix the '{Configuration.GetType().FullName}.{nameof(Configuration.Port)}' value.");
                     }
-                    hostPort = portMapping.hostPort;
                 }
                 else
                 {
-                    hostPort = ports.First().hostPort;
+                    portMapping = ports.First();
                 }
-                _connectionString = Configuration.ConnectionString(ContainerInfo.Host, hostPort);
+                bool.TryParse(Environment.GetEnvironmentVariable("XUNIT_FIXTURE_DOCKER_USE_CONTAINER_PORT"), out var useContainerPort);
+                var port = useContainerPort ? portMapping.containerPort : portMapping.hostPort;
+                _connectionString = Configuration.ConnectionString(ContainerInfo.Host, port);
             }
 
             IDatabaseChecker databaseChecker = new DatabaseChecker(Configuration);

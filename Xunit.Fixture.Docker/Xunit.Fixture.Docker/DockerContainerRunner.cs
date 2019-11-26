@@ -30,8 +30,18 @@ namespace Xunit.Fixture.Docker
                 containerId = (await RunDockerAsync("run " + arguments, cancellationToken: cancellationToken)).output;
             }
 
-            var host = await DockerGetHostAsync(cancellationToken);
             var ports = await DockerContainerGetPortsAsync(dockerStartDateTime, cancellationToken);
+
+            var hostFormat = Environment.GetEnvironmentVariable("XUNIT_FIXTURE_DOCKER_HOST_FORMAT");
+            if (hostFormat != null)
+            {
+                // The idea is to use {{ .NetworkSettings.Networks.nat.IPAddress }} or whatever network is configured on Docker on CI, e.g. AppVeyor
+                // See https://github.com/docker/for-win/issues/204 and https://stackoverflow.com/questions/44817861/windows-container-port-binding-not-working-on-windows-server-2016-using-docker/44827162#44827162
+                var address = (await RunDockerAsync($"inspect \"{_configuration.ContainerName}\" --format={hostFormat}", cancellationToken: cancellationToken)).output;
+                return new ContainerInfo(new ContainerId(containerId), address, ports);
+            }
+
+            var host = await DockerGetHostAsync(cancellationToken);
             return new ContainerInfo(new ContainerId(containerId), host, ports);
         }
 
