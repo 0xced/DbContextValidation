@@ -54,13 +54,12 @@ namespace Xunit.Fixture.Docker
         /// Stops the docker container.
         /// </summary>
         /// <returns>A task representing the container stop operation.</returns>
-        /// <remarks>The method may return before the container is fully stopped.</remarks>
         public virtual async Task DisposeAsync()
         {
             var containerId = _containerInfo?.ContainerId;
             if (containerId != null)
             {
-                await _dockerContainerRunner.StopContainerAsync(containerId, wait: false);
+                await _dockerContainerRunner.StopContainerAsync(containerId, wait: true);
             }
         }
 
