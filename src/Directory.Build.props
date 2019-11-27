@@ -1,15 +1,15 @@
 <Project>
   <PropertyGroup>
-    <NeutralLanguage>en</NeutralLanguage>
     <Authors>Cédric Luthi</Authors>
     <Copyright>Copyright © Cédric Luthi</Copyright>
     <Description>DbContext validation against an actual database</Description>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IncludeSymbols>true</IncludeSymbols>
+    <NeutralLanguage>en</NeutralLanguage>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/0xced/DbContextValidation</PackageProjectUrl>
     <RepositoryUrl>https://github.com/0xced/DbContextValidation</RepositoryUrl>
-    <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
   <PropertyGroup Label="MinVer">
     <MinVerMinimumMajorMinor>1.0</MinVerMinimumMajorMinor>
