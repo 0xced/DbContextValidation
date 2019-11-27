@@ -13,6 +13,10 @@
     <LangVersion>7.2</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
+  <PropertyGroup Label="MinVer">
+    <MinVerMinimumMajorMinor>1.0</MinVerMinimumMajorMinor>
+    <MinVerDefaultPreReleasePhase>preview</MinVerDefaultPreReleasePhase>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\*.cs" />
   </ItemGroup>
