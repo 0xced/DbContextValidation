@@ -18,18 +18,16 @@ namespace Xunit.Fixture.Docker
         public async Task WaitForDatabaseAsync(string connectionString, Func<IDbConnection, Task> onOpened = null, CancellationToken cancellationToken = default)
         {
             var stopWatch = Stopwatch.StartNew();
-            using (var connection = _databaseConfiguration.ProviderFactory.CreateConnection() ?? throw new InvalidOperationException($"Failed to create a connection with {_databaseConfiguration.ProviderFactory}."))
+            while (true)
             {
-                connection.ConnectionString = connectionString;
-                while (true)
+                using (var connection = _databaseConfiguration.ProviderFactory.CreateConnection() ?? throw new InvalidOperationException($"Failed to create a connection with {_databaseConfiguration.ProviderFactory}."))
                 {
+                    var success = false;
+                    connection.ConnectionString = connectionString;
                     try
                     {
-                        if (connection.State != ConnectionState.Open)
-                        {
-                            await connection.OpenAsync(cancellationToken);
-                        }
-                        break;
+                        await connection.OpenAsync(cancellationToken);
+                        success = true;
                     }
                     catch (Exception exception)
                     {
@@ -39,10 +37,14 @@ namespace Xunit.Fixture.Docker
                             throw new TimeoutException($"Database was not available on \"{connectionString}\" after waiting for {_databaseConfiguration.Timeout.TotalSeconds:F1} seconds.", exception);
                         }
                     }
-                }
-                if (onOpened != null)
-                {
-                    await onOpened(connection);
+                    if (success)
+                    {
+                        if (onOpened != null)
+                        {
+                            await onOpened(connection);
+                        }
+                        break;
+                    }
                 }
             }
         }
