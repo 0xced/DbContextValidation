@@ -27,7 +27,7 @@ namespace DbContextValidation.Tests
 {
     public class ConfigurationBase
     {
-        public virtual TimeSpan Timeout => TimeSpan.FromSeconds(30);
+        public virtual TimeSpan Timeout => TimeSpan.FromSeconds(15);
 
         public virtual ushort? Port => null;
 
