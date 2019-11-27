@@ -16,7 +16,7 @@ namespace DbContextValidation.Tests.Oracle
 
         public System.Data.Common.DbProviderFactory ProviderFactory => global::Oracle.ManagedDataAccess.Client.OracleClientFactory.Instance;
 
-        public override TimeSpan Timeout => TimeSpan.FromMinutes(2);
+        public override TimeSpan Timeout => TimeSpan.FromMinutes(3);
 
         public string ImageName => "wnameless/oracle-xe-11g-r2";
 
