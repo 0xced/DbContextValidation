@@ -9,13 +9,6 @@ namespace Xunit.Fixture.Docker
     public interface IDockerContainerConfiguration
     {
         /// <summary>
-        /// The name given to the docker container. Used to start a container by its name if it already exists and to
-        /// assign a name to the container for the given configuration.
-        /// </summary>
-        /// <example>MyLibrary_Tests_MySQL</example>
-        string ContainerName { get; }
-
-        /// <summary>
         /// The docker image name. May include a tag or not.
         /// </summary>
         /// <example>mysql/mysql-server:5.7</example>

@@ -19,25 +19,17 @@ namespace Xunit.Fixture.Docker
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             var dockerStartDateTime = DateTime.Now;
-            string containerId;
-            try
-            {
-                containerId = (await RunDockerAsync($"start \"{_configuration.ContainerName}\"", cancellationToken: cancellationToken)).output;
-            }
-            catch (Exception e) when (e.Message.Contains("No such container"))
-            {
-                var arguments = GetDockerRunArguments();
-                containerId = (await RunDockerAsync("run " + arguments, cancellationToken: cancellationToken)).output;
-            }
 
-            var ports = await DockerContainerGetPortsAsync(dockerStartDateTime, cancellationToken);
+            var arguments = GetDockerRunArguments();
+            var containerId = (await RunDockerAsync("run " + arguments, cancellationToken: cancellationToken)).output;
+            var ports = await DockerContainerGetPortsAsync(dockerStartDateTime, containerId, cancellationToken);
 
             var hostFormat = Environment.GetEnvironmentVariable("XUNIT_FIXTURE_DOCKER_HOST_FORMAT");
             if (hostFormat != null)
             {
                 // The idea is to use {{ .NetworkSettings.Networks.nat.IPAddress }} or whatever network is configured on Docker on CI, e.g. AppVeyor
                 // See https://github.com/docker/for-win/issues/204 and https://stackoverflow.com/questions/44817861/windows-container-port-binding-not-working-on-windows-server-2016-using-docker/44827162#44827162
-                var address = (await RunDockerAsync($"inspect \"{_configuration.ContainerName}\" --format={hostFormat}", cancellationToken: cancellationToken)).output;
+                var address = (await RunDockerAsync($"inspect {containerId} --format={hostFormat}", cancellationToken: cancellationToken)).output;
                 return new ContainerInfo(new ContainerId(containerId), address, ports);
             }
 
@@ -71,9 +63,9 @@ namespace Xunit.Fixture.Docker
             var arguments = environmentVariablesArguments.Concat(volumesArguments)
                 .Concat(new []
                 {
-                    $"--name \"{_configuration.ContainerName}\"",
                     "--publish-all",
                     "--detach",
+                    "--rm",
                     $"\"{_configuration.ImageName}\"",
                 });
             return string.Join(" ", arguments);
@@ -91,9 +83,9 @@ namespace Xunit.Fixture.Docker
             }
         }
 
-        private async Task<IReadOnlyList<(ushort containerPort, ushort hostPort)>> DockerContainerGetPortsAsync(DateTime dockerStartDateTime, CancellationToken cancellationToken)
+        private async Task<IReadOnlyList<(ushort containerPort, ushort hostPort)>> DockerContainerGetPortsAsync(DateTime dockerStartDateTime, string containerId, CancellationToken cancellationToken)
         {
-            var portLines = (await RunDockerAsync($"port \"{_configuration.ContainerName}\"", cancellationToken: cancellationToken)).output;
+            var portLines = (await RunDockerAsync($"port {containerId}", cancellationToken: cancellationToken)).output;
             using (var reader = new StringReader(portLines))
             {
                 var ports = new List<(ushort containerPort, ushort hostPort)>();
@@ -108,7 +100,7 @@ namespace Xunit.Fixture.Docker
                         string logs;
                         try
                         {
-                            var (output, error) = await RunDockerAsync($"logs --since {dockerStartDateTime:O} \"{_configuration.ContainerName}\"", trimResult: false, cancellationToken: cancellationToken);
+                            var (output, error) = await RunDockerAsync($"logs --since {dockerStartDateTime:O} {containerId}", trimResult: false, cancellationToken: cancellationToken);
                             logs = !string.IsNullOrWhiteSpace(error) ? error : output;
                         }
                         catch
@@ -116,7 +108,7 @@ namespace Xunit.Fixture.Docker
                             logs = "";
                         }
                         var message = string.IsNullOrWhiteSpace(logs) ? "Please check its logs." : "Here are its logs: " + Environment.NewLine + logs;
-                        throw new ApplicationException($"The '{_configuration.ContainerName}' container failed to start properly. {message}");
+                        throw new ApplicationException($"The container {containerId} failed to start properly. {message}");
                     }
 
                     ports.Add((ushort.Parse(containerPort.Value), ushort.Parse(hostPort.Value)));

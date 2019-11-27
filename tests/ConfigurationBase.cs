@@ -29,9 +29,6 @@ namespace DbContextValidation.Tests
     {
         public virtual TimeSpan Timeout => TimeSpan.FromSeconds(30);
 
-        private readonly Lazy<string> _containerName = new Lazy<string>(() => Assembly.GetExecutingAssembly().ExportedTypes.Single(e => e.GetInterfaces().FirstOrDefault() == typeof(IClassFixture<DockerDatabaseFixture<Configuration>>)).Namespace);
-        public virtual string ContainerName => _containerName.Value;
-
         public virtual ushort? Port => null;
 
         public virtual IReadOnlyDictionary<string, string> EnvironmentVariables => new Dictionary<string, string>();
