@@ -4,7 +4,7 @@ TESTS_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 test: test_ef6 test_efcore
 
 test_ef6: build_ef6
-	mono ~/.nuget/packages/xunit.runner.console/2.4.1/tools/net452/xunit.console.exe "${TESTS_DIR}"/EF6/*/bin/Debug/*/*.Tests.EF6.*.dll -noshadow -html Report.EF6.html -parallel all
+	mono ~/.nuget/packages/xunit.runner.console/2.4.1/tools/net452/xunit.console.exe "${TESTS_DIR}"/EF6/*/bin/Debug/*/*.Tests.EF6.*.dll -verbose -noshadow -html Report.EF6.html
 
 test_efcore: build_efcore
 	dotnet vstest "${TESTS_DIR}"/EFCore2/*/bin/Debug/*/osx-x64/publish/*.Tests.EFCore*.dll --logger:"console;verbosity=normal" --logger:"html;LogFileName=${TESTS_DIR}/Report.EFCore2.html" --parallel
