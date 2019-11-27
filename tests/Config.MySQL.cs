@@ -20,7 +20,7 @@ namespace DbContextValidation.Tests.MySQL
 
         public System.Data.Common.DbProviderFactory ProviderFactory => MySql.Data.MySqlClient.MySqlClientFactory.Instance;
 
-        public string ImageName => "mysql/mysql-server:5.7";
+        public string ImageName => "mysql/mysql-server:8.0";
 
         public override IReadOnlyDictionary<string, string> EnvironmentVariables => new Dictionary<string, string>
         {
