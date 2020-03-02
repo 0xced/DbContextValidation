@@ -17,10 +17,13 @@ namespace DbContextValidation.EF6
         {
             Table = table;
         }
-        
+
         /// <summary>
         /// The table that is defined in the DbContext model.
         /// </summary>
         public Table Table { get; }
+
+        /// <returns>A sentence describing the validation error.</returns>
+        public abstract override string ToString();
     }
 }
