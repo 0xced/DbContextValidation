@@ -20,7 +20,6 @@
   </ItemGroup>
   <PropertyGroup Label="MinVer">
     <MinVerMinimumMajorMinor>0.9</MinVerMinimumMajorMinor>
-    <MinVerDefaultPreReleasePhase>alpha</MinVerDefaultPreReleasePhase>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\*.cs" />
