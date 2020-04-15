@@ -4,7 +4,7 @@
     <DefineConstants>$(DefineConstants);PROVIDER_FIREBIRD</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="EntityFramework.Firebird" Version="7.1.1" />
+    <PackageReference Include="EntityFramework.Firebird" Version="7.5.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="$(TestsDirectory)\Config.Firebird.cs" />

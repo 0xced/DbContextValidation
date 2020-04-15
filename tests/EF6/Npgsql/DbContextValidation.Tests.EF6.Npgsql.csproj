@@ -4,7 +4,7 @@
     <DefineConstants>$(DefineConstants);PROVIDER_NPGSQL</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="EntityFramework6.Npgsql" Version="6.3.0" />
+    <PackageReference Include="EntityFramework6.Npgsql" Version="6.4.1" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="$(TestsDirectory)\Config.Npgsql.cs" />
