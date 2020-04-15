@@ -14,6 +14,7 @@ namespace Xunit.Fixture.Docker
         private IDockerContainerConfiguration _configuration;
 
         public EventHandler<CommandEventArgs> RunningCommand { get; set; }
+        public EventHandler<RanCommandEventArgs> RanCommand { get; set; }
 
         public async Task<ContainerInfo> StartContainerAsync(IDockerContainerConfiguration configuration, CancellationToken cancellationToken = default)
         {
@@ -145,6 +146,7 @@ namespace Xunit.Fixture.Docker
                         throw new ApplicationException(error);
                     }
                     var output = await process.StandardOutput.ReadToEndAsync();
+                    RanCommand?.Invoke(this, new RanCommandEventArgs(command, arguments, output));
                     return trimResult ? (output.TrimEnd('\n'), error.TrimEnd('\n')) : (output, error);
                 }
                 return (null, null);

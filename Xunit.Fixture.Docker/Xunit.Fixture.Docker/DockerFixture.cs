@@ -32,6 +32,7 @@ namespace Xunit.Fixture.Docker
             Configuration = new TConfiguration();
             var dockerContainerRunner = new DockerContainerRunner();
             dockerContainerRunner.RunningCommand += (sender, args) => WriteDiagnostic($"> {args.Command} {args.Arguments}");
+            dockerContainerRunner.RanCommand += (sender, args) => WriteDiagnostic($">> {args.Command} {args.Arguments}{Environment.NewLine}{args.Output}");
             _dockerContainerRunner = dockerContainerRunner;
         }
 
