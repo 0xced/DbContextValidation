@@ -90,7 +90,7 @@ namespace Xunit.Fixture.Docker
             {
                 var ports = new List<(ushort containerPort, ushort hostPort)>();
                 string portLine;
-                while ((portLine = reader.ReadLine()) != null)
+                while ((portLine = await reader.ReadLineAsync()) != null)
                 {
                     var match = Regex.Match(portLine, @"(?<containerPort>\d+)/.* -> 0\.0\.0\.0:(?<hostPort>\d+)");
                     var containerPort = match.Groups["containerPort"];
@@ -139,12 +139,12 @@ namespace Xunit.Fixture.Docker
                 if (waitForExit)
                 {
                     var exitCode = await process.WaitForExitAsync(cancellationToken);
-                    var error = process.StandardError.ReadToEnd();
+                    var error = await process.StandardError.ReadToEndAsync();
                     if (exitCode != 0)
                     {
                         throw new ApplicationException(error);
                     }
-                    var output = process.StandardOutput.ReadToEnd();
+                    var output = await process.StandardOutput.ReadToEndAsync();
                     return trimResult ? (output.TrimEnd('\n'), error.TrimEnd('\n')) : (output, error);
                 }
                 return (null, null);
