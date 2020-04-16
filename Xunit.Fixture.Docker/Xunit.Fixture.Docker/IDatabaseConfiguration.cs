@@ -22,7 +22,7 @@ namespace Xunit.Fixture.Docker
         /// <summary>
         /// The exposed database port by the docker container. See the documentation of the docker image for exposed ports.
         /// </summary>
-        /// <remarks>If null, the first port exposed by the docker container is used as the database port.</remarks>
+        /// <remarks>May be null if and only if the docker container exposes a single port.</remarks>
         /// <example>3306</example>
         ushort? Port { get; }
 

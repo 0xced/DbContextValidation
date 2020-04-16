@@ -22,6 +22,8 @@ namespace DbContextValidation.Tests.MySQL
 
         public string ImageName => "mysql/mysql-server:8.0";
 
+        public override ushort? Port => 3306;
+
         public override IReadOnlyDictionary<string, string> EnvironmentVariables => new Dictionary<string, string>
         {
             ["MYSQL_DATABASE"] = Database,

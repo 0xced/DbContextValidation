@@ -63,7 +63,12 @@ namespace Xunit.Fixture.Docker
                 }
                 else
                 {
-                    portMapping = ports.First();
+                    if (ports.Count > 1)
+                    {
+                        throw new ApplicationException($"The docker image '{Configuration.ImageName}' exposes multiple ports ({string.Join(", ", ports.Select(e => e.containerPort))}). " +
+                                                       $"Please specify which one is the database port that must be used with the '{Configuration.GetType().FullName}.{nameof(Configuration.Port)}' value.");
+                    }
+                    portMapping = ports[0];
                 }
                 bool.TryParse(Environment.GetEnvironmentVariable("XUNIT_FIXTURE_DOCKER_USE_CONTAINER_PORT"), out var useContainerPort);
                 var port = useContainerPort ? portMapping.containerPort : portMapping.hostPort;
