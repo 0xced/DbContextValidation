@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using Xunit.Fixture.Docker;
 
 namespace DbContextValidation.Tests.Npgsql

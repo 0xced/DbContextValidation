@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using Xunit.Fixture.Docker;
 
 #if PROVIDER_MYSQL_POMELO

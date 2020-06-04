@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Xunit;
-using Xunit.Fixture.Docker;
 
 #if PROVIDER_FIREBIRD
 namespace DbContextValidation.Tests.Firebird
@@ -22,7 +20,6 @@ namespace DbContextValidation.Tests.SQLite
 namespace DbContextValidation.Tests.SqlServer
 #else
 #error Make sure to define a PROVIDER_* constant in the tests project
-namespace DbContextValidation.Tests
 #endif
 {
     public class ConfigurationBase
