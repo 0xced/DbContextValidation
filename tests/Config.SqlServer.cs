@@ -14,7 +14,7 @@ namespace DbContextValidation.Tests.SqlServer
 
         public string ConnectionString(string host, ushort port) => $"Server={host},{port};Database={Database};User Id={User};Password={Password}";
 
-#if NETCOREAPP3_0
+#if NETCOREAPP3_1
         public System.Data.Common.DbProviderFactory ProviderFactory => Microsoft.Data.SqlClient.SqlClientFactory.Instance;
 #else
         public System.Data.Common.DbProviderFactory ProviderFactory => System.Data.SqlClient.SqlClientFactory.Instance;
