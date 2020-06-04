@@ -1,33 +1,47 @@
 <Project>
-  <PropertyGroup>
+
+  <PropertyGroup Label="Compilation">
+    <LangVersion>8.0</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Packaging">
+    <DebugType>embedded</DebugType>
+    <EmbedAllSources>true</EmbedAllSources>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Publishing">
     <Authors>Cédric Luthi</Authors>
     <Copyright>Copyright © Cédric Luthi</Copyright>
     <Description>DbContext validation against an actual database</Description>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <IncludeSymbols>true</IncludeSymbols>
-    <NeutralLanguage>en</NeutralLanguage>
     <PackageIcon>icon.png</PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/0xced/DbContextValidation</PackageProjectUrl>
     <RepositoryUrl>https://github.com/0xced/DbContextValidation</RepositoryUrl>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
+
+  <PropertyGroup Label="MinVer">
+    <MinVerMinimumMajorMinor>0.9</MinVerMinimumMajorMinor>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Include="..\..\images\icon.png">
       <Pack>True</Pack>
       <PackagePath />
     </None>
   </ItemGroup>
-  <PropertyGroup Label="MinVer">
-    <MinVerMinimumMajorMinor>0.9</MinVerMinimumMajorMinor>
-  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="..\*.cs" />
   </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="16.6.13" PrivateAssets="All" />
     <PackageReference Include="MinVer" Version="2.3.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
+
   <Import Project="$(MSBuildThisFileDirectory)\..\Directory.Build.props" />
+
 </Project>
