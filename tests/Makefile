@@ -8,8 +8,8 @@ test_ef6: build_ef6
 
 test_efcore: build_efcore
 	mkdir -p TestResults # https://github.com/microsoft/vstest/issues/2318#issuecomment-614242976
-	dotnet vstest "${TESTS_DIR}"/EFCore2/*/bin/Debug/*/osx-x64/publish/*.Tests.EFCore*.dll --logger:"console;verbosity=normal" --logger:"html;LogFileName=${TESTS_DIR}/Report.EFCore2.html" --parallel
-	dotnet vstest "${TESTS_DIR}"/EFCore3/*/bin/Debug/*/osx-x64/publish/*.Tests.EFCore*.dll --logger:"console;verbosity=normal" --logger:"html;LogFileName=${TESTS_DIR}/Report.EFCore3.html" --parallel
+	dotnet vstest "${TESTS_DIR}"/EFCore2/*/bin/Release/*/publish/*.Tests.EFCore*.dll --logger:"console;verbosity=normal" --logger:"html;LogFileName=${TESTS_DIR}/Report.EFCore2.html" --parallel
+	dotnet vstest "${TESTS_DIR}"/EFCore3/*/bin/Release/*/publish/*.Tests.EFCore*.dll --logger:"console;verbosity=normal" --logger:"html;LogFileName=${TESTS_DIR}/Report.EFCore3.html" --parallel
 	rmdir TestResults
 	# Running tests in parallel (-parallel all) doesn't work, we get System.MissingMethodException but it works in parallel when running through dotnet vstest. Is this a bug in the xunit console runner?
 	# dotnet ~/.nuget/packages/xunit.runner.console/2.4.1/tools/netcoreapp2.0/xunit.console.dll "${TESTS_DIR}"/EFCore*/*/bin/Debug/*/osx-x64/publish/*.Tests.EFCore*.dll -html Report.EFCore.html
@@ -21,7 +21,7 @@ build_ef6:
 	msbuild "${TESTS_DIR}/.."
 
 build_efcore:
-	for csproj in "${TESTS_DIR}"/EFCore*/*/*.csproj; do dotnet publish --runtime osx-x64 $${csproj}; done
+	for csproj in "${TESTS_DIR}"/EFCore*/*/*.csproj; do dotnet publish --configuration Release $${csproj}; done
 
 clean:
 	find "${TESTS_DIR}/.." -name "bin" -print0 | xargs -0 rm -r

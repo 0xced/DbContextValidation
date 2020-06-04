@@ -74,7 +74,7 @@ namespace DbContextValidation.Tests.SqlServer
             else
             {
                 var assemblyDirectory = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory;
-                var targetFrameworkDirectory = assemblyDirectory?.Name == "publish" ? assemblyDirectory.Parent?.Parent : assemblyDirectory;
+                var targetFrameworkDirectory = assemblyDirectory?.Name == "publish" ? assemblyDirectory.Parent : assemblyDirectory;
                 testsDirectoryInfo = targetFrameworkDirectory?.Parent?.Parent?.Parent?.Parent?.Parent ?? throw new FileNotFoundException("Tests directory not found");
             }
             return testsDirectoryInfo;
