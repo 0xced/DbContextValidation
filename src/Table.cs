@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.Common;
 
 #if EFCORE
 namespace DbContextValidation.EFCore
@@ -16,12 +17,12 @@ namespace DbContextValidation.EF6
         /// </summary>
         /// <param name="schema">The schema of the table.</param>
         /// <param name="tableName">The name of the table.</param>
-        /// <param name="columnNames">The names of the columns.</param>
-        public Table(string schema, string tableName, IReadOnlyCollection<string> columnNames)
+        /// <param name="columns">The columns of the table.</param>
+        public Table(string schema, string tableName, IReadOnlyCollection<DbColumn> columns)
         {
             Schema = schema;
             TableName = tableName;
-            ColumnNames = columnNames;
+            Columns = columns;
         }
 
         /// <summary>
@@ -37,7 +38,7 @@ namespace DbContextValidation.EF6
         /// <summary>
         /// The names of the columns.
         /// </summary>
-        public IReadOnlyCollection<string> ColumnNames { get; }
+        public IReadOnlyCollection<DbColumn> Columns { get; }
 
         /// <summary>
         /// Creates a string representation of the table.

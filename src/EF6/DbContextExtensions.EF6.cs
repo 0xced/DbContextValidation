@@ -28,8 +28,8 @@ namespace DbContextValidation.EF6
                 var fragmentMapping = entitySetMapping.EntityTypeMappings.Single().Fragments.Single();
                 var schema = fragmentMapping.StoreEntitySet.Schema;
                 var tableName = fragmentMapping.StoreEntitySet.Table;
-                var columnNames = fragmentMapping.PropertyMappings.OfType<ScalarPropertyMapping>().Select(e => e.Column.Name);
-                var table = new Table(schema, tableName, columnNames.ToList());
+                var columns = fragmentMapping.PropertyMappings.OfType<ScalarPropertyMapping>().Select(e => new ModelColumn(e.Column));
+                var table = new Table(schema, tableName, columns.ToList());
                 yield return table;
             }
         }

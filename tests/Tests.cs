@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
@@ -37,6 +38,25 @@ namespace DbContextValidation.Tests.SqlServer
 namespace DbContextValidation.Tests
 #endif
 {
+    public class ColumnNameEqualityComparer : IEqualityComparer<DbColumn>
+    {
+        private readonly IEqualityComparer<string> _columnNameEqualityComparer;
+
+        public ColumnNameEqualityComparer(IEqualityComparer<string> columnNameEqualityComparer)
+        {
+            _columnNameEqualityComparer = columnNameEqualityComparer ?? throw new ArgumentNullException(nameof(columnNameEqualityComparer));
+        }
+
+        public bool Equals(DbColumn x, DbColumn y)
+        {
+            if (x == null) throw new ArgumentNullException(nameof(x));
+            if (y == null) throw new ArgumentNullException(nameof(y));
+            return _columnNameEqualityComparer.Equals(x.ColumnName, y.ColumnName);
+        }
+
+        public int GetHashCode(DbColumn column) => _columnNameEqualityComparer.GetHashCode(column.ColumnName);
+    }
+
     [SuppressMessage("ReSharper", "VSTHRD200", Justification = "Naming all tests methods with the Async suffix feels weird")]
     public class ValidatorTests : IClassFixture<DbFixture>
     {
@@ -57,7 +77,7 @@ namespace DbContextValidation.Tests
 
         public ValidatorTests(DbFixture dbFixture)
         {
-            _defaultValidator = new DbContextValidator(StringComparer.InvariantCulture);
+            _defaultValidator = new DbContextValidator(new ColumnNameEqualityComparer(StringComparer.InvariantCulture));
             _connectionString = dbFixture.ConnectionString;
         }
 
@@ -172,7 +192,7 @@ namespace DbContextValidation.Tests
         {
             // Arrange
             using var context = new ContextWithMixedCaseColumns(_connectionString);
-            var caseInsensitiveValidator = new DbContextValidator(StringComparer.InvariantCultureIgnoreCase);
+            var caseInsensitiveValidator = new DbContextValidator(new ColumnNameEqualityComparer(StringComparer.InvariantCultureIgnoreCase));
 
             // Act
             var errors = await caseInsensitiveValidator.ValidateContextAsync(context);

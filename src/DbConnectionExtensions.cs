@@ -14,7 +14,7 @@ namespace DbContextValidation.EF6
     {
         internal static async Task<Table> GetTableAsync(this DbConnection connection, string schema, string tableName, CancellationToken cancellationToken)
         {
-            var columnNames = new List<string>();
+            var columns = new List<DbColumn>();
             var wasClosed = connection.State == ConnectionState.Closed;
             if (wasClosed)
                 await connection.OpenAsync(cancellationToken);
@@ -30,9 +30,20 @@ namespace DbContextValidation.EF6
                     command.CommandType = CommandType.Text;
                     using (var reader = await command.ExecuteReaderAsync(cancellationToken))
                     {
-                        for (var i = 0; i < reader.FieldCount; i++)
+                        if (reader.CanGetColumnSchema())
                         {
-                            columnNames.Add(reader.GetName(i));
+                            columns.AddRange(reader.GetColumnSchema());
+                        }
+                        else
+                        {
+                            for (var i = 0; i < reader.FieldCount; i++)
+                            {
+                                var columnName = reader.GetName(i);
+                                var columnOrdinal = reader.GetOrdinal(columnName);
+                                var dataType = reader.GetFieldType(columnOrdinal);
+                                var dataTypeName = reader.GetDataTypeName(columnOrdinal);
+                                columns.Add(new ModelColumn(columnName, columnOrdinal, dataType, dataTypeName));
+                            }
                         }
                     }
                 }
@@ -50,7 +61,7 @@ namespace DbContextValidation.EF6
                     connection.Close();
 #endif
             }
-            return new Table(schema, tableName, columnNames);
+            return new Table(schema, tableName, columns);
         }
 
         /// <param name="schema">The schema of the table. May be <code>null</code> as some providers (e.g. SQLite, MySQL) do not support schemata.</param>

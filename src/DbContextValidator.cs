@@ -19,15 +19,15 @@ namespace DbContextValidation.EF6
     /// <inheritdoc />
     public class DbContextValidator : IDbContextValidator
     {
-        private readonly IEqualityComparer<string> _columnNameEqualityComparer;
+        private readonly IEqualityComparer<DbColumn> _columnEqualityComparer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DbContextValidator"/> class.
         /// </summary>
-        /// <param name="columnNameEqualityComparer">An equality comparer used to compare column names defined in the model against the actual column names.</param>
-        public DbContextValidator(IEqualityComparer<string> columnNameEqualityComparer)
+        /// <param name="columnEqualityComparer">An equality comparer used to compare columns defined in the model against the actual columns.</param>
+        public DbContextValidator(IEqualityComparer<DbColumn> columnEqualityComparer)
         {
-            _columnNameEqualityComparer = columnNameEqualityComparer ?? throw new ArgumentNullException(nameof(columnNameEqualityComparer));
+            _columnEqualityComparer = columnEqualityComparer ?? throw new ArgumentNullException(nameof(columnEqualityComparer));
         }
 
         /// <param name="context">The context</param>
@@ -58,14 +58,14 @@ namespace DbContextValidation.EF6
                 cancellationToken.ThrowIfCancellationRequested();
                 var schema = modelTable.Schema;
                 var tableName = modelTable.TableName;
-                var expectedColumnNames = modelTable.ColumnNames;
+                var expectedColumns = modelTable.Columns;
                 try
                 {
                     var databaseTable = await GetTableAsync(context.GetDbConnection(), schema, tableName, cancellationToken);
-                    var missingColumns = expectedColumnNames.Except(databaseTable.ColumnNames, _columnNameEqualityComparer).ToList();
+                    var missingColumns = expectedColumns.Except(databaseTable.Columns, _columnEqualityComparer).ToList();
                     if (missingColumns.Any())
                     {
-                        errors.Add(new MissingColumnsError(modelTable, missingColumns));
+                        errors.Add(new MissingColumnsError(modelTable, missingColumns.Select(e => e.ColumnName).ToList()));
                     }
                 }
                 catch (TableNotFoundException exception)

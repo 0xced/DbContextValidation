@@ -21,8 +21,8 @@ namespace DbContextValidation.EFCore
             {
                 var schema = entityType.GetSchema();
                 var tableName = entityType.GetTableName();
-                var columnNames = entityType.GetProperties().Select(GetColumnName);
-                var table = new Table(schema, tableName, columnNames.ToList());
+                var columns = entityType.GetProperties().Select(e => new ModelColumn(e));
+                var table = new Table(schema, tableName, columns.ToList());
                 yield return table;
             }
         }
@@ -100,7 +100,7 @@ namespace DbContextValidation.EFCore
             throw NotSupportedException();
         }
 
-        private static string GetColumnName(this IProperty property)
+        internal static string GetColumnName(this IProperty property)
         {
             var parameters = new object[] {property};
             if (GetColumnNameMethod != null)
