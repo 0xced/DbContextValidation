@@ -61,110 +61,137 @@ namespace DbContextValidation.Tests
         [Fact]
         public async Task Validator_ValidContext_ReturnNoErrors()
         {
-            using (var context = new ValidContext(_connectionString))
-            {
-                var errors = await _defaultValidator.ValidateContextAsync(context);
-                errors.Should().BeEmpty();
-                // ReSharper disable AccessToDisposedClosure
-                Func<Task> customersTask = async () => { await context.Customers.ToListAsync(); };
-                Func<Task> ordersTask = async () => { await context.Orders.ToListAsync(); };
-                // ReSharper restore AccessToDisposedClosure
-                await customersTask.Should().NotThrowAsync();
-                await ordersTask.Should().NotThrowAsync();
-            }
+            // Arrange
+            using var context = new ValidContext(_connectionString);
+
+            // Act
+            var errors = await _defaultValidator.ValidateContextAsync(context);
+
+            // Assert
+            errors.Should().BeEmpty();
+            // ReSharper disable AccessToDisposedClosure
+            Func<Task> customersTask = async () => { await context.Customers.ToListAsync(); };
+            Func<Task> ordersTask = async () => { await context.Orders.ToListAsync(); };
+            // ReSharper restore AccessToDisposedClosure
+            await customersTask.Should().NotThrowAsync();
+            await ordersTask.Should().NotThrowAsync();
         }
 
         [Fact]
         public async Task Validator_ValidContextWithExplicitSchema_ReturnNoErrors()
         {
-            using (var context = new ValidContextWithExplicitSchema(_connectionString, Configuration.Schema))
-            {
-                var errors = await _defaultValidator.ValidateContextAsync(context);
-                errors.Should().BeEmpty();
-            }
+            // Arrange
+            using var context = new ValidContextWithExplicitSchema(_connectionString, Configuration.Schema);
+
+            // Act
+            var errors = await _defaultValidator.ValidateContextAsync(context);
+
+            // Assert
+            errors.Should().BeEmpty();
         }
 
         [Fact]
         public async Task Validator_ValidContext_ReportsProgress()
         {
+            // Arrange
             var progress = new AccumulatorProgress<Table>();
-            using (var context = new ValidContext(_connectionString))
-            {
-                await _defaultValidator.ValidateContextAsync(context, progress);
-                progress.Items.Select(e => e.TableName).Should().BeEquivalentTo("tCustomers", "tOrders");
-            }
+            using var context = new ValidContext(_connectionString);
+
+            // Act
+            await _defaultValidator.ValidateContextAsync(context, progress);
+
+            // Assert
+            progress.Items.Select(e => e.TableName).Should().BeEquivalentTo("tCustomers", "tOrders");
         }
 
         [Fact]
         public void Validator_ValidContext_SupportsCancellation()
         {
-            using (var context = new ValidContext(_connectionString))
-            {
-                var validationTask = _defaultValidator.ValidateContextAsync(context, cancellationToken: new CancellationToken(true));
-                validationTask.Status.Should().Be(TaskStatus.Canceled);
-            }
+            // Arrange
+            using var context = new ValidContext(_connectionString);
+
+            // Act
+            var validationTask = _defaultValidator.ValidateContextAsync(context, cancellationToken: new CancellationToken(true));
+
+            // Assert
+            validationTask.Status.Should().Be(TaskStatus.Canceled);
         }
 
         [Fact]
         public async Task Validator_UnknownSchema_ReturnsMissingTableErrors()
         {
-            using (var context = new ContextWithUnknownSchema(_connectionString))
-            {
-                var errors = await _defaultValidator.ValidateContextAsync(context);
-                errors.Should().OnlyContain(e => e.Table.Schema == "unknown");
-                errors.Should().OnlyContain(e => e.GetType() == typeof(MissingTableError));
-                errors.Select(e => e.Table.TableName).Should().BeEquivalentTo("tCustomers", "tOrders");
-            }
+            // Arrange
+            using var context = new ContextWithUnknownSchema(_connectionString);
+
+            // Act
+            var errors = await _defaultValidator.ValidateContextAsync(context);
+
+            // Assert
+            errors.Should().OnlyContain(e => e.Table.Schema == "unknown");
+            errors.Should().OnlyContain(e => e.GetType() == typeof(MissingTableError));
+            errors.Select(e => e.Table.TableName).Should().BeEquivalentTo("tCustomers", "tOrders");
         }
 
         [Fact]
         public async Task Validator_MisspelledCustomersTable_ReturnsMissingTableError()
         {
-            using (var context = new ContextWithMisspelledCustomersTable(_connectionString))
-            {
-                var errors = await _defaultValidator.ValidateContextAsync(context);
-                var error = errors.Should().ContainSingle().Subject;
-                error.Table.TableName.Should().Be("Customers");
-                error.Should().BeOfType<MissingTableError>();
-            }
+            // Arrange
+            using var context = new ContextWithMisspelledCustomersTable(_connectionString);
+
+            // Act
+            var errors = await _defaultValidator.ValidateContextAsync(context);
+
+            // Assert
+            var error = errors.Should().ContainSingle().Subject;
+            error.Table.TableName.Should().Be("Customers");
+            error.Should().BeOfType<MissingTableError>();
         }
 
         [Fact]
         public async Task Validator_MisspelledOrderDateColumn_ReturnsMissingColumnsError()
         {
-            using (var context = new ContextWithMisspelledOrderDateColumn(_connectionString))
-            {
-                var errors = await _defaultValidator.ValidateContextAsync(context);
-                var error = errors.Should().ContainSingle().Subject;
-                error.Table.TableName.Should().Be("tOrders");
-                error.Should().BeOfType<MissingColumnsError>()
-                    .Which.ColumnNames.Should().ContainSingle()
-                    .Which.Should().Be("OrderFate");
-            }
+            // Arrange
+            using var context = new ContextWithMisspelledOrderDateColumn(_connectionString);
+
+            // Act
+            var errors = await _defaultValidator.ValidateContextAsync(context);
+
+            // Assert
+            var error = errors.Should().ContainSingle().Subject;
+            error.Table.TableName.Should().Be("tOrders");
+            error.Should().BeOfType<MissingColumnsError>()
+                .Which.ColumnNames.Should().ContainSingle()
+                .Which.Should().Be("OrderFate");
         }
 
         [Fact]
         public async Task Validator_CaseInsensitiveColumnNameComparison_ReturnNoErrors()
         {
-            using (var context = new ContextWithMixedCaseColumns(_connectionString))
-            {
-                var caseInsensitiveValidator = new DbContextValidator(StringComparer.InvariantCultureIgnoreCase);
-                var errors = await caseInsensitiveValidator.ValidateContextAsync(context);
-                errors.Should().BeEmpty();
-            }
+            // Arrange
+            using var context = new ContextWithMixedCaseColumns(_connectionString);
+            var caseInsensitiveValidator = new DbContextValidator(StringComparer.InvariantCultureIgnoreCase);
+
+            // Act
+            var errors = await caseInsensitiveValidator.ValidateContextAsync(context);
+
+            // Assert
+            errors.Should().BeEmpty();
         }
 
         [Fact]
         public async Task Validator_CaseSensitiveColumnNameComparison_ReturnsMissingColumnsError()
         {
-            using (var context = new ContextWithMixedCaseColumns(_connectionString))
-            {
-                var errors = await _defaultValidator.ValidateContextAsync(context);
-                var error = errors.Should().ContainSingle().Subject;
-                error.Table.TableName.Should().Be("tOrders");
-                error.Should().BeOfType<MissingColumnsError>()
-                    .Which.ColumnNames.Should().BeEquivalentTo("oRdErDaTe", "cUsToMeRiD");
-            }
+            // Arrange
+            using var context = new ContextWithMixedCaseColumns(_connectionString);
+
+            // Act
+            var errors = await _defaultValidator.ValidateContextAsync(context);
+
+            // Assert
+            var error = errors.Should().ContainSingle().Subject;
+            error.Table.TableName.Should().Be("tOrders");
+            error.Should().BeOfType<MissingColumnsError>()
+                .Which.ColumnNames.Should().BeEquivalentTo("oRdErDaTe", "cUsToMeRiD");
         }
     }
 }
