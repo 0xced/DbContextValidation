@@ -5,7 +5,7 @@
     <RootNamespace>DbContextValidation.Tests.EFCore.MySQL</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.19" />
+    <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.20" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="$(TestsDirectory)\Config.MySQL.cs" />

@@ -11,8 +11,8 @@
     </ItemGroup>
   </Target>
   <ItemGroup>
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.112.1" />
-    <PackageReference Include="System.Data.SQLite.EF6" Version="1.0.112.1" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.113.1" />
+    <PackageReference Include="System.Data.SQLite.EF6" Version="1.0.113" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="$(TestsDirectory)\Config.SQLite.cs" />

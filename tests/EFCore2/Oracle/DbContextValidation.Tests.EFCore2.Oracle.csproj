@@ -5,7 +5,7 @@
     <RootNamespace>DbContextValidation.Tests.EFCore.Oracle</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Oracle.EntityFrameworkCore" Version="2.19.60" />
+    <PackageReference Include="Oracle.EntityFrameworkCore" Version="2.19.70" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="$(TestsDirectory)\Config.Oracle.cs" />
