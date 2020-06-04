@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <DefineConstants>$(DefineConstants);PROVIDER_ORACLE</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Oracle.EntityFrameworkCore" Version="3.19.0-beta1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(TestsDirectory)\Config.Oracle.cs" />
+    <Compile Include="$(TestsDirectory)\EFCore2\Oracle\Context.EFCore.Oracle.cs" />
+  </ItemGroup>
+</Project>
