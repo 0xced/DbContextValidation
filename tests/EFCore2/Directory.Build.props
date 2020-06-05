@@ -1,4 +1,7 @@
 <Project>
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);EFCORE;EFCORE2</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="$(MSBuildThisFileDirectory)\..\..\src\EFCore\DbContextValidation.EFCore.csproj" />
   </ItemGroup>

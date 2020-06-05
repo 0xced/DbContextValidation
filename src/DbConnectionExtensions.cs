@@ -44,7 +44,11 @@ namespace DbContextValidation.EF6
             finally
             {
                 if (wasClosed)
+#if NETSTANDARD2_1
+                    await connection.CloseAsync();
+#else
                     connection.Close();
+#endif
             }
             return new Table(schema, tableName, columnNames);
         }

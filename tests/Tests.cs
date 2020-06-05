@@ -5,12 +5,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
-#if NETFRAMEWORK
-using DbContextValidation.EF6;
-using System.Data.Entity;
-#else
+#if EFCORE
 using DbContextValidation.EFCore;
 using Microsoft.EntityFrameworkCore;
+#else
+using DbContextValidation.EF6;
+using System.Data.Entity;
 #endif
 using Xunit;
 using Xunit.Fixture.Docker;

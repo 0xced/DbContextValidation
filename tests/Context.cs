@@ -1,8 +1,8 @@
-﻿#if NETFRAMEWORK
+﻿#if EFCORE
+using Microsoft.EntityFrameworkCore;
+#else
 using System.Data.Entity;
 using ModelBuilder = System.Data.Entity.DbModelBuilder;
-#else
-using Microsoft.EntityFrameworkCore;
 #endif
 
 #if PROVIDER_FIREBIRD
@@ -28,7 +28,7 @@ namespace DbContextValidation.Tests
     {
         static ValidContext()
         {
-#if NETFRAMEWORK
+#if !EFCORE
             // Disable migrations
             Database.SetInitializer<ValidContext>(null);
             Database.SetInitializer<ValidContextWithExplicitSchema>(null);
@@ -45,7 +45,7 @@ namespace DbContextValidation.Tests
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-#if NETFRAMEWORK
+#if !EFCORE
             /*
              * EF Core is better at choosing the most appropriate default schema, see https://docs.microsoft.com/en-us/ef/core/modeling/relational/default-schema
              * > By convention, the database provider will choose the most appropriate default schema. For example, Microsoft SQL Server will use the dbo schema and SQLite will not use a schema (since schemas are not supported in SQLite).
