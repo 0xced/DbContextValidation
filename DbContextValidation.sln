@@ -12,6 +12,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0C482C13-FAE3-4C29-8C58-C651D780B8DD}"
 ProjectSection(SolutionItems) = preProject
 	tests\Directory.Build.props = tests\Directory.Build.props
+	tests\xunit.runner.json = tests\xunit.runner.json
 EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EF6", "EF6", "{7BB96B87-A62C-4DA4-9E9E-876E71BB12E4}"

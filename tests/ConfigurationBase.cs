@@ -63,21 +63,23 @@ namespace DbContextValidation.Tests.SqlServer
 
         private static DirectoryInfo TestsDirectory()
         {
-            DirectoryInfo testsDirectoryInfo;
             var testsDirectory = Environment.GetEnvironmentVariable("TESTS_DIRECTORY");
             if (testsDirectory != null)
             {
-                testsDirectoryInfo = new DirectoryInfo(testsDirectory);
+                var testsDirectoryInfo = new DirectoryInfo(testsDirectory);
                 if (!testsDirectoryInfo.Exists)
-                    throw new FileNotFoundException($"Tests directory not found ({testsDirectoryInfo.FullName})", testsDirectoryInfo.FullName);
+                    throw new FileNotFoundException($"Tests directory specified in the TESTS_DIRECTORY environment variable not found ({testsDirectoryInfo.FullName})", testsDirectoryInfo.FullName);
+                return testsDirectoryInfo;
             }
-            else
+
+            var assemblyLocation = Assembly.GetExecutingAssembly().Location;
+            var assemblyDirectory = new FileInfo(assemblyLocation).Directory;
+            for (var directory = assemblyDirectory; directory != null; directory = directory.Parent)
             {
-                var assemblyDirectory = new FileInfo(Assembly.GetExecutingAssembly().Location).Directory;
-                var targetFrameworkDirectory = assemblyDirectory?.Name == "publish" ? assemblyDirectory.Parent : assemblyDirectory;
-                testsDirectoryInfo = targetFrameworkDirectory?.Parent?.Parent?.Parent?.Parent?.Parent ?? throw new FileNotFoundException("Tests directory not found");
+                if (directory.Name == "tests")
+                    return directory;
             }
-            return testsDirectoryInfo;
+            throw new FileNotFoundException($"Tests directory not found by going up '{assemblyLocation}' and searching for a directory named 'tests'.");
         }
     }
 }
