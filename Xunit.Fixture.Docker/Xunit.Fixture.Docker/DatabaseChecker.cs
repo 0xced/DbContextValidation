@@ -18,6 +18,7 @@ namespace Xunit.Fixture.Docker
         public async Task WaitForDatabaseAsync(string connectionString, Func<IDbConnection, Task> onOpened = null, CancellationToken cancellationToken = default)
         {
             var stopWatch = Stopwatch.StartNew();
+            var attempts = 0;
             while (true)
             {
                 using (var connection = _databaseConfiguration.ProviderFactory.CreateConnection() ?? throw new InvalidOperationException($"Failed to create a connection with {_databaseConfiguration.ProviderFactory}."))
@@ -26,6 +27,7 @@ namespace Xunit.Fixture.Docker
                     connection.ConnectionString = connectionString;
                     try
                     {
+                        attempts++;
                         await connection.OpenAsync(cancellationToken);
                         success = true;
                     }
@@ -34,7 +36,8 @@ namespace Xunit.Fixture.Docker
                         await Task.Delay(TimeSpan.FromSeconds(value: 1), cancellationToken);
                         if (stopWatch.Elapsed > _databaseConfiguration.Timeout)
                         {
-                            throw new TimeoutException($"Database was not available on \"{connectionString}\" after waiting for {_databaseConfiguration.Timeout.TotalSeconds:F1} seconds.", exception);
+                            var attemptsInfo = attempts == 1 ? $"({attempts} attempt)" : $"({attempts} attempts)";
+                            throw new TimeoutException($"Database was not available on \"{connectionString}\" after waiting for {_databaseConfiguration.Timeout.TotalSeconds:F1} seconds. {attemptsInfo}", exception);
                         }
                     }
                     if (success)
