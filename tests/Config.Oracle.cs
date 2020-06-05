@@ -20,6 +20,11 @@ namespace DbContextValidation.Tests.Oracle
 
         public string ImageName => "wnameless/oracle-xe-11g-r2";
 
+        public override IReadOnlyDictionary<string, string> EnvironmentVariables => new Dictionary<string, string>
+        {
+            ["TZ"] = "UTC",
+        };
+
         public override ushort? Port => 1521;
 
         public override IEnumerable<string> SqlStatements => ReadSqlStatements(SqlDirectory("SQL.Oracle"));
