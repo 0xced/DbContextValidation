@@ -5,6 +5,7 @@
     <RootNamespace>DbContextValidation.Tests.EFCore.MySQL</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="DockerRunner.Database.MySql" Version="1.0.0-beta.1" />
     <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="6.10.9" />
   </ItemGroup>
   <ItemGroup>

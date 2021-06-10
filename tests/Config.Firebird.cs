@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
-using Xunit.Fixture.Docker;
+using System.Data.Common;
+using DockerRunner;
+using static DbContextValidation.Tests.SqlInitializationHelper;
 
-namespace DbContextValidation.Tests.Firebird
+namespace DbContextValidation.Tests
 {
-    public class Configuration : ConfigurationBase, IDockerContainerConfiguration, IDatabaseConfiguration
+    public class Configuration : DockerDatabaseContainerConfiguration
     {
         public const string Schema = null;
 
@@ -11,11 +13,13 @@ namespace DbContextValidation.Tests.Firebird
         private const string User = "firebird";
         private const string Password = "docker";
 
-        public string ConnectionString(string host, ushort port) => $"DataSource={host};Port={port};Database={Database};User={User};Password={Password}";
+        public override string ImageName => "jacobalberty/firebird";
 
-        public System.Data.Common.DbProviderFactory ProviderFactory => FirebirdSql.Data.FirebirdClient.FirebirdClientFactory.Instance;
+        public override string ConnectionString(string host, ushort port) => $"DataSource={host};Port={port};Database={Database};User={User};Password={Password}";
 
-        public string ImageName => "jacobalberty/firebird:3.0.4";
+        public override DbProviderFactory ProviderFactory => FirebirdSql.Data.FirebirdClient.FirebirdClientFactory.Instance;
+
+        public override IEnumerable<string> SqlStatements => ReadSqlStatements(SqlDirectory("SQL.Firebird"));
 
         public override IReadOnlyDictionary<string, string> EnvironmentVariables => new Dictionary<string, string>
         {
@@ -24,7 +28,5 @@ namespace DbContextValidation.Tests.Firebird
             ["FIREBIRD_PASSWORD"] = Password,
             ["EnableWireCrypt"] = "true",
         };
-
-        public override IEnumerable<string> SqlStatements => ReadSqlStatements(SqlDirectory("SQL.Firebird"));
     }
 }

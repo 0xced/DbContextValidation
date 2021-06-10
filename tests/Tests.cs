@@ -13,7 +13,10 @@ using DbContextValidation.EF6;
 using System.Data.Entity;
 #endif
 using Xunit;
-using Xunit.Fixture.Docker;
+
+#if !PROVIDER_SQLITE
+using DbFixture = DockerRunner.Xunit.DockerDatabaseContainerFixture<DbContextValidation.Tests.Configuration>;
+#endif
 
 #if PROVIDER_FIREBIRD
 namespace DbContextValidation.Tests.Firebird
@@ -35,7 +38,7 @@ namespace DbContextValidation.Tests
 #endif
 {
     [SuppressMessage("ReSharper", "VSTHRD200", Justification = "Naming all tests methods with the Async suffix feels weird")]
-    public class ValidatorTests : IClassFixture<DockerDatabaseFixture<Configuration>>
+    public class ValidatorTests : IClassFixture<DbFixture>
     {
         private class AccumulatorProgress<T> : IProgress<T>
         {
@@ -52,10 +55,10 @@ namespace DbContextValidation.Tests
         private readonly DbContextValidator _defaultValidator;
         private readonly string _connectionString;
 
-        public ValidatorTests(DockerDatabaseFixture<Configuration> dockerDatabaseFixture)
+        public ValidatorTests(DbFixture dbFixture)
         {
             _defaultValidator = new DbContextValidator(StringComparer.InvariantCulture);
-            _connectionString = dockerDatabaseFixture.ConnectionString;
+            _connectionString = dbFixture.ConnectionString;
         }
 
         [Fact]

@@ -4,42 +4,16 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-#if PROVIDER_FIREBIRD
-namespace DbContextValidation.Tests.Firebird
-#elif PROVIDER_MYSQL
-namespace DbContextValidation.Tests.MySQL
-#elif PROVIDER_MYSQL_POMELO
-namespace DbContextValidation.Tests.MySQL.Pomelo
-#elif PROVIDER_NPGSQL
-namespace DbContextValidation.Tests.Npgsql
-#elif PROVIDER_ORACLE
-namespace DbContextValidation.Tests.Oracle
-#elif PROVIDER_SQLITE
-namespace DbContextValidation.Tests.SQLite
-#elif PROVIDER_SQLSERVER
-namespace DbContextValidation.Tests.SqlServer
-#else
-#error Make sure to define a PROVIDER_* constant in the tests project
-#endif
+namespace DbContextValidation.Tests
 {
-    public class ConfigurationBase
+    public static class SqlInitializationHelper
     {
-        public virtual TimeSpan Timeout => TimeSpan.FromSeconds(15);
-
-        public virtual ushort? Port => null;
-
-        public virtual IReadOnlyDictionary<string, string> EnvironmentVariables => new Dictionary<string, string>();
-
-        public virtual IReadOnlyDictionary<DirectoryInfo, string> Volumes => new Dictionary<DirectoryInfo, string>();
-
-        public virtual IEnumerable<string> SqlStatements => Enumerable.Empty<string>();
-
-        protected static IEnumerable<string> ReadSqlStatements(DirectoryInfo directory)
+        public static IEnumerable<string> ReadSqlStatements(DirectoryInfo directory)
         {
             return directory.GetFiles("*.sql").OrderBy(file => file.Name).Select(file => File.ReadAllText(file.FullName));
         }
 
-        protected static DirectoryInfo SqlDirectory(string directoryName)
+        public static DirectoryInfo SqlDirectory(string directoryName)
         {
             var testsDirectory = TestsDirectory();
             var sqlDirectory = new DirectoryInfo(Path.Combine(testsDirectory.FullName, directoryName));
@@ -50,7 +24,7 @@ namespace DbContextValidation.Tests.SqlServer
             return sqlDirectory;
         }
 
-        protected static FileInfo SqlFile(string fileName)
+        public static FileInfo SqlFile(string fileName)
         {
             var testsDirectory = TestsDirectory();
             var sqlFile = new FileInfo(Path.Combine(testsDirectory.FullName, fileName));

@@ -15,7 +15,11 @@ namespace DbContextValidation.Tests.MySQL.Pomelo
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+#if EFCORE2
             optionsBuilder.UseMySql(_connectionString);
+#else
+            optionsBuilder.UseMySql(_connectionString, ServerVersion.AutoDetect(_connectionString));
+#endif
         }
     }
 }

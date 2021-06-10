@@ -1,26 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using Xunit.Fixture.Docker;
+﻿using System.Collections.Generic;
+using DockerRunner.Database.Oracle;
+using static DbContextValidation.Tests.SqlInitializationHelper;
 
-namespace DbContextValidation.Tests.Oracle
+namespace DbContextValidation.Tests
 {
-    public class Configuration : ConfigurationBase, IDockerContainerConfiguration, IDatabaseConfiguration
+    public class Configuration : Oracle11SlimConfiguration
     {
         public const string Schema = null;
-
-        private const string Sid = "xe";
-        private const string User = "system";
-        private const string Password = "oracle";
-
-        public string ConnectionString(string host, ushort port) => $"User Id={User};Password={Password};Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST={host})(PORT={port}))(CONNECT_DATA=(SID={Sid})))";
-
-        public System.Data.Common.DbProviderFactory ProviderFactory => global::Oracle.ManagedDataAccess.Client.OracleClientFactory.Instance;
-
-        public override TimeSpan Timeout => TimeSpan.FromMinutes(3);
-
-        public string ImageName => "wnameless/oracle-xe-11g-r2";
-
-        public override ushort? Port => 1521;
 
         public override IEnumerable<string> SqlStatements => ReadSqlStatements(SqlDirectory("SQL.Oracle"));
     }
