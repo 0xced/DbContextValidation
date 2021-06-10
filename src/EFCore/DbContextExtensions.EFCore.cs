@@ -33,29 +33,43 @@ namespace DbContextValidation.EFCore
         }
 
         /*
-         * For compatibility with both EF Core 2 and EF Core 3, see https://docs.microsoft.com/en-us/ef/core/what-is-new/ef-core-3.0/breaking-changes#provider-specific-metadata-api-changes
-         * We can't use entityType.Relational() or property.Relational() in EF Core 3 or else we get System.TypeLoadException : Could not load type 'Microsoft.EntityFrameworkCore.RelationalMetadataExtensions' from assembly 'Microsoft.EntityFrameworkCore.Relational, Version=3.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60'.
-         * We can't use entityType.GetSchema() or property.GetColumnName() since we support EF Core 2 and those methods are new in EF Core 3
+         * For compatibility with both EF Core 2 and EF Core 3+, see https://docs.microsoft.com/en-us/ef/core/what-is-new/ef-core-3.0/breaking-changes#provider-specific-metadata-api-changes
+         * We can't use entityType.Relational() or property.Relational() in EF Core 3+ or else we get System.TypeLoadException : Could not load type 'Microsoft.EntityFrameworkCore.RelationalMetadataExtensions' from assembly 'Microsoft.EntityFrameworkCore.Relational, Version=3.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60'.
+         * We can't use entityType.GetSchema() or property.GetColumnName() since we support EF Core 2 and those methods are new in EF Core 3+
          * So we have to call them all through reflection.
          */
-        private static readonly Assembly EfCoreRelationalAssembly = typeof(DbContextExtensions).Assembly.GetReferencedAssemblies().Where(e => e.Name == "Microsoft.EntityFrameworkCore.Relational").Select(Assembly.Load).SingleOrDefault();
+        private static readonly Assembly EfCoreRelationalAssembly;
         // EF Core 2
-        private static readonly Type RelationalMetadataExtensions = EfCoreRelationalAssembly?.GetType("Microsoft.EntityFrameworkCore.RelationalMetadataExtensions");
-        private static readonly MethodInfo EntityTypeRelational =  RelationalMetadataExtensions?.GetMethod("Relational", new [] {typeof(IEntityType)});
-        private static readonly MethodInfo PropertyRelational =  RelationalMetadataExtensions?.GetMethod("Relational", new [] {typeof(IProperty)});
-        // EF Core 3
-        private static readonly Type RelationalEntityTypeExtensions = EfCoreRelationalAssembly?.GetType("Microsoft.EntityFrameworkCore.RelationalEntityTypeExtensions");
-        private static readonly Type RelationalPropertyExtensions = EfCoreRelationalAssembly?.GetType("Microsoft.EntityFrameworkCore.RelationalPropertyExtensions");
-        private static readonly MethodInfo GetSchemaMethod = RelationalEntityTypeExtensions?.GetMethod("GetSchema");
-        private static readonly MethodInfo GetTableNameMethod = RelationalEntityTypeExtensions?.GetMethod("GetTableName");
-        private static readonly MethodInfo GetColumnNameMethod = RelationalPropertyExtensions?.GetMethod("GetColumnName");
+        private static readonly MethodInfo EntityTypeRelational;
+        private static readonly MethodInfo PropertyRelational;
+        // EF Core 3+
+        private static readonly MethodInfo GetSchemaMethod;
+        private static readonly MethodInfo GetTableNameMethod;
+        private static readonly MethodInfo GetColumnNameMethod;
+
+        static DbContextExtensions()
+        {
+            EfCoreRelationalAssembly = typeof(DbContextExtensions).Assembly.GetReferencedAssemblies().Where(e => e.Name == "Microsoft.EntityFrameworkCore.Relational").Select(Assembly.Load).SingleOrDefault();
+
+            // EF Core 2
+            var relationalMetadataExtensions = EfCoreRelationalAssembly?.GetType("Microsoft.EntityFrameworkCore.RelationalMetadataExtensions");
+            EntityTypeRelational =  relationalMetadataExtensions?.GetMethod("Relational", new [] {typeof(IEntityType)});
+            PropertyRelational =  relationalMetadataExtensions?.GetMethod("Relational", new [] {typeof(IProperty)});
+
+            // EF Core 3+
+            var relationalEntityTypeExtensions = EfCoreRelationalAssembly?.GetType("Microsoft.EntityFrameworkCore.RelationalEntityTypeExtensions");
+            var relationalPropertyExtensions = EfCoreRelationalAssembly?.GetType("Microsoft.EntityFrameworkCore.RelationalPropertyExtensions");
+            GetSchemaMethod = relationalEntityTypeExtensions?.GetMethod("GetSchema", new [] {typeof(IEntityType)});
+            GetTableNameMethod = relationalEntityTypeExtensions?.GetMethod("GetTableName", new [] {typeof(IEntityType)});
+            GetColumnNameMethod = relationalPropertyExtensions?.GetMethod("GetColumnName", new [] {typeof(IProperty)});
+        }
 
         private static string GetSchema(this IEntityType entityType)
         {
             var parameters = new object[] {entityType};
             if (GetSchemaMethod != null)
             {
-                // Equivalent to `entityType.GetSchema()` (EF Core 3)
+                // Equivalent to `entityType.GetSchema()` (EF Core 3+)
                 return (string)GetSchemaMethod.Invoke(null, parameters);
             }
             if (EntityTypeRelational != null)
@@ -73,7 +87,7 @@ namespace DbContextValidation.EFCore
             var parameters = new object[] {entityType};
             if (GetTableNameMethod != null)
             {
-                // Equivalent to `entityType.GetTableName()` (EF Core 3)
+                // Equivalent to `entityType.GetTableName()` (EF Core 3+)
                 return (string)GetTableNameMethod.Invoke(null, parameters);
             }
             if (EntityTypeRelational != null)
@@ -91,7 +105,7 @@ namespace DbContextValidation.EFCore
             var parameters = new object[] {property};
             if (GetColumnNameMethod != null)
             {
-                // Equivalent to `property.GetColumnName()` (EF Core 3)
+                // Equivalent to `property.GetColumnName()` (EF Core 3+)
                 return (string)GetColumnNameMethod.Invoke(null, parameters);
             }
             if (PropertyRelational != null)
@@ -108,7 +122,7 @@ namespace DbContextValidation.EFCore
         {
             if (EfCoreRelationalAssembly == null)
                 throw new InvalidOperationException($"The 'Microsoft.EntityFrameworkCore.Relational' assembly was not found as a referenced assembly by {typeof(DbContextExtensions).Assembly}.");
-            return new NotSupportedException($"Found neither 'Microsoft.EntityFrameworkCore.RelationalMetadataExtensions' (expected in EF Core 2) nor 'Microsoft.EntityFrameworkCore.RelationalEntityTypeExtensions' (expected in EF Core 3). Did Microsoft introduce a breaking change in {EfCoreRelationalAssembly} ?");
+            return new NotSupportedException($"Found neither 'Microsoft.EntityFrameworkCore.RelationalMetadataExtensions' (expected in EF Core 2) nor 'Microsoft.EntityFrameworkCore.RelationalEntityTypeExtensions' (expected in EF Core 3+). Did Microsoft introduce a breaking change in {EfCoreRelationalAssembly} ?");
         }
     }
 }
