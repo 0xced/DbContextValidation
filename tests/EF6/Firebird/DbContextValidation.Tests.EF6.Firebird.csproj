@@ -4,7 +4,8 @@
     <DefineConstants>$(DefineConstants);PROVIDER_FIREBIRD</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="EntityFramework.Firebird" Version="7.5.0" />
+    <!-- Starting with version 8.0.0, net48 or netstandard2.1 is required -->
+    <PackageReference Include="EntityFramework.Firebird" Version="7.10.1" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="$(TestsDirectory)\Config.Firebird.cs" />
