@@ -4,8 +4,8 @@
     <DefineConstants>$(DefineConstants);PROVIDER_SQLSERVER</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="DockerRunner.Database.SqlServer" Version="1.0.0-beta.1" />
     <PackageReference Include="EntityFramework" Version="6.4.4" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="$(TestsDirectory)\Config.SqlServer.cs" />

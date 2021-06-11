@@ -5,7 +5,6 @@
     <RootNamespace>DbContextValidation.Tests.EFCore.SqlServer</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="DockerRunner.Database.SqlServer" Version="1.0.0-beta.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
   </ItemGroup>
   <ItemGroup>

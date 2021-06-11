@@ -1,4 +1,7 @@
 <Project>
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);EF6</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="$(MSBuildThisFileDirectory)\..\..\src\EF6\DbContextValidation.EF6.csproj" />
   </ItemGroup>
