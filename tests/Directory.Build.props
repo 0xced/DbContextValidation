@@ -1,18 +1,22 @@
 <Project>
+
   <PropertyGroup>
     <IsPackable>false</IsPackable>
     <TestsDirectory>$(MSBuildThisFileDirectory)</TestsDirectory>
     <LangVersion>8.0</LangVersion>
   </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)\SqlInitializationHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)\Context.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)\Tests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)\Entities\*.cs" />
   </ItemGroup>
+
   <ItemGroup>
     <Content Include="$(MSBuildThisFileDirectory)\xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="DockerRunner" Version="1.0.0-beta.1" />
     <PackageReference Include="DockerRunner.Xunit" Version="1.0.0-beta.1" />
@@ -22,4 +26,5 @@
     <PackageReference Include="xunit.runner.reporters" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3" />
   </ItemGroup>
+
 </Project>

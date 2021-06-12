@@ -1,13 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <TargetFrameworks>net472;netcoreapp3.1</TargetFrameworks>
     <DefineConstants>$(DefineConstants);PROVIDER_SQLSERVER</DefineConstants>
   </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
   </ItemGroup>
+
   <ItemGroup>
     <Compile Include="$(TestsDirectory)\Config.SqlServer.cs" />
   </ItemGroup>
+
 </Project>

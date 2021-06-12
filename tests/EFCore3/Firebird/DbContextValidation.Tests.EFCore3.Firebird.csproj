@@ -1,13 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <DefineConstants>$(DefineConstants);PROVIDER_FIREBIRD</DefineConstants>
   </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="FirebirdSql.EntityFrameworkCore.Firebird" Version="7.10.1" />
   </ItemGroup>
+
   <ItemGroup>
     <Compile Include="$(TestsDirectory)\Config.Firebird.cs" />
     <Compile Include="$(TestsDirectory)\EFCore2\Firebird\Context.EFCore.Firebird.cs" />
   </ItemGroup>
+
 </Project>

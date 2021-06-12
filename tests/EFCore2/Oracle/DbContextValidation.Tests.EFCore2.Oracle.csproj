@@ -1,14 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <DefineConstants>$(DefineConstants);PROVIDER_ORACLE</DefineConstants>
     <RootNamespace>DbContextValidation.Tests.EFCore.Oracle</RootNamespace>
   </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="DockerRunner.Database.Oracle" Version="1.0.0-beta.1" />
     <PackageReference Include="Oracle.EntityFrameworkCore" Version="2.19.110" />
   </ItemGroup>
+
   <ItemGroup>
     <Compile Include="$(TestsDirectory)\Config.Oracle.cs" />
   </ItemGroup>
+
 </Project>
