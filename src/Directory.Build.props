@@ -42,6 +42,4 @@
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
 
-  <Import Project="$(MSBuildThisFileDirectory)\..\Directory.Build.props" />
-
 </Project>

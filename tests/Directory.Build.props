@@ -22,5 +22,4 @@
     <PackageReference Include="xunit.runner.reporters" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3" />
   </ItemGroup>
-  <Import Project="$(MSBuildThisFileDirectory)\..\Directory.Build.props" />
 </Project>
