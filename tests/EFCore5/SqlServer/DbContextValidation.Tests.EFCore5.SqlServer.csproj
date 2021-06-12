@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <DefineConstants>$(DefineConstants);PROVIDER_SQLSERVER</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.7" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(TestsDirectory)\Config.SqlServer.cs" />
+    <Compile Include="$(TestsDirectory)\EFCore2\SqlServer\Context.EFCore.SqlServer.cs" />
+  </ItemGroup>
+</Project>

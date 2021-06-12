@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <DefineConstants>$(DefineConstants);PROVIDER_FIREBIRD</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="FirebirdSql.EntityFrameworkCore.Firebird" Version="8.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="$(TestsDirectory)\Config.Firebird.cs" />
+    <Compile Include="$(TestsDirectory)\EFCore2\Firebird\Context.EFCore.Firebird.cs" />
+  </ItemGroup>
+</Project>
