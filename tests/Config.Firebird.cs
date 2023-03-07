@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.Common;
-using DockerRunner;
+using DockerRunner.Database;
 using static DbContextValidation.Tests.SqlInitializationHelper;
 
 namespace DbContextValidation.Tests

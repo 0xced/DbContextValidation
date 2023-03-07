@@ -8,6 +8,10 @@
     <ProjectReference Include="$(MSBuildThisFileDirectory)\..\..\src\EF6\DbContextValidation.EF6.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="EntityFramework" Version="6.*" />
+  </ItemGroup>
+
   <Import Project="$(MSBuildThisFileDirectory)\..\Directory.Build.props" />
 
 </Project>

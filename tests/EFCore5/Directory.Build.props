@@ -8,6 +8,10 @@
     <ProjectReference Include="$(MSBuildThisFileDirectory)\..\..\src\EFCore\DbContextValidation.EFCore.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.*" />
+  </ItemGroup>
+
   <Import Project="$(MSBuildThisFileDirectory)\..\Directory.Build.props" />
 
 </Project>

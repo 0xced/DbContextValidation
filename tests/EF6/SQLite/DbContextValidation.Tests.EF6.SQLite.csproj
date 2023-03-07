@@ -8,14 +8,18 @@
   <Target Name="FixSQLiteInteropFilesOnLinuxAndOSX" BeforeTargets="CopySQLiteInteropFiles">
     <ItemGroup>
       <SQLiteInteropFiles Condition="$([MSBuild]::IsOsPlatform(Linux)) OR $([MSBuild]::IsOsPlatform(OSX))" Remove="@(SQLiteInteropFiles)" />
-      <SQLiteInteropFiles Condition="$([MSBuild]::IsOsPlatform(Linux))" Include="$(PkgSystem_Data_SQLite_Core)/runtimes/linux-x64/native/netstandard2.0/SQLite.Interop.*" />
-      <SQLiteInteropFiles Condition="$([MSBuild]::IsOsPlatform(OSX))" Include="$(PkgSystem_Data_SQLite_Core)/runtimes/osx-x64/native/netstandard2.0/SQLite.Interop.*" />
+      <SQLiteInteropFiles Condition="$([MSBuild]::IsOsPlatform(Linux))" Include="$(PkgStub_System_Data_SQLite_Core_NetStandard)/runtimes/linux-x64/native/SQLite.Interop.*" />
+      <SQLiteInteropFiles Condition="$([MSBuild]::IsOsPlatform(OSX))" Include="$(PkgStub_System_Data_SQLite_Core_NetStandard)/runtimes/osx-x64/native/SQLite.Interop.*" />
     </ItemGroup>
   </Target>
 
   <ItemGroup>
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.114.2" GeneratePathProperty="true" />
-    <PackageReference Include="System.Data.SQLite.EF6" Version="1.0.114" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.*" />
+    <PackageReference Include="System.Data.SQLite.EF6" Version="1.*" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(TargetFrameworkIdentifier) == '.NETFramework'">
+    <PackageReference Include="Stub.System.Data.SQLite.Core.NetStandard" Version="1.*" GeneratePathProperty="true" />
   </ItemGroup>
 
   <ItemGroup>

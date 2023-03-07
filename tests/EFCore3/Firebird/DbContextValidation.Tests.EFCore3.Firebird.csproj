@@ -6,7 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FirebirdSql.EntityFrameworkCore.Firebird" Version="7.10.1" />
+    <PackageReference Include="FirebirdSql.Data.FirebirdClient" Version="9.*" />
+    <PackageReference Include="FirebirdSql.EntityFrameworkCore.Firebird" Version="7.*" />
   </ItemGroup>
 
   <ItemGroup>

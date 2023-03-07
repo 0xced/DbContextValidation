@@ -7,8 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DockerRunner.Database.MySql" Version="1.0.0-beta.1" />
-    <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="6.10.9" />
+    <!--
+        Fails with System.MissingMethodException since version 2.1.0
+        Method not found: 'Void Microsoft.EntityFrameworkCore.Storage.Internal.RelationalCommandBuilderFactory..ctor(Microsoft.EntityFrameworkCore.Diagnostics.IDiagnosticsLogger`1<Command>, Microsoft.EntityFrameworkCore.Storage.IRelationalTypeMapper)'.
+    -->
+    <PackageReference Update="Microsoft.EntityFrameworkCore.Relational" Version="2.0.3" />
+    <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="6.*" />
   </ItemGroup>
 
   <ItemGroup>

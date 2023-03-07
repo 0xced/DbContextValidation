@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using DockerRunner;
+using DockerRunner.Database;
 #if EF6 || EFCORE2
 using System.Data.SqlClient;
 #else
@@ -28,6 +28,7 @@ namespace DbContextValidation.Tests
                 DataSource = $"{host},{port}",
                 UserID = User,
                 Password = Password,
+                TrustServerCertificate = true,
             };
             return builder.ConnectionString;
         }
