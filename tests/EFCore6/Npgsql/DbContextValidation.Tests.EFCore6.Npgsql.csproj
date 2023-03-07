@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <DefineConstants>$(DefineConstants);PROVIDER_NPGSQL</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DockerRunner.Database.Npgsql" Version="1.0.0-beta.1" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="$(TestsDirectory)\Config.Npgsql.cs" />
+    <Compile Include="$(TestsDirectory)\EFCore2\Npgsql\Context.EFCore.Npgsql.cs" />
+  </ItemGroup>
+
+</Project>
