@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <DefineConstants>$(DefineConstants);PROVIDER_MYSQL</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MySql.EntityFrameworkCore" Version="7.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="$(TestsDirectory)\Config.MySQL.cs" />
+    <Compile Include="$(TestsDirectory)\EFCore2\MySQL\Context.EFCore.MySQL.cs" />
+  </ItemGroup>
+
+</Project>

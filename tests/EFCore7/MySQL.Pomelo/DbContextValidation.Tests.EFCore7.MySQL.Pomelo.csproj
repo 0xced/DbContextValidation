@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <DefineConstants>$(DefineConstants);PROVIDER_MYSQL_POMELO</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MySqlConnector" Version="2.*" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="7.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="$(TestsDirectory)\Config.MySQL.cs" />
+    <Compile Include="$(TestsDirectory)\EFCore5\MySQL.Pomelo\Context.EFCore.MySQL.Pomelo.cs" />
+  </ItemGroup>
+
+</Project>
