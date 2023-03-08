@@ -34,8 +34,8 @@
 
   <ItemGroup>
     <VSTestLogger Include="GitHubActions" />
-    <VSTestLogger Include="trx%3BLogFileName=TestResults-$(MSBuildProjectName).trx" />
-    <VSTestLogger Include="html%3BLogFileName=TestResults-$(MSBuildProjectName).html" />
+    <VSTestLogger Include="trx%3BLogFileName=TestResults-$(TargetFramework)-$(MSBuildProjectName).trx" />
+    <VSTestLogger Include="html%3BLogFileName=TestResults-$(TargetFramework)-$(MSBuildProjectName).html" />
   </ItemGroup>
 
   <PropertyGroup Condition="$(ContinuousIntegrationBuild) == 'true'">

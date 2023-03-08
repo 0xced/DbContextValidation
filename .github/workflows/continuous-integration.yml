@@ -47,13 +47,13 @@ jobs:
         if: always()
         with:
           name: TestResults-${{ runner.os }}
-          path: "**/TestResults-*.html"
+          path: TestResults-*.html
       - name: Test Report
         uses: dorny/test-reporter@v1
         if: always()
         with:
           name: Test Results (${{ runner.os }})
-          path: "**/TestResults-*.trx"
+          path: TestResults-*.trx
           reporter: dotnet-trx
       - name: Create NuGet packages
         run: dotnet pack --no-build --output .
