@@ -19,4 +19,10 @@
     <PackageReference Update="xunit.runner.visualstudio" Version="2.4.3" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <!-- Fixes this error: Could not find a test logger with AssemblyQualifiedName, URI or FriendlyName 'GitHubActions'.
+         See https://github.com/Tyrrrz/GitHubActionsTestLogger/issues/5#issuecomment-648431667 -->
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
 </Project>
