@@ -80,7 +80,7 @@ jobs:
         if: matrix.os == 'ubuntu-latest' && startsWith(github.ref, 'refs/tags/')
         uses: actions/upload-artifact@v3
         with:
-          name: ReleaseNotes.md
+          name: Release Notes
           path: ReleaseNotes.md
   publish:
     runs-on: ubuntu-latest
@@ -93,11 +93,11 @@ jobs:
       - name: Download NuGet packages artifact
         uses: actions/download-artifact@v3
         with:
-          name: "*.nupkg"
+          name: NuGet packages
       - name: Download release notes artifact
         uses: actions/download-artifact@v3
         with:
-          name: ReleaseNotes.md
+          name: Release Notes
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
