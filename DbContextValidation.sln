@@ -121,6 +121,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbContextValidation.Tests.EFCore7.SqlServer", "tests\EFCore7\SqlServer\DbContextValidation.Tests.EFCore7.SqlServer.csproj", "{473D3D39-4ABB-4A2E-B8B6-FAC5388D8A3C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Meta", "Meta", "{CB1A8A3B-7D39-4F01-A889-C1350658D89A}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\continuous-integration.yml = .github\workflows\continuous-integration.yml
+		global.json = global.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -1,0 +1,101 @@
+name: Continuous Integration
+
+on: push
+
+env:
+  Configuration: Release
+  ContinuousIntegrationBuild: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_NOLOGO: true
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+  DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: true
+  TERM: xterm
+
+jobs:
+  package:
+    strategy:
+      matrix:
+        os: [ macos-latest, ubuntu-latest, windows-latest ]
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+    permissions:
+      checks: write
+    name: Run tests and create NuGet packages
+    steps:
+      - name: Checkout git repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Install .NET SDK
+        uses: actions/setup-dotnet@v3
+      - name: Retrieve cached NuGet packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+      - name: Restore NuGet packages
+        run: dotnet restore
+      - name: Build solution
+        run: dotnet build
+      - name: Run tests
+        run: dotnet test --no-build --logger "html;LogFileName=../../TestResults-${{ runner.os }}.html" --logger "trx;LogFileName=../../TestResults-${{ runner.os }}.trx" --logger GitHubActions
+        id: dotnet-test
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: TestResults-${{ runner.os }}
+          path: TestResults-${{ runner.os }}.html
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: always()
+        with:
+          name: Test Results (${{ runner.os }})
+          path: TestResults-${{ runner.os }}.trx
+          reporter: dotnet-trx
+      - name: Create NuGet packages
+        run: dotnet pack --no-build --output .
+        id: dotnet-pack
+      - name: Upload NuGet packages artifact
+        if: matrix.os == 'ubuntu-latest'
+        uses: actions/upload-artifact@v3
+        with:
+          name: NuGet packages
+          path: "*.nupkg"
+      - name: Retrieve release notes from tag
+        if: matrix.os == 'ubuntu-latest' && startsWith(github.ref, 'refs/tags/')
+        run: |
+          git fetch --tags --force
+          git tag --list ${{ github.ref_name }} --format='%(contents)' > ReleaseNotes.md
+      - name: Upload release notes
+        if: matrix.os == 'ubuntu-latest' && startsWith(github.ref, 'refs/tags/')
+        uses: actions/upload-artifact@v3
+        with:
+          name: ReleaseNotes.md
+          path: ReleaseNotes.md
+  publish:
+    runs-on: macos-latest
+    needs: package
+    if: startsWith(github.ref, 'refs/tags/')
+    permissions:
+      contents: write
+    name: Publish NuGet package and create GitHub release
+    steps:
+      - name: Download NuGet packages artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: "*.nupkg"
+      - name: Download release notes artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ReleaseNotes.md
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Version ${{ github.ref_name }}
+          body_path: ReleaseNotes.md
+          prerelease: ${{ contains(github.ref_name, '-') }}
+      - name: Publish NuGet package on nuget.org
+        run: dotnet nuget push "*.nupkg" --source https://api.nuget.org/v3/index.json --api-key "${{ secrets.NUGET_API_KEY }}"
