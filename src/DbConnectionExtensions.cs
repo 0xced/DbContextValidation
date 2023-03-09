@@ -70,7 +70,7 @@ namespace DbContextValidation.EF6
         // ReSharper disable once SuggestBaseTypeForParameter
         private static DbProviderFactory GetProviderFactory(this DbConnection connection)
         {
-#if EFCORE && (NETSTANDARD2_0 || NETCOREAPP2_0)
+#if NETSTANDARD2_0
             // DbProviderFactories was introduced in netcoreapp2.1 but it is easy to get the DbProviderFactory through reflection
             var type = connection.GetType();
             var dbProviderFactoryProperty = type.GetProperty("DbProviderFactory", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);

@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <Compile Include="$(TestsDirectory)\Config.SQLite.cs" />
-    <Compile Include="$(TestsDirectory)\EFCore2\SQLite\Context.EFCore.SQLite.cs" />
+    <Compile Include="$(TestsDirectory)\Context.EFCore.SQLite.cs" />
     <None Include="$(TestsDirectory)\DbContextValidation.sqlite3" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 

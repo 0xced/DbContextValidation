@@ -12,7 +12,7 @@
   
   <ItemGroup>
     <Compile Include="$(TestsDirectory)\Config.Npgsql.cs" />
-    <Compile Include="$(TestsDirectory)\EFCore2\Npgsql\Context.EFCore.Npgsql.cs" />
+    <Compile Include="$(TestsDirectory)\Context.EFCore.Npgsql.cs" />
   </ItemGroup>
 
 </Project>

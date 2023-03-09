@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <Compile Include="$(TestsDirectory)\Config.MySQL.cs" />
-    <Compile Include="$(TestsDirectory)\EFCore2\MySQL\Context.EFCore.MySQL.cs" />
+    <Compile Include="$(TestsDirectory)\Context.EFCore.MySQL.cs" />
   </ItemGroup>
 
 </Project>

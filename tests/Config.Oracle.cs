@@ -26,9 +26,7 @@ namespace DbContextValidation.Tests
                 var connection = (OracleConnection)_factory.CreateConnection() ?? throw new InvalidOperationException($"CreateConnection() returned null for {_factory}");
                 // Fixes "ORA-01882: timezone region not found" that occurs on GitHub actions
                 // See https://stackoverflow.com/questions/47469074/timezone-region-not-found/74291427#74291427
-#if !NETCOREAPP2_1
                 connection.UseHourOffsetForUnsupportedTimezone = true;
-#endif
                 return connection;
             }
 

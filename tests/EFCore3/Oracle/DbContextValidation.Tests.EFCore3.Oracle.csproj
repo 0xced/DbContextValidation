@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <Compile Include="$(TestsDirectory)\Config.Oracle.cs" />
-    <Compile Include="$(TestsDirectory)\EFCore2\Oracle\Context.EFCore.Oracle.cs" />
+    <Compile Include="$(TestsDirectory)\Context.EFCore.Oracle.cs" />
   </ItemGroup>
 
 </Project>
