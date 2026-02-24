@@ -124,7 +124,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Meta", "Meta", "{CB1A8A3B-7D39-4F01-A889-C1350658D89A}"
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\continuous-integration.yml = .github\workflows\continuous-integration.yml
-		global.json = global.json
 	EndProjectSection
 EndProject
 Global
