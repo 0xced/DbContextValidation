@@ -33,7 +33,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <VSTestLogger Include="GitHubActions" />
     <VSTestLogger Include="trx%3BLogFileName=TestResults-$(TargetFramework)-$(MSBuildProjectName).trx" />
     <VSTestLogger Include="html%3BLogFileName=TestResults-$(TargetFramework)-$(MSBuildProjectName).html" />
   </ItemGroup>
