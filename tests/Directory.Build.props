@@ -56,10 +56,6 @@
     <PackageReference Include="Testcontainers.MsSql" Version="4.10.0" />
   </ItemGroup>
 
-  <ItemGroup Condition="$(DefineConstants.Contains('PROVIDER_SQLSERVER')) AND $(DefineConstants.Contains('EFCORE')) AND $([MSBuild]::VersionGreaterThanOrEquals('$(TargetFrameworkVersion)', '3.0'))">
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.4" />
-  </ItemGroup>
-
   <ItemGroup>
     <VSTestLogger Include="trx%3BLogFileName=TestResults-$(TargetFramework)-$(MSBuildProjectName).trx" />
     <VSTestLogger Include="html%3BLogFileName=TestResults-$(TargetFramework)-$(MSBuildProjectName).html" />
