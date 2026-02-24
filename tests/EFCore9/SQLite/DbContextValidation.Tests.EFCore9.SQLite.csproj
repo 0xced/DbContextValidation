@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <DefineConstants>$(DefineConstants);PROVIDER_SQLITE</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="$(TestsDirectory)\EFCore2\SQLite\Context.EFCore.SQLite.cs" />
+    <None Include="$(TestsDirectory)\DbContextValidation.sqlite3" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>
