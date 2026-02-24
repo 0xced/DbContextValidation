@@ -62,6 +62,7 @@
   </Folder>
   <Folder Name="/tests/EFCore7/">
     <File Path="tests/EFCore7/Directory.Build.props" />
+    <Project Path="tests/EFCore7/Firebird/DbContextValidation.Tests.EFCore7.Firebird.csproj" />
     <Project Path="tests/EFCore7/MySQL.Pomelo/DbContextValidation.Tests.EFCore7.MySQL.Pomelo.csproj" />
     <Project Path="tests/EFCore7/MySQL/DbContextValidation.Tests.EFCore7.MySQL.csproj" />
     <Project Path="tests/EFCore7/Npgsql/DbContextValidation.Tests.EFCore7.Npgsql.csproj" />
