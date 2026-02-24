@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <DefineConstants>$(DefineConstants);EFCORE;EFCORE2</DefineConstants>
+    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,6 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.*" />
+    <PackageReference Include="Microsoft.NETCore.App" Version="2.1.*" />
   </ItemGroup>
 
   <Import Project="$(MSBuildThisFileDirectory)\..\Directory.Build.props" />
