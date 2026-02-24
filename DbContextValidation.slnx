@@ -1,0 +1,72 @@
+<Solution>
+  <Folder Name="/Meta/">
+    <File Path=".github/workflows/continuous-integration.yml" />
+  </Folder>
+  <Folder Name="/src/">
+    <File Path="src/Directory.Build.props" />
+    <Project Path="src/EF6/DbContextValidation.EF6.csproj" />
+    <Project Path="src/EFCore/DbContextValidation.EFCore.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <File Path="tests/Directory.Build.props" />
+    <File Path="tests/xunit.runner.json" />
+  </Folder>
+  <Folder Name="/tests/EF6/">
+    <File Path="tests/EF6/Directory.Build.props" />
+    <Project Path="tests/EF6/Firebird/DbContextValidation.Tests.EF6.Firebird.csproj" />
+    <Project Path="tests/EF6/MySQL/DbContextValidation.Tests.EF6.MySQL.csproj" />
+    <Project Path="tests/EF6/Npgsql/DbContextValidation.Tests.EF6.Npgsql.csproj" />
+    <Project Path="tests/EF6/Oracle/DbContextValidation.Tests.EF6.Oracle.csproj" />
+    <Project Path="tests/EF6/SQLite/DbContextValidation.Tests.EF6.SQLite.csproj" />
+    <Project Path="tests/EF6/SqlServer/DbContextValidation.Tests.EF6.SqlServer.csproj" />
+  </Folder>
+  <Folder Name="/tests/EFCore2/">
+    <File Path="tests/EFCore2/Directory.Build.props" />
+    <Project Path="tests/EFCore2/Firebird/DbContextValidation.Tests.EFCore2.Firebird.csproj" />
+    <Project Path="tests/EFCore2/MySQL/DbContextValidation.Tests.EFCore2.MySQL.csproj" />
+    <Project Path="tests/EFCore2/Npgsql/DbContextValidation.Tests.EFCore2.Npgsql.csproj" />
+    <Project Path="tests/EFCore2/Oracle/DbContextValidation.Tests.EFCore2.Oracle.csproj">
+      <Build Solution="Release|*" Project="false" />
+    </Project>
+    <Project Path="tests/EFCore2/SQLite/DbContextValidation.Tests.EFCore2.SQLite.csproj" />
+    <Project Path="tests/EFCore2/SqlServer/DbContextValidation.Tests.EFCore2.SqlServer.csproj" />
+  </Folder>
+  <Folder Name="/tests/EFCore3/">
+    <File Path="tests/EFCore3/Directory.Build.props" />
+    <Project Path="tests/EFCore3/Firebird/DbContextValidation.Tests.EFCore3.Firebird.csproj" />
+    <Project Path="tests/EFCore3/MySQL/DbContextValidation.Tests.EFCore3.MySQL.csproj" />
+    <Project Path="tests/EFCore3/Npgsql/DbContextValidation.Tests.EFCore3.Npgsql.csproj" />
+    <Project Path="tests/EFCore3/Oracle/DbContextValidation.Tests.EFCore3.Oracle.csproj" />
+    <Project Path="tests/EFCore3/SQLite/DbContextValidation.Tests.EFCore3.SQLite.csproj" />
+    <Project Path="tests/EFCore3/SqlServer/DbContextValidation.Tests.EFCore3.SqlServer.csproj" />
+  </Folder>
+  <Folder Name="/tests/EFCore5/">
+    <File Path="tests/EFCore5/Directory.Build.props" />
+    <Project Path="tests/EFCore5/Firebird/DbContextValidation.Tests.EFCore5.Firebird.csproj" />
+    <Project Path="tests/EFCore5/MySQL.Pomelo/DbContextValidation.Tests.EFCore5.MySQL.Pomelo.csproj" />
+    <Project Path="tests/EFCore5/MySQL/DbContextValidation.Tests.EFCore5.MySQL.csproj" />
+    <Project Path="tests/EFCore5/Npgsql/DbContextValidation.Tests.EFCore5.Npgsql.csproj" />
+    <Project Path="tests/EFCore5/Oracle/DbContextValidation.Tests.EFCore5.Oracle.csproj" />
+    <Project Path="tests/EFCore5/SQLite/DbContextValidation.Tests.EFCore5.SQLite.csproj" />
+    <Project Path="tests/EFCore5/SqlServer/DbContextValidation.Tests.EFCore5.SqlServer.csproj" />
+  </Folder>
+  <Folder Name="/tests/EFCore6/">
+    <File Path="tests/EFCore6/Directory.Build.props" />
+    <Project Path="tests/EFCore6/Firebird/DbContextValidation.Tests.EFCore6.Firebird.csproj" />
+    <Project Path="tests/EFCore6/MySQL.Pomelo/DbContextValidation.Tests.EFCore6.MySQL.Pomelo.csproj" />
+    <Project Path="tests/EFCore6/MySQL/DbContextValidation.Tests.EFCore6.MySQL.csproj" />
+    <Project Path="tests/EFCore6/Npgsql/DbContextValidation.Tests.EFCore6.Npgsql.csproj" />
+    <Project Path="tests/EFCore6/Oracle/DbContextValidation.Tests.EFCore6.Oracle.csproj" />
+    <Project Path="tests/EFCore6/SQLite/DbContextValidation.Tests.EFCore6.SQLite.csproj" />
+    <Project Path="tests/EFCore6/SqlServer/DbContextValidation.Tests.EFCore6.SqlServer.csproj" />
+  </Folder>
+  <Folder Name="/tests/EFCore7/">
+    <File Path="tests/EFCore7/Directory.Build.props" />
+    <Project Path="tests/EFCore7/MySQL.Pomelo/DbContextValidation.Tests.EFCore7.MySQL.Pomelo.csproj" />
+    <Project Path="tests/EFCore7/MySQL/DbContextValidation.Tests.EFCore7.MySQL.csproj" />
+    <Project Path="tests/EFCore7/Npgsql/DbContextValidation.Tests.EFCore7.Npgsql.csproj" />
+    <Project Path="tests/EFCore7/Oracle/DbContextValidation.Tests.EFCore7.Oracle.csproj" />
+    <Project Path="tests/EFCore7/SQLite/DbContextValidation.Tests.EFCore7.SQLite.csproj" />
+    <Project Path="tests/EFCore7/SqlServer/DbContextValidation.Tests.EFCore7.SqlServer.csproj" />
+  </Folder>
+</Solution>
