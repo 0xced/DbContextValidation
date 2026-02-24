@@ -28,22 +28,31 @@
   </ItemGroup>
 
   <ItemGroup Condition="$(DefineConstants.Contains('PROVIDER_FIREBIRD'))">
+    <Compile Include="$(TestsDirectory)\DbFixture.Firebird.cs" />
     <PackageReference Include="Testcontainers.FirebirdSql" Version="4.10.0" />
   </ItemGroup>
 
   <ItemGroup Condition="$(DefineConstants.Contains('PROVIDER_MYSQL'))">
+    <Compile Include="$(TestsDirectory)\DbFixture.MySQL.cs" />
     <PackageReference Include="Testcontainers.MySql" Version="4.10.0" />
   </ItemGroup>
 
   <ItemGroup Condition="$(DefineConstants.Contains('PROVIDER_NPGSQL'))">
+    <Compile Include="$(TestsDirectory)\DbFixture.Npgsql.cs" />
     <PackageReference Include="Testcontainers.PostgreSql" Version="4.10.0" />
   </ItemGroup>
 
   <ItemGroup Condition="$(DefineConstants.Contains('PROVIDER_ORACLE'))">
+    <Compile Include="$(TestsDirectory)\DbFixture.Oracle.cs" />
     <PackageReference Include="Testcontainers.Oracle" Version="4.10.0" />
   </ItemGroup>
 
+  <ItemGroup Condition="$(DefineConstants.Contains('PROVIDER_SQLITE'))">
+    <Compile Include="$(TestsDirectory)\DbFixture.SQLite.cs" />
+  </ItemGroup>
+
   <ItemGroup Condition="$(DefineConstants.Contains('PROVIDER_SQLSERVER'))">
+    <Compile Include="$(TestsDirectory)\DbFixture.SqlServer.cs" />
     <PackageReference Include="Testcontainers.MsSql" Version="4.10.0" />
   </ItemGroup>
 

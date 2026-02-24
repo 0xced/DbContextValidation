@@ -10,7 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="$(TestsDirectory)\DbFixture.MySQL.cs" />
     <Compile Include="$(TestsDirectory)\EFCore2\MySQL\Context.EFCore.MySQL.cs" />
   </ItemGroup>
 

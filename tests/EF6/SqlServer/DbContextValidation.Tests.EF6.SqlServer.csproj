@@ -9,8 +9,4 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.*" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Include="$(TestsDirectory)\DbFixture.SqlServer.cs" />
-  </ItemGroup>
-
 </Project>

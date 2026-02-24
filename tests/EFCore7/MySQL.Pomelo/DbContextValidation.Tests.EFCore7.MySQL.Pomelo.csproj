@@ -11,7 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="$(TestsDirectory)\DbFixture.MySQL.cs" />
     <Compile Include="$(TestsDirectory)\EFCore5\MySQL.Pomelo\Context.EFCore.MySQL.Pomelo.cs" />
   </ItemGroup>
 

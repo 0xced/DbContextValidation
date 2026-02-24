@@ -10,8 +10,4 @@
     <PackageReference Include="Oracle.ManagedDataAccess.EntityFramework" Version="21.*" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Include="$(TestsDirectory)\DbFixture.Oracle.cs" />
-  </ItemGroup>
-
 </Project>

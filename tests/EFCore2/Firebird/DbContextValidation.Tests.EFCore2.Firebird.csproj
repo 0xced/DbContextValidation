@@ -11,8 +11,4 @@
     <PackageReference Include="FirebirdSql.EntityFrameworkCore.Firebird" Version="6.*" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Include="$(TestsDirectory)\DbFixture.Firebird.cs" />
-  </ItemGroup>
-
 </Project>

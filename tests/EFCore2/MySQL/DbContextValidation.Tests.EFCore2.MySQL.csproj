@@ -15,8 +15,4 @@
     <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="6.*" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Include="$(TestsDirectory)\DbFixture.MySQL.cs" />
-  </ItemGroup>
-
 </Project>
