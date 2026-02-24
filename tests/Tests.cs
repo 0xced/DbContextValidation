@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using FluentAssertions;
+using AwesomeAssertions;
 #if EFCORE
 using DbContextValidation.EFCore;
 using Microsoft.EntityFrameworkCore;

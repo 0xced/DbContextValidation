@@ -20,9 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AwesomeAssertions" Version="9.4.0" />
     <PackageReference Include="DockerRunner" Version="1.0.0-beta.2" />
     <PackageReference Include="DockerRunner.Xunit" Version="1.0.0-beta.2" />
-    <PackageReference Include="FluentAssertions" Version="6.11.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
     <PackageReference Include="xunit" Version="2.4.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5" />
