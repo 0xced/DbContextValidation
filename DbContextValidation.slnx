@@ -69,4 +69,14 @@
     <Project Path="tests/EFCore7/SQLite/DbContextValidation.Tests.EFCore7.SQLite.csproj" />
     <Project Path="tests/EFCore7/SqlServer/DbContextValidation.Tests.EFCore7.SqlServer.csproj" />
   </Folder>
+  <Folder Name="/tests/EFCore8/">
+    <File Path="tests/EFCore8/Directory.Build.props" />
+    <Project Path="tests/EFCore8/Firebird/DbContextValidation.Tests.EFCore8.Firebird.csproj" />
+    <Project Path="tests/EFCore8/MySQL.Pomelo/DbContextValidation.Tests.EFCore8.MySQL.Pomelo.csproj" />
+    <Project Path="tests/EFCore8/MySQL/DbContextValidation.Tests.EFCore8.MySQL.csproj" />
+    <Project Path="tests/EFCore8/Npgsql/DbContextValidation.Tests.EFCore8.Npgsql.csproj" />
+    <Project Path="tests/EFCore8/Oracle/DbContextValidation.Tests.EFCore8.Oracle.csproj" />
+    <Project Path="tests/EFCore8/SQLite/DbContextValidation.Tests.EFCore8.SQLite.csproj" />
+    <Project Path="tests/EFCore8/SqlServer/DbContextValidation.Tests.EFCore8.SqlServer.csproj" />
+  </Folder>
 </Solution>
