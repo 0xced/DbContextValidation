@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="$(TestsDirectory)\Config.MySQL.cs" />
+    <Compile Include="$(TestsDirectory)\DbFixture.MySQL.cs" />
   </ItemGroup>
 
 </Project>

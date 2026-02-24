@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="$(TestsDirectory)\Config.Firebird.cs" />
+    <Compile Include="$(TestsDirectory)\DbFixture.Firebird.cs" />
     <Compile Include="$(TestsDirectory)\EFCore2\Firebird\Context.EFCore.Firebird.cs" />
   </ItemGroup>
 

@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="$(TestsDirectory)\Config.Npgsql.cs" />
+    <Compile Include="$(TestsDirectory)\DbFixture.Npgsql.cs" />
   </ItemGroup>
 
 </Project>

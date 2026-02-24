@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="$(TestsDirectory)\Config.Oracle.cs" />
+    <Compile Include="$(TestsDirectory)\DbFixture.Oracle.cs" />
   </ItemGroup>
 
 </Project>

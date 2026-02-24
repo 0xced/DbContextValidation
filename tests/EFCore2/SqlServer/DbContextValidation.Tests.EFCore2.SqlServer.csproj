@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="$(TestsDirectory)\Config.SqlServer.cs" />
+    <Compile Include="$(TestsDirectory)\DbFixture.SqlServer.cs" />
   </ItemGroup>
 
 </Project>
