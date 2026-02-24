@@ -1,19 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Common;
-using DockerRunner.Database.Oracle;
 using Oracle.ManagedDataAccess.Client;
-using static DbContextValidation.Tests.SqlInitializationHelper;
+using Testcontainers.Oracle;
+using Xunit.Abstractions;
 
 namespace DbContextValidation.Tests
 {
-    public class Configuration : Oracle11SlimConfiguration
+    public class DbFixture : DbFixture<OracleBuilder, OracleContainer>
     {
-        public const string Schema = null;
+        public DbFixture(IMessageSink messageSink) : base(messageSink)
+        {
+        }
 
-        public override IEnumerable<string> SqlStatements => ReadSqlStatements(SqlDirectory("SQL.Oracle"));
+        protected override OracleBuilder CreateBuilder() => new OracleBuilder("gvenzl/oracle-free:23-slim-faststart");
 
-        public override DbProviderFactory ProviderFactory => new OracleProviderFactory(base.ProviderFactory);
+        public override DbProviderFactory DbProviderFactory => new OracleProviderFactory(OracleClientFactory.Instance);
+
+        protected override string SqlDirectoryName => "SQL.Oracle";
+
+        public override string Schema => null;
 
         private class OracleProviderFactory : DbProviderFactory
         {

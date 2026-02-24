@@ -1,32 +1,22 @@
-﻿using System.Collections.Generic;
-using System.Data.Common;
-using DockerRunner.Database;
-using static DbContextValidation.Tests.SqlInitializationHelper;
+﻿using System.Data.Common;
+using FirebirdSql.Data.FirebirdClient;
+using Testcontainers.FirebirdSql;
+using Xunit.Abstractions;
 
 namespace DbContextValidation.Tests
 {
-    public class Configuration : DockerDatabaseContainerConfiguration
+    public class DbFixture : DbFixture<FirebirdSqlBuilder, FirebirdSqlContainer>
     {
-        public const string Schema = null;
-
-        private const string Database = "DbContextValidation";
-        private const string User = "firebird";
-        private const string Password = "docker";
-
-        public override string ImageName => "jacobalberty/firebird";
-
-        public override string ConnectionString(string host, ushort port) => $"DataSource={host};Port={port};Database={Database};User={User};Password={Password}";
-
-        public override DbProviderFactory ProviderFactory => FirebirdSql.Data.FirebirdClient.FirebirdClientFactory.Instance;
-
-        public override IEnumerable<string> SqlStatements => ReadSqlStatements(SqlDirectory("SQL.Firebird"));
-
-        public override IReadOnlyDictionary<string, string> EnvironmentVariables => new Dictionary<string, string>
+        public DbFixture(IMessageSink messageSink) : base(messageSink)
         {
-            ["FIREBIRD_DATABASE"] = Database,
-            ["FIREBIRD_USER"] = User,
-            ["FIREBIRD_PASSWORD"] = Password,
-            ["EnableWireCrypt"] = "true",
-        };
+        }
+
+        protected override FirebirdSqlBuilder CreateBuilder() => new FirebirdSqlBuilder("jacobalberty/firebird:v4.0");
+
+        public override DbProviderFactory DbProviderFactory => FirebirdClientFactory.Instance;
+
+        protected override string SqlDirectoryName => "SQL.Firebird";
+
+        public override string Schema => null;
     }
 }

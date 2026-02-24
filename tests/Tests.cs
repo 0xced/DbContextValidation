@@ -14,10 +14,6 @@ using System.Data.Entity;
 #endif
 using Xunit;
 
-#if !PROVIDER_SQLITE
-using DbFixture = DockerRunner.Xunit.DockerDatabaseContainerFixture<DbContextValidation.Tests.Configuration>;
-#endif
-
 #if PROVIDER_FIREBIRD
 namespace DbContextValidation.Tests.Firebird
 #elif PROVIDER_MYSQL
@@ -40,6 +36,8 @@ namespace DbContextValidation.Tests
     [SuppressMessage("ReSharper", "VSTHRD200", Justification = "Naming all tests methods with the Async suffix feels weird")]
     public class ValidatorTests : IClassFixture<DbFixture>
     {
+        private readonly DbFixture _dbFixture;
+
         private class AccumulatorProgress<T> : IProgress<T>
         {
             private readonly List<T> _items = new List<T>();
@@ -57,6 +55,7 @@ namespace DbContextValidation.Tests
 
         public ValidatorTests(DbFixture dbFixture)
         {
+            _dbFixture = dbFixture;
             _defaultValidator = new DbContextValidator(StringComparer.InvariantCulture);
             _connectionString = dbFixture.ConnectionString;
         }
@@ -84,7 +83,7 @@ namespace DbContextValidation.Tests
         public async Task Validator_ValidContextWithExplicitSchema_ReturnNoErrors()
         {
             // Arrange
-            using var context = new ValidContextWithExplicitSchema(_connectionString, Configuration.Schema);
+            using var context = new ValidContextWithExplicitSchema(_connectionString, _dbFixture.Schema);
 
             // Act
             var errors = await _defaultValidator.ValidateContextAsync(context);

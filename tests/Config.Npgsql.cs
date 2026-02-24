@@ -1,13 +1,22 @@
-﻿using System.Collections.Generic;
-using DockerRunner.Database.PostgreSql;
-using static DbContextValidation.Tests.SqlInitializationHelper;
+﻿using System.Data.Common;
+using Npgsql;
+using Testcontainers.PostgreSql;
+using Xunit.Abstractions;
 
 namespace DbContextValidation.Tests
 {
-    public class Configuration : PostgresConfiguration
+    public class DbFixture : DbFixture<PostgreSqlBuilder, PostgreSqlContainer>
     {
-        public const string Schema = "public";
+        public DbFixture(IMessageSink messageSink) : base(messageSink)
+        {
+        }
 
-        public override IEnumerable<string> SqlStatements => ReadSqlStatements(SqlDirectory("SQL.Common"));
+        protected override PostgreSqlBuilder CreateBuilder() => new PostgreSqlBuilder("postgres:18");
+
+        public override DbProviderFactory DbProviderFactory => NpgsqlFactory.Instance;
+
+        protected override string SqlDirectoryName => "SQL.Common";
+
+        public override string Schema => "public";
     }
 }

@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)\SqlInitializationHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)\Context.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)\DbFixture.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)\Tests.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)\Entities\*.cs" />
   </ItemGroup>
@@ -21,11 +21,30 @@
 
   <ItemGroup>
     <PackageReference Include="AwesomeAssertions" Version="9.4.0" />
-    <PackageReference Include="DockerRunner" Version="1.0.0-beta.2" />
-    <PackageReference Include="DockerRunner.Xunit" Version="1.0.0-beta.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
-    <PackageReference Include="xunit" Version="2.4.2" />
+    <PackageReference Include="Testcontainers.Xunit" Version="4.10.0" />
+    <PackageReference Include="xunit" Version="2.9.3" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(DefineConstants.Contains('PROVIDER_FIREBIRD'))">
+    <PackageReference Include="Testcontainers.FirebirdSql" Version="4.10.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(DefineConstants.Contains('PROVIDER_MYSQL'))">
+    <PackageReference Include="Testcontainers.MySql" Version="4.10.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(DefineConstants.Contains('PROVIDER_NPGSQL'))">
+    <PackageReference Include="Testcontainers.PostgreSql" Version="4.10.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(DefineConstants.Contains('PROVIDER_ORACLE'))">
+    <PackageReference Include="Testcontainers.Oracle" Version="4.10.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(DefineConstants.Contains('PROVIDER_SQLSERVER'))">
+    <PackageReference Include="Testcontainers.MsSql" Version="4.10.0" />
   </ItemGroup>
 
   <ItemGroup Condition="$(DefineConstants.Contains('PROVIDER_SQLSERVER')) AND $(DefineConstants.Contains('EFCORE')) AND $([MSBuild]::VersionGreaterThanOrEquals('$(TargetFrameworkVersion)', '3.0'))">
