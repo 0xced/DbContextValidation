@@ -7,8 +7,8 @@ env:
   ContinuousIntegrationBuild: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
   DOTNET_NOLOGO: true
-  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: true
+  REPORTGENERATOR_LICENSE: ${{ secrets.REPORTGENERATOR_LICENSE }}
   TERM: xterm
 
 jobs:
@@ -18,16 +18,14 @@ jobs:
         os: [ ubuntu-latest ]
       fail-fast: false
     runs-on: ${{ matrix.os }}
-    permissions:
-      checks: write
-    name: Run tests and create NuGet packages
+    name: 🛠 Build, test and pack
     steps:
-      - name: Checkout git repository
-        uses: actions/checkout@v3
+      - name: 🧑‍💻 Checkout git repository
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Install .NET SDK
-        uses: actions/setup-dotnet@v3
+      - name: 🧑‍🔧 Install .NET SDK
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: |
             2.1.x
@@ -35,50 +33,56 @@ jobs:
             5.0.x
             6.0.x
             7.0.x
-      - name: Retrieve cached NuGet packages
-        uses: actions/cache@v3
+      - name: ℹ️ Show .NET info
+        run: dotnet --info
+      - name: 💾 Retrieve cached NuGet packages
+        uses: actions/cache@v4
         with:
-          path: ~/.nuget/packages
+          path: ${{ env.NUGET_PACKAGES || '~/.nuget/packages' }}
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
           restore-keys: |
             ${{ runner.os }}-nuget-
-      - name: Restore NuGet packages
+      - name: ⚙️ Restore NuGet packages
         run: dotnet restore
-      - name: Build solution
-        run: dotnet build
-      - name: Run tests
+      - name: 🏗 Build solution
+        run: dotnet build --no-restore
+      - name: 🧪 Run tests
         run: dotnet test --no-build
-        id: dotnet-test
-      - name: Upload test results
-        uses: actions/upload-artifact@v3
+      - name: 📤 Upload received files from failing tests
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: Received-${{ runner.os }}
+          path: "**/*.received.*"
+      - name: 📤 Upload test results
+        uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: TestResults (${{ runner.os }})
-          path: TestResults-*.html
-      - name: Test Report
-        uses: dorny/test-reporter@v1
+          name: TestResults-${{ runner.os }}.trx
+          path: "*.trx"
+      - name: 📊 Test Report
+        uses: dorny/test-reporter@v2
         if: always()
         with:
-          name: Test Results (${{ runner.os }})
-          path: TestResults-*.trx
+          name: 🚦 Test Results
+          path: '*.trx'
           reporter: dotnet-trx
-      - name: Create NuGet packages
+      - name: 📦 Create NuGet packages
         run: dotnet pack --no-build --output .
-        id: dotnet-pack
-      - name: Upload NuGet packages artifact
+      - name: 📤 Upload NuGet packages artifact
         if: matrix.os == 'ubuntu-latest'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: NuGet packages
           path: "*.nupkg"
-      - name: Retrieve release notes from tag
+      - name: 📝 Retrieve release notes from tag
         if: matrix.os == 'ubuntu-latest' && startsWith(github.ref, 'refs/tags/')
         run: |
           git fetch --tags --force
           git tag --list ${{ github.ref_name }} --format='%(contents)' > ReleaseNotes.md
-      - name: Upload release notes
+      - name: 📤 Upload release notes
         if: matrix.os == 'ubuntu-latest' && startsWith(github.ref, 'refs/tags/')
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: Release Notes
           path: ReleaseNotes.md
@@ -88,21 +92,28 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
     permissions:
       contents: write
-    name: Publish NuGet package and create GitHub release
+      id-token: write
+    name: 🐿 Publish
     steps:
-      - name: Download NuGet packages artifact
-        uses: actions/download-artifact@v3
+      - name: 📥 Download NuGet packages artifact
+        uses: actions/download-artifact@v4
         with:
           name: NuGet packages
-      - name: Download release notes artifact
-        uses: actions/download-artifact@v3
+      - name: 📥 Download release notes artifact
+        uses: actions/download-artifact@v4
         with:
           name: Release Notes
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+      - name: 🚢 Create GitHub Release
+        uses: softprops/action-gh-release@v2
         with:
           name: Version ${{ github.ref_name }}
           body_path: ReleaseNotes.md
           prerelease: ${{ contains(github.ref_name, '-') }}
-      - name: Publish NuGet package on nuget.org
-        run: dotnet nuget push "*.nupkg" --source https://api.nuget.org/v3/index.json --api-key "${{ secrets.NUGET_API_KEY }}"
+          files: "*.nupkg"
+      - name: 🔑 Retrieve NuGet API key
+        uses: NuGet/login@v1
+        id: nuget-login
+        with:
+          user: '0xced'
+      - name: 🚀 Publish NuGet package on nuget.org
+        run: dotnet nuget push "*.nupkg" --source https://api.nuget.org/v3/index.json --api-key "${{ steps.nuget-login.outputs.NUGET_API_KEY }}"
