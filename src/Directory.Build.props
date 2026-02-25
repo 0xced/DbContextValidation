@@ -48,7 +48,7 @@
   </ItemGroup>
 
   <Target Name="ValidateNuGetPackage" AfterTargets="Pack">
-    <Exec Command="dotnet tool restore" />
+    <Exec Command="dotnet tool restore" Condition="$(ContinuousIntegrationBuild) != 'true'" />
     <Exec Command="dotnet validate package local $([MSBuild]::EnsureTrailingSlash($(PackageOutputPath)))$(PackageId).$(PackageVersion).nupkg" />
   </Target>
 
