@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data.Common;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,6 +9,7 @@ namespace DbContextValidation.EFCore;
 /// <summary>
 /// Extends the <see cref="DbContext"/> class by providing a method for getting a simplified model of the tables.
 /// </summary>
+[SuppressMessage("ReSharper", "ConvertToExtensionBlock", Justification = "https://github.com/dotnet/roslyn/issues/81943")]
 public static class DbContextExtensions
 {
     /// <param name="context">The context</param>

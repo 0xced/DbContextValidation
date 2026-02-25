@@ -6,7 +6,7 @@ namespace DbContextValidation.Tests.Npgsql;
 
 public class NpgsqlConfiguration : DbConfiguration
 {
-    public NpgsqlConfiguration() 
+    public NpgsqlConfiguration()
     {
         SetDefaultConnectionFactory(new NpgsqlConnectionFactory());
         SetProviderFactory("Npgsql", NpgsqlFactory.Instance);
@@ -14,10 +14,5 @@ public class NpgsqlConfiguration : DbConfiguration
     }
 }
 
-[DbConfigurationType(typeof(NpgsqlConfiguration))] 
-public abstract class Context : DbContext
-{
-    protected Context(string connectionString) : base(connectionString)
-    {
-    }
-}
+[DbConfigurationType(typeof(NpgsqlConfiguration))]
+public abstract class Context(string connectionString) : DbContext(connectionString);

@@ -23,14 +23,9 @@ public class SQLiteConfiguration : DbConfiguration
     {
         SetDefaultConnectionFactory(new SQLiteConnectionFactory());
         SetProviderFactory("System.Data.SQLite", SQLiteFactory.Instance);
-        SetProviderServices("System.Data.SQLite", (DbProviderServices)SQLiteProviderFactory.Instance.GetService(typeof(DbProviderServices)));
+        SetProviderServices("System.Data.SQLite", SQLiteProviderFactory.Instance.GetService(typeof(DbProviderServices)) as DbProviderServices);
     }
 }
 
 [DbConfigurationType(typeof(SQLiteConfiguration))] 
-public abstract class Context : DbContext
-{
-    protected Context(string connectionString) : base(connectionString)
-    {
-    }
-}
+public abstract class Context(string connectionString) : DbContext(connectionString);

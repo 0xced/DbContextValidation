@@ -18,7 +18,7 @@ public class DbFixture : DbFixture<MsSqlBuilder, MsSqlContainer>
     {
     }
 
-    protected override MsSqlBuilder CreateBuilder() => new MsSqlBuilder("mcr.microsoft.com/mssql/server:2019-latest");
+    protected override MsSqlBuilder CreateBuilder() => new("mcr.microsoft.com/mssql/server:2019-latest");
 
     public override DbProviderFactory DbProviderFactory => SqlClientFactory.Instance;
 

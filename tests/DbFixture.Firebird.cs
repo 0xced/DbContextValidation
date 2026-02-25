@@ -13,7 +13,7 @@ public class DbFixture : DbFixture<FirebirdSqlBuilder, FirebirdSqlContainer>
     {
     }
 
-    protected override FirebirdSqlBuilder CreateBuilder() => new FirebirdSqlBuilder("jacobalberty/firebird:v4.0");
+    protected override FirebirdSqlBuilder CreateBuilder() => new("jacobalberty/firebird:v4.0");
 
     public override DbProviderFactory DbProviderFactory => FirebirdClientFactory.Instance;
 

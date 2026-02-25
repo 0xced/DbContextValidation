@@ -14,7 +14,7 @@ public class DbFixture : DbFixture<OracleBuilder, OracleContainer>
     {
     }
 
-    protected override OracleBuilder CreateBuilder() => new OracleBuilder("gvenzl/oracle-free:23-slim-faststart");
+    protected override OracleBuilder CreateBuilder() => new("gvenzl/oracle-free:23-slim-faststart");
 
     public override DbProviderFactory DbProviderFactory => new OracleProviderFactory(OracleClientFactory.Instance);
 

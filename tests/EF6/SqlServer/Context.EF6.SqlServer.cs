@@ -15,9 +15,4 @@ public class SqlServerConfiguration : DbConfiguration
 }
 
 [DbConfigurationType(typeof(SqlServerConfiguration))] 
-public abstract class Context : DbContext
-{
-    protected Context(string connectionString) : base(connectionString)
-    {
-    }
-}
+public abstract class Context(string connectionString) : DbContext(connectionString);

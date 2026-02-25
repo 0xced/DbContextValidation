@@ -34,13 +34,11 @@ namespace DbContextValidation.Tests;
 #endif
 
 [SuppressMessage("ReSharper", "VSTHRD200", Justification = "Naming all tests methods with the Async suffix feels weird")]
-public class ValidatorTests : IClassFixture<DbFixture>
+public class ValidatorTests(DbFixture dbFixture) : IClassFixture<DbFixture>
 {
-    private readonly DbFixture _dbFixture;
-
     private class AccumulatorProgress<T> : IProgress<T>
     {
-        private readonly List<T> _items = new List<T>();
+        private readonly List<T> _items = [];
 
         public IReadOnlyList<T> Items => _items;
 
@@ -50,30 +48,23 @@ public class ValidatorTests : IClassFixture<DbFixture>
         }
     }
 
-    private readonly DbContextValidator _defaultValidator;
-    private readonly string _connectionString;
-
-    public ValidatorTests(DbFixture dbFixture)
-    {
-        _dbFixture = dbFixture;
-        _defaultValidator = new DbContextValidator(StringComparer.InvariantCulture);
-        _connectionString = dbFixture.ConnectionString;
-    }
+    private readonly DbContextValidator _defaultValidator = new(StringComparer.InvariantCulture);
 
     [Fact]
     public async Task Validator_ValidContext_ReturnNoErrors()
     {
         // Arrange
-        var context = new ValidContext(_connectionString);
+        var context = new ValidContext(dbFixture.ConnectionString);
 
         // Act
         var errors = await _defaultValidator.ValidateContextAsync(context);
 
         // Assert
         errors.Should().BeEmpty();
+        _ = context.Products;
         // ReSharper disable AccessToDisposedClosure
-        Func<Task> customersTask = async () => { await context.Customers.ToListAsync(); };
-        Func<Task> ordersTask = async () => { await context.Orders.ToListAsync(); };
+        var customersTask = async () => { await context.Customers.ToListAsync(); };
+        var ordersTask = async () => { await context.Orders.ToListAsync(); };
         // ReSharper restore AccessToDisposedClosure
         await customersTask.Should().NotThrowAsync();
         await ordersTask.Should().NotThrowAsync();
@@ -83,7 +74,7 @@ public class ValidatorTests : IClassFixture<DbFixture>
     public async Task Validator_ValidContextWithExplicitSchema_ReturnNoErrors()
     {
         // Arrange
-        var context = new ValidContextWithExplicitSchema(_connectionString, _dbFixture.Schema);
+        var context = new ValidContextWithExplicitSchema(dbFixture.ConnectionString, dbFixture.Schema);
 
         // Act
         var errors = await _defaultValidator.ValidateContextAsync(context);
@@ -97,7 +88,7 @@ public class ValidatorTests : IClassFixture<DbFixture>
     {
         // Arrange
         var progress = new AccumulatorProgress<Table>();
-        var context = new ValidContext(_connectionString);
+        var context = new ValidContext(dbFixture.ConnectionString);
 
         // Act
         await _defaultValidator.ValidateContextAsync(context, progress);
@@ -110,7 +101,7 @@ public class ValidatorTests : IClassFixture<DbFixture>
     public void Validator_ValidContext_SupportsCancellation()
     {
         // Arrange
-        var context = new ValidContext(_connectionString);
+        var context = new ValidContext(dbFixture.ConnectionString);
 
         // Act
         var validationTask = _defaultValidator.ValidateContextAsync(context, cancellationToken: new CancellationToken(true));
@@ -123,7 +114,7 @@ public class ValidatorTests : IClassFixture<DbFixture>
     public async Task Validator_UnknownSchema_ReturnsMissingTableErrors()
     {
         // Arrange
-        var context = new ContextWithUnknownSchema(_connectionString);
+        var context = new ContextWithUnknownSchema(dbFixture.ConnectionString);
 
         // Act
         var errors = await _defaultValidator.ValidateContextAsync(context);
@@ -143,7 +134,7 @@ public class ValidatorTests : IClassFixture<DbFixture>
     public async Task Validator_MisspelledCustomersTable_ReturnsMissingTableError()
     {
         // Arrange
-        var context = new ContextWithMisspelledCustomersTable(_connectionString);
+        var context = new ContextWithMisspelledCustomersTable(dbFixture.ConnectionString);
 
         // Act
         var errors = await _defaultValidator.ValidateContextAsync(context);
@@ -158,7 +149,7 @@ public class ValidatorTests : IClassFixture<DbFixture>
     public async Task Validator_MisspelledOrderDateColumn_ReturnsMissingColumnsError()
     {
         // Arrange
-        var context = new ContextWithMisspelledOrderDateColumn(_connectionString);
+        var context = new ContextWithMisspelledOrderDateColumn(dbFixture.ConnectionString);
 
         // Act
         var errors = await _defaultValidator.ValidateContextAsync(context);
@@ -175,7 +166,7 @@ public class ValidatorTests : IClassFixture<DbFixture>
     public async Task Validator_CaseInsensitiveColumnNameComparison_ReturnNoErrors()
     {
         // Arrange
-        var context = new ContextWithMixedCaseColumns(_connectionString);
+        var context = new ContextWithMixedCaseColumns(dbFixture.ConnectionString);
         var caseInsensitiveValidator = new DbContextValidator(StringComparer.InvariantCultureIgnoreCase);
 
         // Act
@@ -189,7 +180,7 @@ public class ValidatorTests : IClassFixture<DbFixture>
     public async Task Validator_CaseSensitiveColumnNameComparison_ReturnsMissingColumnsError()
     {
         // Arrange
-        var context = new ContextWithMixedCaseColumns(_connectionString);
+        var context = new ContextWithMixedCaseColumns(dbFixture.ConnectionString);
 
         // Act
         var errors = await _defaultValidator.ValidateContextAsync(context);

@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Data.Entity.Core.Mapping;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.Data.Entity.Infrastructure;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace DbContextValidation.EF6;
@@ -11,6 +12,7 @@ namespace DbContextValidation.EF6;
 /// <summary>
 /// Extends the <see cref="DbContext"/> class by providing a method for getting a simplified model of the tables.
 /// </summary>
+[SuppressMessage("ReSharper", "ConvertToExtensionBlock", Justification = "https://github.com/dotnet/roslyn/issues/81943")]
 public static class DbContextExtensions
 {
     /// <param name="context">The context</param>

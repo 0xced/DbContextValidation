@@ -12,7 +12,7 @@ public class DbFixture : DbFixture<MySqlBuilder, MySqlContainer>
     {
     }
 
-    protected override MySqlBuilder CreateBuilder() => new MySqlBuilder("mysql:9");
+    protected override MySqlBuilder CreateBuilder() => new("mysql:9");
 
 #if PROVIDER_MYSQL
     public override DbProviderFactory DbProviderFactory => MySql.Data.MySqlClient.MySqlClientFactory.Instance;

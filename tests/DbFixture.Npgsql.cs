@@ -13,7 +13,7 @@ public class DbFixture : DbFixture<PostgreSqlBuilder, PostgreSqlContainer>
     {
     }
 
-    protected override PostgreSqlBuilder CreateBuilder() => new PostgreSqlBuilder("postgres:18");
+    protected override PostgreSqlBuilder CreateBuilder() => new("postgres:18");
 
     public override DbProviderFactory DbProviderFactory => NpgsqlFactory.Instance;
 

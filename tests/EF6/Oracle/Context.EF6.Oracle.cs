@@ -15,10 +15,5 @@ public class OracleConfiguration : DbConfiguration
     }
 }
 
-[DbConfigurationType(typeof(OracleConfiguration))] 
-public abstract class Context : DbContext
-{
-    protected Context(string connectionString) : base(connectionString)
-    {
-    }
-}
+[DbConfigurationType(typeof(OracleConfiguration))]
+public abstract class Context(string connectionString) : DbContext(connectionString);

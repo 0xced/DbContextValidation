@@ -25,8 +25,8 @@ namespace DbContextValidation.Tests.SqlServer;
 namespace DbContextValidation.Tests;
 #endif
 
-[SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global", Justification = "Required for EF Core")]
-public class ValidContext : Context
+[SuppressMessage("ReSharper", "AutoPropertyCanBeMadeGetOnly.Global", Justification = "Required for EF Core")]
+public class ValidContext(string connectionString) : Context(connectionString)
 {
     static ValidContext()
     {
@@ -39,10 +39,6 @@ public class ValidContext : Context
         Database.SetInitializer<ContextWithMisspelledOrderDateColumn>(null);
         Database.SetInitializer<ContextWithMixedCaseColumns>(null);
 #endif
-    }
-
-    public ValidContext(string connectionString) : base(connectionString)
-    {
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -61,7 +57,8 @@ public class ValidContext : Context
 #endif
         modelBuilder.Entity<Customer>().ToTable("tCustomers");
         modelBuilder.Entity<Order>().ToTable("tOrders");
-        modelBuilder.Entity<Product>().ToTable((string?)null);
+        string? nullTable = null;
+        modelBuilder.Entity<Product>().ToTable(nullTable);
     }
 
     public DbSet<Customer> Customers { get; set; } = null!;
@@ -69,31 +66,20 @@ public class ValidContext : Context
     public DbSet<Product> Products { get; set; } = null!;
 }
 
-public class ValidContextWithExplicitSchema : ValidContext
+public class ValidContextWithExplicitSchema(string connectionString, string? schema) : ValidContext(connectionString)
 {
-    private readonly string? _schema;
-
-    public ValidContextWithExplicitSchema(string connectionString, string? schema) : base(connectionString)
-    {
-        _schema = schema;
-    }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        if (_schema != null) // Some databases don't support schemata at all (e.g., SQLite, MySQL)
+        if (schema != null) // Some databases don't support schemata at all (e.g., SQLite, MySQL)
         {
-            modelBuilder.HasDefaultSchema(_schema);
+            modelBuilder.HasDefaultSchema(schema);
         }
     }
 }
 
-public class ContextWithUnknownSchema : ValidContext
+public class ContextWithUnknownSchema(string connectionString) : ValidContext(connectionString)
 {
-    public ContextWithUnknownSchema(string connectionString) : base(connectionString)
-    {
-    }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -101,12 +87,8 @@ public class ContextWithUnknownSchema : ValidContext
     }
 }
 
-public class ContextWithMisspelledCustomersTable : ValidContext
+public class ContextWithMisspelledCustomersTable(string connectionString) : ValidContext(connectionString)
 {
-    public ContextWithMisspelledCustomersTable(string connectionString) : base(connectionString)
-    {
-    }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -114,12 +96,8 @@ public class ContextWithMisspelledCustomersTable : ValidContext
     }
 }
 
-public class ContextWithMisspelledOrderDateColumn : ValidContext
+public class ContextWithMisspelledOrderDateColumn(string connectionString) : ValidContext(connectionString)
 {
-    public ContextWithMisspelledOrderDateColumn(string connectionString) : base(connectionString)
-    {
-    }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -127,12 +105,8 @@ public class ContextWithMisspelledOrderDateColumn : ValidContext
     }
 }
 
-public class ContextWithMixedCaseColumns : ValidContext
+public class ContextWithMixedCaseColumns(string connectionString) : ValidContext(connectionString)
 {
-    public ContextWithMixedCaseColumns(string connectionString) : base(connectionString)
-    {
-    }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
