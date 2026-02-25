@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Threading;
@@ -19,8 +19,8 @@ namespace DbContextValidation.EF6
             if (wasClosed)
                 await connection.OpenAsync(cancellationToken);
 
-            var dbProviderFactory = connection.GetProviderFactory();
-            var commandBuilder = dbProviderFactory.CreateCommandBuilder();
+            var dbProviderFactory = DbProviderFactories.GetFactory(connection);
+            var commandBuilder = dbProviderFactory?.CreateCommandBuilder();
             var commandText = SelectStatement(schema, tableName, commandBuilder);
             try
             {
@@ -67,21 +67,6 @@ namespace DbContextValidation.EF6
             var schemaSeparator = commandBuilder?.SchemaSeparator ?? ".";
             var tableDescription = hasSchema ? quotedSchema + schemaSeparator + quotedTableName : quotedTableName;
             return $"SELECT * FROM {tableDescription} WHERE 1=0";
-        }
-
-        // ReSharper disable once SuggestBaseTypeForParameter
-        private static DbProviderFactory GetProviderFactory(this DbConnection connection)
-        {
-#if NETSTANDARD2_0
-            // DbProviderFactories was introduced in netcoreapp2.1 but it is easy to get the DbProviderFactory through reflection
-            var type = connection.GetType();
-            var dbProviderFactoryProperty = type.GetProperty("DbProviderFactory", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            if (dbProviderFactoryProperty == null)
-                throw new System.MissingFieldException(type.FullName, "DbProviderFactory");
-            return (DbProviderFactory)dbProviderFactoryProperty.GetValue(connection);
-#else
-            return DbProviderFactories.GetFactory(connection);
-#endif
         }
     }
 }
