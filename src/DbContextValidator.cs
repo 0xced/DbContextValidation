@@ -43,13 +43,13 @@ namespace DbContextValidation.EF6
         /// <param name="cancellationToken">A cancellation token that can be used to cancel the operation.</param>
         /// <returns>The table for the given schema and name.</returns>
         /// <exception cref="TableNotFoundException">The table does not exist.</exception>
-        protected virtual async Task<Table> GetTableAsync(DbConnection connection, string schema, string tableName, CancellationToken cancellationToken)
+        protected virtual async Task<Table> GetTableAsync(DbConnection connection, string? schema, string tableName, CancellationToken cancellationToken)
         {
             return await connection.GetTableAsync(schema, tableName, cancellationToken);
         }
 
         /// <inheritdoc />
-        public async Task<IReadOnlyCollection<ValidationError>> ValidateContextAsync(DbContext context, IProgress<Table> progress = null, CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyCollection<ValidationError>> ValidateContextAsync(DbContext context, IProgress<Table>? progress = null, CancellationToken cancellationToken = default)
         {
             var errors = new List<ValidationError>();
             var modelTables = GetModelTables(context);

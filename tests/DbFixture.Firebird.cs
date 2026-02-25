@@ -19,6 +19,6 @@ namespace DbContextValidation.Tests
 
         protected override string SqlDirectoryName => "SQL.Firebird";
 
-        public override string Schema => null;
+        public override string? Schema => null;
     }
 }

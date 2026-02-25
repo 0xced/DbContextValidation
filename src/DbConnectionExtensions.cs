@@ -12,7 +12,7 @@ namespace DbContextValidation.EF6
 {
     internal static class DbConnectionExtensions
     {
-        internal static async Task<Table> GetTableAsync(this DbConnection connection, string schema, string tableName, CancellationToken cancellationToken)
+        internal static async Task<Table> GetTableAsync(this DbConnection connection, string? schema, string tableName, CancellationToken cancellationToken)
         {
             var columnNames = new List<string>();
             var wasClosed = connection.State == ConnectionState.Closed;
@@ -59,13 +59,12 @@ namespace DbContextValidation.EF6
         /// <param name="tableName">The name of the table.</param>
         /// <param name="commandBuilder">The <see cref="DbCommandBuilder"/> of the provider, may be <see langword="null"/>.</param>
         /// <returns>A select statement used to retrieve all column names in a database.</returns>
-        private static string SelectStatement(string schema, string tableName, DbCommandBuilder commandBuilder)
+        private static string SelectStatement(string? schema, string tableName, DbCommandBuilder? commandBuilder)
         {
-            var hasSchema = !string.IsNullOrEmpty(schema);
-            var quotedSchema = hasSchema ? commandBuilder?.QuoteIdentifier(schema) ?? schema : null;
+            var quotedSchema = string.IsNullOrEmpty(schema) ? null : commandBuilder?.QuoteIdentifier(schema) ?? schema;
             var quotedTableName = commandBuilder?.QuoteIdentifier(tableName) ?? tableName;
             var schemaSeparator = commandBuilder?.SchemaSeparator ?? ".";
-            var tableDescription = hasSchema ? quotedSchema + schemaSeparator + quotedTableName : quotedTableName;
+            var tableDescription = string.IsNullOrEmpty(quotedSchema) ? quotedTableName : quotedSchema + schemaSeparator + quotedTableName;
             return $"SELECT * FROM {tableDescription} WHERE 1=0";
         }
     }

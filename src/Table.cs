@@ -17,7 +17,7 @@ namespace DbContextValidation.EF6
         /// <param name="schema">The schema of the table.</param>
         /// <param name="tableName">The name of the table.</param>
         /// <param name="columnNames">The names of the columns.</param>
-        public Table(string schema, string tableName, IReadOnlyCollection<string> columnNames)
+        public Table(string? schema, string tableName, IReadOnlyCollection<string> columnNames)
         {
             Schema = schema;
             TableName = tableName;
@@ -27,7 +27,7 @@ namespace DbContextValidation.EF6
         /// <summary>
         /// The schema of the table. May be <see langword="null"/> or empty string as some providers (e.g., SQLite, MySQL) do not support schemata.
         /// </summary>
-        public string Schema { get; }
+        public string? Schema { get; }
         
         /// <summary>
         /// The name of the table.

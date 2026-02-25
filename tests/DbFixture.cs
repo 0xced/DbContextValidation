@@ -27,7 +27,7 @@ namespace DbContextValidation.Tests
 
         // ReSharper disable once UnusedMember.Global
         // ReSharper disable once UnusedMemberInSuper.Global
-        public abstract string Schema { get; }
+        public abstract string? Schema { get; }
 
         protected override async Task InitializeAsync()
         {

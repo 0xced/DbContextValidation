@@ -20,7 +20,7 @@ namespace DbContextValidation.Tests
 
         protected override string SqlDirectoryName => "SQL.Oracle";
 
-        public override string Schema => null;
+        public override string? Schema => null;
 
         private class OracleProviderFactory : DbProviderFactory
         {
@@ -30,19 +30,19 @@ namespace DbContextValidation.Tests
 
             public override DbConnection CreateConnection()
             {
-                var connection = (OracleConnection)_factory.CreateConnection() ?? throw new InvalidOperationException($"CreateConnection() returned null for {_factory}");
+                var connection = _factory.CreateConnection() as OracleConnection ?? throw new InvalidOperationException($"CreateConnection() did not return an OracleConnection for {_factory}");
                 // Fixes "ORA-01882: timezone region not found" that occurs on GitHub actions
                 // See https://stackoverflow.com/questions/47469074/timezone-region-not-found/74291427#74291427
                 connection.UseHourOffsetForUnsupportedTimezone = true;
                 return connection;
             }
 
-            public override DbCommand CreateCommand() => _factory.CreateCommand();
-            public override DbCommandBuilder CreateCommandBuilder() => _factory.CreateCommandBuilder();
-            public override DbConnectionStringBuilder CreateConnectionStringBuilder() => _factory.CreateConnectionStringBuilder();
-            public override DbDataAdapter CreateDataAdapter() => _factory.CreateDataAdapter();
-            public override DbDataSourceEnumerator CreateDataSourceEnumerator() => _factory.CreateDataSourceEnumerator();
-            public override DbParameter CreateParameter() => _factory.CreateParameter();
+            public override DbCommand? CreateCommand() => _factory.CreateCommand();
+            public override DbCommandBuilder? CreateCommandBuilder() => _factory.CreateCommandBuilder();
+            public override DbConnectionStringBuilder? CreateConnectionStringBuilder() => _factory.CreateConnectionStringBuilder();
+            public override DbDataAdapter? CreateDataAdapter() => _factory.CreateDataAdapter();
+            public override DbDataSourceEnumerator? CreateDataSourceEnumerator() => _factory.CreateDataSourceEnumerator();
+            public override DbParameter? CreateParameter() => _factory.CreateParameter();
             public override bool CanCreateDataSourceEnumerator => _factory.CanCreateDataSourceEnumerator;
 
 #if NETCOREAPP

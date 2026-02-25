@@ -22,6 +22,6 @@ namespace DbContextValidation.Tests
 
         protected override string SqlDirectoryName => "SQL.MySQL";
 
-        public override string Schema => null;
+        public override string? Schema => null;
     }
 }

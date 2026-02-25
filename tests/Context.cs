@@ -61,19 +61,19 @@ namespace DbContextValidation.Tests
 #endif
             modelBuilder.Entity<Customer>().ToTable("tCustomers");
             modelBuilder.Entity<Order>().ToTable("tOrders");
-            modelBuilder.Entity<Product>().ToTable((string)null);
+            modelBuilder.Entity<Product>().ToTable((string?)null);
         }
 
-        public DbSet<Customer> Customers { get; set; }
-        public DbSet<Order> Orders { get; set; }
-        public DbSet<Product> Products { get; set; }
+        public DbSet<Customer> Customers { get; set; } = null!;
+        public DbSet<Order> Orders { get; set; } = null!;
+        public DbSet<Product> Products { get; set; } = null!;
     }
 
     public class ValidContextWithExplicitSchema : ValidContext
     {
-        private readonly string _schema;
+        private readonly string? _schema;
 
-        public ValidContextWithExplicitSchema(string connectionString, string schema) : base(connectionString)
+        public ValidContextWithExplicitSchema(string connectionString, string? schema) : base(connectionString)
         {
             _schema = schema;
         }

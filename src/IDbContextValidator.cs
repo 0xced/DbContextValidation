@@ -29,6 +29,6 @@ namespace DbContextValidation.EF6
         /// A collection of <see cref="ValidationError"/>s, i.e., when an entity defined in the model does not have a matching table and column names in the database.
         /// If the context model exactly matches the actual database, then an empty collection is returned.
         /// </returns>
-        Task<IReadOnlyCollection<ValidationError>> ValidateContextAsync(DbContext context, IProgress<Table> progress = null, CancellationToken cancellationToken = default);
+        Task<IReadOnlyCollection<ValidationError>> ValidateContextAsync(DbContext context, IProgress<Table>? progress = null, CancellationToken cancellationToken = default);
     }
 }

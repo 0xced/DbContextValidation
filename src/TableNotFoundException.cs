@@ -20,7 +20,7 @@ namespace DbContextValidation.EF6
         /// <param name="tableName">The name of the table.</param>
         /// <param name="dbException">The DbException that was thrown while retrieving the table information.</param>
         /// <param name="selectStatement">The select statement that was issued to the database that generated the <see cref="DbException"/>.</param>
-        public TableNotFoundException(string schema, string tableName, DbException dbException, string selectStatement) : base($"{schema}{(string.IsNullOrEmpty(schema) ? "" : ".")}{tableName} not found", dbException)
+        public TableNotFoundException(string? schema, string tableName, DbException dbException, string selectStatement) : base($"{schema}{(string.IsNullOrEmpty(schema) ? "" : ".")}{tableName} not found", dbException)
         {
             DbException = dbException;
             SelectStatement = selectStatement;
