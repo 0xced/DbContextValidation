@@ -19,9 +19,12 @@ namespace DbContextValidation.EFCore
             {
                 var schema = entityType.GetSchema();
                 var tableName = entityType.GetTableName();
-                var columnNames = entityType.GetProperties().Select(e => e.GetColumnName());
-                var table = new Table(schema, tableName, columnNames.ToList());
-                yield return table;
+                if (tableName != null)
+                {
+                    var columnNames = entityType.GetProperties().Select(e => e.GetColumnName());
+                    var table = new Table(schema, tableName, columnNames.ToList());
+                    yield return table;
+                }
             }
         }
 

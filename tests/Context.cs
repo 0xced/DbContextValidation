@@ -61,10 +61,12 @@ namespace DbContextValidation.Tests
 #endif
             modelBuilder.Entity<Customer>().ToTable("tCustomers");
             modelBuilder.Entity<Order>().ToTable("tOrders");
+            modelBuilder.Entity<Product>().ToTable((string)null);
         }
 
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<Product> Products { get; set; }
     }
 
     public class ValidContextWithExplicitSchema : ValidContext
