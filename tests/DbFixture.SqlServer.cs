@@ -1,7 +1,7 @@
 ﻿using System.Data.Common;
 using Testcontainers.MsSql;
 using Xunit.Abstractions;
-#if EF6 || EFCORE2
+#if EF6
 using System.Data.SqlClient;
 #else
 using Microsoft.Data.SqlClient;

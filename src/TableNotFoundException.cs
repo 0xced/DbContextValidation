@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data.Common;
-using System.Runtime.Serialization;
 
 #if EFCORE
 namespace DbContextValidation.EFCore
@@ -12,7 +11,6 @@ namespace DbContextValidation.EF6
     /// Represents errors that occur while trying to get the list of column names for a given table.
     /// </summary>
     /// <seealso cref="MissingTableError.MissingTableException"/>
-    [Serializable]
     public sealed class TableNotFoundException : Exception
     {
         /// <summary>
@@ -26,21 +24,6 @@ namespace DbContextValidation.EF6
         {
             DbException = dbException;
             SelectStatement = selectStatement;
-        }
-
-        /// <inheritdoc />
-        private TableNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-            DbException = (DbException)info.GetValue(nameof(DbException), typeof(DbException));
-            SelectStatement = info.GetString(nameof(SelectStatement));
-        }
-
-        /// <inheritdoc />
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            base.GetObjectData(info, context);
-            info.AddValue(nameof(DbException), DbException, typeof(DbException));
-            info.AddValue(nameof(SelectStatement), SelectStatement);
         }
 
         /// <summary>
