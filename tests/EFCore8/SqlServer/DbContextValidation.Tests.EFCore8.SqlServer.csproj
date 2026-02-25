@@ -10,8 +10,4 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.*" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Include="$(TestsDirectory)\EFCore2\SqlServer\Context.EFCore.SqlServer.cs" />
-  </ItemGroup>
-
 </Project>

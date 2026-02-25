@@ -10,8 +10,4 @@
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.*" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Include="$(TestsDirectory)\EFCore5\MySQL.Pomelo\Context.EFCore.MySQL.Pomelo.cs" />
-  </ItemGroup>
-
 </Project>

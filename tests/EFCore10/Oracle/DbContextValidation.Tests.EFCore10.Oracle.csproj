@@ -9,8 +9,4 @@
     <PackageReference Include="Oracle.EntityFrameworkCore" Version="10.*" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Include="$(TestsDirectory)\EFCore2\Oracle\Context.EFCore.Oracle.cs" />
-  </ItemGroup>
-
 </Project>

@@ -10,8 +10,4 @@
     <PackageReference Include="FirebirdSql.EntityFrameworkCore.Firebird" Version="7.*" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Include="$(TestsDirectory)\EFCore2\Firebird\Context.EFCore.Firebird.cs" />
-  </ItemGroup>
-
 </Project>

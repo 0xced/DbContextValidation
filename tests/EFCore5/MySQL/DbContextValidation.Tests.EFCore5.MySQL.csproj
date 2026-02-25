@@ -9,8 +9,4 @@
     <PackageReference Include="MySql.EntityFrameworkCore" Version="5.*" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Include="$(TestsDirectory)\EFCore2\MySQL\Context.EFCore.MySQL.cs" />
-  </ItemGroup>
-
 </Project>
