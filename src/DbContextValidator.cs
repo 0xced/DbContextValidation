@@ -38,7 +38,7 @@ namespace DbContextValidation.EF6
         }
 
         /// <param name="connection">The database connection.</param>
-        /// <param name="schema">The schema of the table. May be <code>null</code> as some providers (e.g. SQLite, MySQL) do not support schemata.</param>
+        /// <param name="schema">The schema of the table. May be <see langword="null"/> as some providers (e.g., SQLite, MySQL) do not support schemata.</param>
         /// <param name="tableName">The name of the table.</param>
         /// <param name="cancellationToken">A cancellation token that can be used to cancel the operation.</param>
         /// <returns>The table for the given schema and name.</returns>
@@ -63,7 +63,7 @@ namespace DbContextValidation.EF6
                 {
                     var databaseTable = await GetTableAsync(context.GetDbConnection(), schema, tableName, cancellationToken);
                     var missingColumns = expectedColumnNames.Except(databaseTable.ColumnNames, _columnNameEqualityComparer).ToList();
-                    if (missingColumns.Any())
+                    if (missingColumns.Count > 0)
                     {
                         errors.Add(new MissingColumnsError(modelTable, missingColumns));
                     }

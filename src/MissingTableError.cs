@@ -13,14 +13,14 @@ namespace DbContextValidation.EF6
         /// Initializes a new instance of the <see cref="MissingTableError"/> class.
         /// </summary>
         /// <param name="table">The missing table that is defined in the DbContext model.</param>
-        /// <param name="exception">The exception that occured when trying to get the table.</param>
+        /// <param name="exception">The exception that occurred when trying to get the table.</param>
         public MissingTableError(Table table, TableNotFoundException exception) : base(table)
         {
             MissingTableException = exception;
         }
         
         /// <summary>
-        /// Contains the exception that occured when the select statement to get the actual column names was issued to the database.
+        /// Contains the exception that occurred when the select statement to get the actual column names was issued to the database.
         /// Especially useful to diagnose why a table is missing.
         /// </summary>
         public TableNotFoundException MissingTableException { get; }

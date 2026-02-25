@@ -1,10 +1,12 @@
 ﻿using System.Data.Common;
+using System.Diagnostics.CodeAnalysis;
 using Npgsql;
 using Testcontainers.PostgreSql;
 using Xunit.Abstractions;
 
 namespace DbContextValidation.Tests
 {
+    [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global", Justification = "Instantiated by xUnit")]
     public class DbFixture : DbFixture<PostgreSqlBuilder, PostgreSqlContainer>
     {
         public DbFixture(IMessageSink messageSink) : base(messageSink)

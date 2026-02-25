@@ -64,7 +64,7 @@ namespace DbContextValidation.Tests
         public async Task Validator_ValidContext_ReturnNoErrors()
         {
             // Arrange
-            using var context = new ValidContext(_connectionString);
+            var context = new ValidContext(_connectionString);
 
             // Act
             var errors = await _defaultValidator.ValidateContextAsync(context);
@@ -83,7 +83,7 @@ namespace DbContextValidation.Tests
         public async Task Validator_ValidContextWithExplicitSchema_ReturnNoErrors()
         {
             // Arrange
-            using var context = new ValidContextWithExplicitSchema(_connectionString, _dbFixture.Schema);
+            var context = new ValidContextWithExplicitSchema(_connectionString, _dbFixture.Schema);
 
             // Act
             var errors = await _defaultValidator.ValidateContextAsync(context);
@@ -97,7 +97,7 @@ namespace DbContextValidation.Tests
         {
             // Arrange
             var progress = new AccumulatorProgress<Table>();
-            using var context = new ValidContext(_connectionString);
+            var context = new ValidContext(_connectionString);
 
             // Act
             await _defaultValidator.ValidateContextAsync(context, progress);
@@ -110,7 +110,7 @@ namespace DbContextValidation.Tests
         public void Validator_ValidContext_SupportsCancellation()
         {
             // Arrange
-            using var context = new ValidContext(_connectionString);
+            var context = new ValidContext(_connectionString);
 
             // Act
             var validationTask = _defaultValidator.ValidateContextAsync(context, cancellationToken: new CancellationToken(true));
@@ -123,7 +123,7 @@ namespace DbContextValidation.Tests
         public async Task Validator_UnknownSchema_ReturnsMissingTableErrors()
         {
             // Arrange
-            using var context = new ContextWithUnknownSchema(_connectionString);
+            var context = new ContextWithUnknownSchema(_connectionString);
 
             // Act
             var errors = await _defaultValidator.ValidateContextAsync(context);
@@ -132,13 +132,18 @@ namespace DbContextValidation.Tests
             errors.Should().OnlyContain(e => e.Table.Schema == "unknown");
             errors.Should().OnlyContain(e => e.GetType() == typeof(MissingTableError));
             errors.Select(e => e.Table.TableName).Should().BeEquivalentTo("tCustomers", "tOrders");
+            var exceptions = errors.OfType<MissingTableError>().Select(e => e.MissingTableException).ToList();
+#if !PROVIDER_MYSQL && !PROVIDER_MYSQL_POMELO // The message for MySQL is this: "SELECT command denied to user 'mysql'@'192.168.215.1' for table 'tableName'"
+            exceptions.Select(e => e.DbException.Message).Should().AllSatisfy(message => message.Should().Contain("unknown"));
+#endif
+            exceptions.Select(e => e.SelectStatement).Should().AllSatisfy(message => message.Should().StartWith("SELECT *"));
         }
 
         [Fact]
         public async Task Validator_MisspelledCustomersTable_ReturnsMissingTableError()
         {
             // Arrange
-            using var context = new ContextWithMisspelledCustomersTable(_connectionString);
+            var context = new ContextWithMisspelledCustomersTable(_connectionString);
 
             // Act
             var errors = await _defaultValidator.ValidateContextAsync(context);
@@ -153,7 +158,7 @@ namespace DbContextValidation.Tests
         public async Task Validator_MisspelledOrderDateColumn_ReturnsMissingColumnsError()
         {
             // Arrange
-            using var context = new ContextWithMisspelledOrderDateColumn(_connectionString);
+            var context = new ContextWithMisspelledOrderDateColumn(_connectionString);
 
             // Act
             var errors = await _defaultValidator.ValidateContextAsync(context);
@@ -170,7 +175,7 @@ namespace DbContextValidation.Tests
         public async Task Validator_CaseInsensitiveColumnNameComparison_ReturnNoErrors()
         {
             // Arrange
-            using var context = new ContextWithMixedCaseColumns(_connectionString);
+            var context = new ContextWithMixedCaseColumns(_connectionString);
             var caseInsensitiveValidator = new DbContextValidator(StringComparer.InvariantCultureIgnoreCase);
 
             // Act
@@ -184,7 +189,7 @@ namespace DbContextValidation.Tests
         public async Task Validator_CaseSensitiveColumnNameComparison_ReturnsMissingColumnsError()
         {
             // Arrange
-            using var context = new ContextWithMixedCaseColumns(_connectionString);
+            var context = new ContextWithMixedCaseColumns(_connectionString);
 
             // Act
             var errors = await _defaultValidator.ValidateContextAsync(context);

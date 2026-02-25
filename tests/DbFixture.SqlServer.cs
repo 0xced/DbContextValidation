@@ -1,4 +1,5 @@
 ﻿using System.Data.Common;
+using System.Diagnostics.CodeAnalysis;
 using Testcontainers.MsSql;
 using Xunit.Abstractions;
 #if EF6
@@ -10,6 +11,7 @@ using Microsoft.Data.SqlClient;
 
 namespace DbContextValidation.Tests
 {
+    [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global", Justification = "Instantiated by xUnit")]
     public class DbFixture : DbFixture<MsSqlBuilder, MsSqlContainer>
     {
         public DbFixture(IMessageSink messageSink) : base(messageSink)

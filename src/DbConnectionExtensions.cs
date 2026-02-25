@@ -55,9 +55,9 @@ namespace DbContextValidation.EF6
             return new Table(schema, tableName, columnNames);
         }
 
-        /// <param name="schema">The schema of the table. May be <code>null</code> as some providers (e.g. SQLite, MySQL) do not support schemata.</param>
+        /// <param name="schema">The schema of the table. May be <see langword="null"/> as some providers (e.g., SQLite, MySQL) do not support schemata.</param>
         /// <param name="tableName">The name of the table.</param>
-        /// <param name="commandBuilder">The <see cref="DbCommandBuilder"/> of the provider, may be <code>null</code>.</param>
+        /// <param name="commandBuilder">The <see cref="DbCommandBuilder"/> of the provider, may be <see langword="null"/>.</param>
         /// <returns>A select statement used to retrieve all column names in a database.</returns>
         private static string SelectStatement(string schema, string tableName, DbCommandBuilder commandBuilder)
         {

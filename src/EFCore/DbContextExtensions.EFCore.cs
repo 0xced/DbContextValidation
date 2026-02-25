@@ -14,6 +14,7 @@ namespace DbContextValidation.EFCore
         /// <returns>An enumerable collection of the database tables defined in the given context.</returns>
         public static IEnumerable<Table> GetModelTables(this DbContext context)
         {
+            // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (var entityType in context.Model.GetEntityTypes())
             {
                 var schema = entityType.GetSchema();

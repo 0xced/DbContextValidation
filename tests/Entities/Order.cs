@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DbContextValidation.Tests
 {
+    [SuppressMessage("ReSharper", "All")]
     public class Order
     {
         public long Id { get; set; }

@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DbContextValidation.Tests
 {
+    [SuppressMessage("ReSharper", "All")]
     public class Customer
     {
         public long Id { get; set; }

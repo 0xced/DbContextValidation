@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 
-// ReSharper disable once CheckNamespace
 namespace DbContextValidation.Tests.MySQL
 {
     public abstract class Context : DbContext

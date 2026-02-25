@@ -1,4 +1,5 @@
-﻿#if EFCORE
+﻿using System.Diagnostics.CodeAnalysis;
+#if EFCORE
 using Microsoft.EntityFrameworkCore;
 #else
 using System.Data.Entity;
@@ -24,6 +25,7 @@ namespace DbContextValidation.Tests.SqlServer
 namespace DbContextValidation.Tests
 #endif
 {
+    [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global", Justification = "Required for EF Core")]
     public class ValidContext : Context
     {
         static ValidContext()
@@ -77,7 +79,7 @@ namespace DbContextValidation.Tests
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            if (_schema != null) // Some databases don't support schemata at all (e.g. SQLite, MySQL)
+            if (_schema != null) // Some databases don't support schemata at all (e.g., SQLite, MySQL)
             {
                 modelBuilder.HasDefaultSchema(_schema);
             }

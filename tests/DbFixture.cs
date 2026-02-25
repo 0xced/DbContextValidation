@@ -12,6 +12,7 @@ using Xunit.Abstractions;
 
 namespace DbContextValidation.Tests
 {
+    // ReSharper disable once UnusedType.Global
     public abstract class DbFixture<TBuilderEntity, TContainerEntity> : DbContainerFixture<TBuilderEntity, TContainerEntity>
         where TBuilderEntity : IContainerBuilder<TBuilderEntity, TContainerEntity, IContainerConfiguration>, new()
         where TContainerEntity : IContainer, IDatabaseContainer
@@ -24,18 +25,20 @@ namespace DbContextValidation.Tests
 
         protected abstract string SqlDirectoryName { get; }
 
+        // ReSharper disable once UnusedMember.Global
+        // ReSharper disable once UnusedMemberInSuper.Global
         public abstract string Schema { get; }
 
         protected override async Task InitializeAsync()
         {
             await base.InitializeAsync();
 
-            using var connection = CreateConnection();
+            var connection = CreateConnection();
             await connection.OpenAsync();
 
             foreach (var sql in ReadSqlStatements(SqlDirectory(SqlDirectoryName)))
             {
-                using var command = connection.CreateCommand();
+                var command = connection.CreateCommand();
                 command.CommandText = sql;
                 await command.ExecuteNonQueryAsync();
             }
@@ -55,11 +58,9 @@ namespace DbContextValidation.Tests
         {
             var testsDirectory = TestsDirectory();
             var sqlDirectory = new DirectoryInfo(Path.Combine(testsDirectory.FullName, directoryName));
-            if (!sqlDirectory.Exists)
-            {
-                throw new FileNotFoundException($"SQL directory not found ({sqlDirectory.FullName})", sqlDirectory.FullName);
-            }
-            return sqlDirectory;
+            return sqlDirectory.Exists
+                ? sqlDirectory
+                : throw new FileNotFoundException($"SQL directory not found ({sqlDirectory.FullName})", sqlDirectory.FullName);
         }
 
         private static DirectoryInfo TestsDirectory()
@@ -68,9 +69,9 @@ namespace DbContextValidation.Tests
             if (testsDirectory != null)
             {
                 var testsDirectoryInfo = new DirectoryInfo(testsDirectory);
-                if (!testsDirectoryInfo.Exists)
-                    throw new FileNotFoundException($"Tests directory specified in the TESTS_DIRECTORY environment variable not found ({testsDirectoryInfo.FullName})", testsDirectoryInfo.FullName);
-                return testsDirectoryInfo;
+                return testsDirectoryInfo.Exists
+                    ? testsDirectoryInfo
+                    : throw new FileNotFoundException($"Tests directory specified in the TESTS_DIRECTORY environment variable not found ({testsDirectoryInfo.FullName})", testsDirectoryInfo.FullName);
             }
 
             var assemblyLocation = Assembly.GetExecutingAssembly().Location;

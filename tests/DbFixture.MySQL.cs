@@ -1,9 +1,11 @@
 ﻿using System.Data.Common;
+using System.Diagnostics.CodeAnalysis;
 using Testcontainers.MySql;
 using Xunit.Abstractions;
 
 namespace DbContextValidation.Tests
 {
+    [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global", Justification = "Instantiated by xUnit")]
     public class DbFixture : DbFixture<MySqlBuilder, MySqlContainer>
     {
         public DbFixture(IMessageSink messageSink) : base(messageSink)
