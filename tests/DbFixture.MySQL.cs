@@ -3,25 +3,24 @@ using System.Diagnostics.CodeAnalysis;
 using Testcontainers.MySql;
 using Xunit.Abstractions;
 
-namespace DbContextValidation.Tests
-{
-    [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global", Justification = "Instantiated by xUnit")]
-    public class DbFixture : DbFixture<MySqlBuilder, MySqlContainer>
-    {
-        public DbFixture(IMessageSink messageSink) : base(messageSink)
-        {
-        }
+namespace DbContextValidation.Tests;
 
-        protected override MySqlBuilder CreateBuilder() => new MySqlBuilder("mysql:9");
+[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global", Justification = "Instantiated by xUnit")]
+public class DbFixture : DbFixture<MySqlBuilder, MySqlContainer>
+{
+    public DbFixture(IMessageSink messageSink) : base(messageSink)
+    {
+    }
+
+    protected override MySqlBuilder CreateBuilder() => new MySqlBuilder("mysql:9");
 
 #if PROVIDER_MYSQL
-        public override DbProviderFactory DbProviderFactory => MySql.Data.MySqlClient.MySqlClientFactory.Instance;
+    public override DbProviderFactory DbProviderFactory => MySql.Data.MySqlClient.MySqlClientFactory.Instance;
 #else
         public override DbProviderFactory DbProviderFactory => MySqlConnector.MySqlConnectorFactory.Instance;
 #endif
 
-        protected override string SqlDirectoryName => "SQL.MySQL";
+    protected override string SqlDirectoryName => "SQL.MySQL";
 
-        public override string? Schema => null;
-    }
+    public override string? Schema => null;
 }

@@ -11,70 +11,69 @@ using System.Data.Entity;
 #endif
 
 #if EFCORE
-namespace DbContextValidation.EFCore
+namespace DbContextValidation.EFCore;
 #else
-namespace DbContextValidation.EF6
+namespace DbContextValidation.EF6;
 #endif
+
+/// <inheritdoc />
+public class DbContextValidator : IDbContextValidator
 {
-    /// <inheritdoc />
-    public class DbContextValidator : IDbContextValidator
+    private readonly IEqualityComparer<string> _columnNameEqualityComparer;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DbContextValidator"/> class.
+    /// </summary>
+    /// <param name="columnNameEqualityComparer">An equality comparer used to compare column names defined in the model against the actual column names.</param>
+    public DbContextValidator(IEqualityComparer<string> columnNameEqualityComparer)
     {
-        private readonly IEqualityComparer<string> _columnNameEqualityComparer;
+        _columnNameEqualityComparer = columnNameEqualityComparer ?? throw new ArgumentNullException(nameof(columnNameEqualityComparer));
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DbContextValidator"/> class.
-        /// </summary>
-        /// <param name="columnNameEqualityComparer">An equality comparer used to compare column names defined in the model against the actual column names.</param>
-        public DbContextValidator(IEqualityComparer<string> columnNameEqualityComparer)
-        {
-            _columnNameEqualityComparer = columnNameEqualityComparer ?? throw new ArgumentNullException(nameof(columnNameEqualityComparer));
-        }
+    /// <param name="context">The context</param>
+    /// <returns>An enumerable collection of the database tables defined in the given context.</returns>
+    protected virtual IEnumerable<Table> GetModelTables(DbContext context)
+    {
+        return context.GetModelTables();
+    }
 
-        /// <param name="context">The context</param>
-        /// <returns>An enumerable collection of the database tables defined in the given context.</returns>
-        protected virtual IEnumerable<Table> GetModelTables(DbContext context)
-        {
-            return context.GetModelTables();
-        }
+    /// <param name="connection">The database connection.</param>
+    /// <param name="schema">The schema of the table. May be <see langword="null"/> as some providers (e.g., SQLite, MySQL) do not support schemata.</param>
+    /// <param name="tableName">The name of the table.</param>
+    /// <param name="cancellationToken">A cancellation token that can be used to cancel the operation.</param>
+    /// <returns>The table for the given schema and name.</returns>
+    /// <exception cref="TableNotFoundException">The table does not exist.</exception>
+    protected virtual async Task<Table> GetTableAsync(DbConnection connection, string? schema, string tableName, CancellationToken cancellationToken)
+    {
+        return await connection.GetTableAsync(schema, tableName, cancellationToken);
+    }
 
-        /// <param name="connection">The database connection.</param>
-        /// <param name="schema">The schema of the table. May be <see langword="null"/> as some providers (e.g., SQLite, MySQL) do not support schemata.</param>
-        /// <param name="tableName">The name of the table.</param>
-        /// <param name="cancellationToken">A cancellation token that can be used to cancel the operation.</param>
-        /// <returns>The table for the given schema and name.</returns>
-        /// <exception cref="TableNotFoundException">The table does not exist.</exception>
-        protected virtual async Task<Table> GetTableAsync(DbConnection connection, string? schema, string tableName, CancellationToken cancellationToken)
+    /// <inheritdoc />
+    public async Task<IReadOnlyCollection<ValidationError>> ValidateContextAsync(DbContext context, IProgress<Table>? progress = null, CancellationToken cancellationToken = default)
+    {
+        var errors = new List<ValidationError>();
+        var modelTables = GetModelTables(context);
+        foreach (var modelTable in modelTables)
         {
-            return await connection.GetTableAsync(schema, tableName, cancellationToken);
-        }
-
-        /// <inheritdoc />
-        public async Task<IReadOnlyCollection<ValidationError>> ValidateContextAsync(DbContext context, IProgress<Table>? progress = null, CancellationToken cancellationToken = default)
-        {
-            var errors = new List<ValidationError>();
-            var modelTables = GetModelTables(context);
-            foreach (var modelTable in modelTables)
+            cancellationToken.ThrowIfCancellationRequested();
+            var schema = modelTable.Schema;
+            var tableName = modelTable.TableName;
+            var expectedColumnNames = modelTable.ColumnNames;
+            try
             {
-                cancellationToken.ThrowIfCancellationRequested();
-                var schema = modelTable.Schema;
-                var tableName = modelTable.TableName;
-                var expectedColumnNames = modelTable.ColumnNames;
-                try
+                var databaseTable = await GetTableAsync(context.GetDbConnection(), schema, tableName, cancellationToken);
+                var missingColumns = expectedColumnNames.Except(databaseTable.ColumnNames, _columnNameEqualityComparer).ToList();
+                if (missingColumns.Count > 0)
                 {
-                    var databaseTable = await GetTableAsync(context.GetDbConnection(), schema, tableName, cancellationToken);
-                    var missingColumns = expectedColumnNames.Except(databaseTable.ColumnNames, _columnNameEqualityComparer).ToList();
-                    if (missingColumns.Count > 0)
-                    {
-                        errors.Add(new MissingColumnsError(modelTable, missingColumns));
-                    }
+                    errors.Add(new MissingColumnsError(modelTable, missingColumns));
                 }
-                catch (TableNotFoundException exception)
-                {
-                    errors.Add(new MissingTableError(modelTable, exception));
-                }
-                progress?.Report(modelTable);
             }
-            return errors;
+            catch (TableNotFoundException exception)
+            {
+                errors.Add(new MissingTableError(modelTable, exception));
+            }
+            progress?.Report(modelTable);
         }
+        return errors;
     }
 }

@@ -3,23 +3,22 @@ using Oracle.ManagedDataAccess.Client;
 using Oracle.ManagedDataAccess.EntityFramework;
 
 // ReSharper disable once CheckNamespace
-namespace DbContextValidation.Tests.Oracle
-{
-    public class OracleConfiguration : DbConfiguration
-    {
-        public OracleConfiguration()
-        {
-            SetDefaultConnectionFactory(new OracleConnectionFactory());
-            SetProviderFactory("Oracle.ManagedDataAccess.Client", OracleClientFactory.Instance);
-            SetProviderServices("Oracle.ManagedDataAccess.Client", EFOracleProviderServices.Instance);
-        }
-    }
+namespace DbContextValidation.Tests.Oracle;
 
-    [DbConfigurationType(typeof(OracleConfiguration))] 
-    public abstract class Context : DbContext
+public class OracleConfiguration : DbConfiguration
+{
+    public OracleConfiguration()
     {
-        protected Context(string connectionString) : base(connectionString)
-        {
-        }
+        SetDefaultConnectionFactory(new OracleConnectionFactory());
+        SetProviderFactory("Oracle.ManagedDataAccess.Client", OracleClientFactory.Instance);
+        SetProviderServices("Oracle.ManagedDataAccess.Client", EFOracleProviderServices.Instance);
+    }
+}
+
+[DbConfigurationType(typeof(OracleConfiguration))] 
+public abstract class Context : DbContext
+{
+    protected Context(string connectionString) : base(connectionString)
+    {
     }
 }

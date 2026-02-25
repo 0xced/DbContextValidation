@@ -3,22 +3,21 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity.SqlServer;
 
 // ReSharper disable once CheckNamespace
-namespace DbContextValidation.Tests.SqlServer
-{
-    public class SqlServerConfiguration : DbConfiguration
-    {
-        public SqlServerConfiguration() 
-        {
-            SetDefaultConnectionFactory(new SqlConnectionFactory());
-            SetProviderServices("System.Data.SqlClient", SqlProviderServices.Instance);
-        }
-    }
+namespace DbContextValidation.Tests.SqlServer;
 
-    [DbConfigurationType(typeof(SqlServerConfiguration))] 
-    public abstract class Context : DbContext
+public class SqlServerConfiguration : DbConfiguration
+{
+    public SqlServerConfiguration() 
     {
-        protected Context(string connectionString) : base(connectionString)
-        {
-        }
+        SetDefaultConnectionFactory(new SqlConnectionFactory());
+        SetProviderServices("System.Data.SqlClient", SqlProviderServices.Instance);
+    }
+}
+
+[DbConfigurationType(typeof(SqlServerConfiguration))] 
+public abstract class Context : DbContext
+{
+    protected Context(string connectionString) : base(connectionString)
+    {
     }
 }

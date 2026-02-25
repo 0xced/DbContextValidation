@@ -9,21 +9,20 @@ using System.Data.SqlClient;
 using Microsoft.Data.SqlClient;
 #endif
 
-namespace DbContextValidation.Tests
+namespace DbContextValidation.Tests;
+
+[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global", Justification = "Instantiated by xUnit")]
+public class DbFixture : DbFixture<MsSqlBuilder, MsSqlContainer>
 {
-    [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global", Justification = "Instantiated by xUnit")]
-    public class DbFixture : DbFixture<MsSqlBuilder, MsSqlContainer>
+    public DbFixture(IMessageSink messageSink) : base(messageSink)
     {
-        public DbFixture(IMessageSink messageSink) : base(messageSink)
-        {
-        }
-
-        protected override MsSqlBuilder CreateBuilder() => new MsSqlBuilder("mcr.microsoft.com/mssql/server:2019-latest");
-
-        public override DbProviderFactory DbProviderFactory => SqlClientFactory.Instance;
-
-        protected override string SqlDirectoryName => "SQL.SqlServer";
-
-        public override string Schema => "dbo";
     }
+
+    protected override MsSqlBuilder CreateBuilder() => new MsSqlBuilder("mcr.microsoft.com/mssql/server:2019-latest");
+
+    public override DbProviderFactory DbProviderFactory => SqlClientFactory.Instance;
+
+    protected override string SqlDirectoryName => "SQL.SqlServer";
+
+    public override string Schema => "dbo";
 }

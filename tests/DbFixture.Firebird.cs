@@ -4,21 +4,20 @@ using FirebirdSql.Data.FirebirdClient;
 using Testcontainers.FirebirdSql;
 using Xunit.Abstractions;
 
-namespace DbContextValidation.Tests
+namespace DbContextValidation.Tests;
+
+[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global", Justification = "Instantiated by xUnit")]
+public class DbFixture : DbFixture<FirebirdSqlBuilder, FirebirdSqlContainer>
 {
-    [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global", Justification = "Instantiated by xUnit")]
-    public class DbFixture : DbFixture<FirebirdSqlBuilder, FirebirdSqlContainer>
+    public DbFixture(IMessageSink messageSink) : base(messageSink)
     {
-        public DbFixture(IMessageSink messageSink) : base(messageSink)
-        {
-        }
-
-        protected override FirebirdSqlBuilder CreateBuilder() => new FirebirdSqlBuilder("jacobalberty/firebird:v4.0");
-
-        public override DbProviderFactory DbProviderFactory => FirebirdClientFactory.Instance;
-
-        protected override string SqlDirectoryName => "SQL.Firebird";
-
-        public override string? Schema => null;
     }
+
+    protected override FirebirdSqlBuilder CreateBuilder() => new FirebirdSqlBuilder("jacobalberty/firebird:v4.0");
+
+    public override DbProviderFactory DbProviderFactory => FirebirdClientFactory.Instance;
+
+    protected override string SqlDirectoryName => "SQL.Firebird";
+
+    public override string? Schema => null;
 }
