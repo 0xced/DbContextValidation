@@ -2,6 +2,7 @@
 using Testcontainers.MsSql;
 using Xunit.Abstractions;
 #if EF6
+#pragma warning disable 618 // EntityFramework (v6) depends on System.Data.SqlClient
 using System.Data.SqlClient;
 #else
 using Microsoft.Data.SqlClient;

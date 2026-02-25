@@ -1,14 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   
   <PropertyGroup>
-    <TargetFrameworks>net472;net6.0</TargetFrameworks>
+    <TargetFrameworks>net10.0;</TargetFrameworks>
+    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('Windows'))">$(TargetFrameworks)net48</TargetFrameworks>
     <DefineConstants>$(DefineConstants);PROVIDER_FIREBIRD</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- Starting with version 8.0.0, net48 or netstandard2.1 is required -->
-    <PackageReference Include="EntityFramework.Firebird" Version="7.*" />
-    <PackageReference Include="FirebirdSql.Data.FirebirdClient" Version="9.*" />
+    <PackageReference Include="EntityFramework.Firebird" Version="10.*" />
   </ItemGroup>
 
 </Project>

@@ -1,13 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework Condition="!$([MSBuild]::IsOSPlatform('Windows'))">net472</TargetFramework>
-    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('Windows'))">net472;net6.0</TargetFrameworks>
+    <TargetFramework>net472</TargetFramework>
     <DefineConstants>$(DefineConstants);PROVIDER_ORACLE</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Oracle.ManagedDataAccess.EntityFramework" Version="21.*" />
+    <PackageReference Include="Oracle.ManagedDataAccess.EntityFramework" Version="23.*" />
   </ItemGroup>
 
 </Project>

@@ -13,24 +13,14 @@
   </Folder>
   <Folder Name="/tests/EF6/">
     <File Path="tests/EF6/Directory.Build.props" />
-    <Project Path="tests/EF6/Firebird/DbContextValidation.Tests.EF6.Firebird.csproj">
-      <Build Solution="Release|*" Project="false" />
-    </Project>
-    <Project Path="tests/EF6/MySQL/DbContextValidation.Tests.EF6.MySQL.csproj">
-      <Build Solution="Release|*" Project="false" />
-    </Project>
-    <Project Path="tests/EF6/Npgsql/DbContextValidation.Tests.EF6.Npgsql.csproj">
-      <Build Solution="Release|*" Project="false" />
-    </Project>
+    <Project Path="tests/EF6/Firebird/DbContextValidation.Tests.EF6.Firebird.csproj" />
+    <Project Path="tests/EF6/MySQL/DbContextValidation.Tests.EF6.MySQL.csproj" />
+    <Project Path="tests/EF6/Npgsql/DbContextValidation.Tests.EF6.Npgsql.csproj" />
     <Project Path="tests/EF6/Oracle/DbContextValidation.Tests.EF6.Oracle.csproj">
       <Build Solution="Release|*" Project="false" />
     </Project>
-    <Project Path="tests/EF6/SQLite/DbContextValidation.Tests.EF6.SQLite.csproj">
-      <Build Solution="Release|*" Project="false" />
-    </Project>
-    <Project Path="tests/EF6/SqlServer/DbContextValidation.Tests.EF6.SqlServer.csproj">
-      <Build Solution="Release|*" Project="false" />
-    </Project>
+    <Project Path="tests/EF6/SQLite/DbContextValidation.Tests.EF6.SQLite.csproj" />
+    <Project Path="tests/EF6/SqlServer/DbContextValidation.Tests.EF6.SqlServer.csproj" />
   </Folder>
   <Folder Name="/tests/EFCore8/">
     <File Path="tests/EFCore8/Directory.Build.props" />
