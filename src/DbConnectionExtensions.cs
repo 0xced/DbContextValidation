@@ -24,17 +24,19 @@ namespace DbContextValidation.EF6
             var commandText = SelectStatement(schema, tableName, commandBuilder);
             try
             {
-                using (var command = connection.CreateCommand())
+#if !NET45
+                await
+#endif
+                using var command = connection.CreateCommand();
+                command.CommandText = commandText;
+                command.CommandType = CommandType.Text;
+#if !NET45
+                await
+#endif
+                using var reader = await command.ExecuteReaderAsync(cancellationToken);
+                for (var i = 0; i < reader.FieldCount; i++)
                 {
-                    command.CommandText = commandText;
-                    command.CommandType = CommandType.Text;
-                    using (var reader = await command.ExecuteReaderAsync(cancellationToken))
-                    {
-                        for (var i = 0; i < reader.FieldCount; i++)
-                        {
-                            columnNames.Add(reader.GetName(i));
-                        }
-                    }
+                    columnNames.Add(reader.GetName(i));
                 }
             }
             catch (DbException exception)
