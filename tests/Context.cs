@@ -57,8 +57,7 @@ public class ValidContext(string connectionString) : Context(connectionString)
 #endif
         modelBuilder.Entity<Customer>().ToTable("tCustomers");
         modelBuilder.Entity<Order>().ToTable("tOrders");
-        string? nullTable = null;
-        modelBuilder.Entity<Product>().ToTable(nullTable);
+        modelBuilder.Ignore<Product>();
     }
 
     public DbSet<Customer> Customers { get; set; } = null!;
